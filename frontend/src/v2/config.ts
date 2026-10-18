@@ -15,8 +15,8 @@ export const V2_CONFIG = {
     smartEdges: true,      // Habilitado
     particles: true,       // Habilitado
     labels: true,          // Habilitado
-    depthStyle: true,      // Mejora 5: Habilitado
-    uiPolish: false,
+    depthStyle: true,      // Habilitado
+    uiPolish: true,        // Mejora 6: Habilitado
   } as FeatureFlags,
 
   // Parámetros de auto-encuadre y centrado (Mejora 2)
@@ -79,6 +79,12 @@ export const V2_CONFIG = {
     // Parámetros de Bloom y translucidez
     bloomIntensity: 1.25,
     translucentOpacity: 0.90,
+  },
+
+  // Parámetros de UI y presentación (Mejora 6)
+  ui: {
+    presentationRotateSpeed: 0.75, // Velocidad de rotación cinemática lenta
+    minFontSizePx: 12,
   },
 
   // Estilos de profundidad y paleta accesible (Mejora 5)

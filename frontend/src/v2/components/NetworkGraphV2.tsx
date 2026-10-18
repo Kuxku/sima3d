@@ -18,6 +18,7 @@ interface NetworkGraphV2Props {
   particlesEnabled: boolean;
   labelsEnabled: boolean;
   depthStyleEnabled: boolean;
+  filterType?: string | null;
 }
 
 export function NetworkGraphV2({
@@ -30,6 +31,7 @@ export function NetworkGraphV2({
   particlesEnabled,
   labelsEnabled,
   depthStyleEnabled,
+  filterType = null,
 }: NetworkGraphV2Props) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -38,7 +40,7 @@ export function NetworkGraphV2({
 
   // El nodo activo es el seleccionado, o el que tiene hover si no hay ninguno seleccionado
   const activeNodeId = selectedNode?.id || hoveredId || null;
-  const hasActiveFilter = activeNodeId !== null || highlightedIds.length > 0;
+  const hasActiveFilter = activeNodeId !== null || highlightedIds.length > 0 || filterType !== null;
 
   // Nodos vecinos conectados al nodo activo
   const connectedIds = useMemo(() => {
@@ -131,6 +133,7 @@ export function NetworkGraphV2({
         const isHovered = hoveredId === node.id;
         const isHighlighted = highlightedIds.includes(node.id);
         const isNeighbor = connectedIds.has(node.id);
+        const matchesType = filterType === null || node.type === filterType;
 
         const activeScale =
           isSelected || isHovered
@@ -146,14 +149,18 @@ export function NetworkGraphV2({
             : isHighlighted
               ? 1.7
               : hasActiveFilter
-                ? isNeighbor
-                  ? 0.75
+                ? matchesType && (isNeighbor || filterType !== null)
+                  ? 0.85
                   : 0.04
                 : 0.55;
 
         // Translucidez sutil para orbes de cristal espacial
         const baseOpacity = depthStyleEnabled ? V2_CONFIG.depth.translucentOpacity : 0.95;
-        const nodeOpacity = hasActiveFilter ? (isNeighbor ? 1.0 : 0.15) : baseOpacity;
+        const nodeOpacity = hasActiveFilter
+          ? matchesType && (isNeighbor || filterType !== null)
+            ? 1.0
+            : 0.12
+          : baseOpacity;
 
         // Solo mostrar etiqueta básica si labels está apagado
         const showFallbackLabel = !labelsEnabled && (isSelected || isHovered || isHighlighted);

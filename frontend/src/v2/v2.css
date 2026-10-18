@@ -246,3 +246,224 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* ============================================================
+   Mejora 6: UI Polish, Chat Colapsable, Leyenda y Presentación
+   ============================================================ */
+
+/* 1. Chips de sugerencias del chat envolventes sin cortarse */
+.quick-prompts {
+  display: flex;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  overflow-x: visible !important;
+  padding-bottom: 4px;
+}
+
+.prompt-chip {
+  white-space: normal !important;
+  text-align: left;
+  line-height: 1.35;
+  font-size: 11px !important;
+  padding: 6px 10px !important;
+  border-radius: 8px !important;
+  transition: all 0.18s ease;
+}
+
+.prompt-chip:hover {
+  background: rgba(56, 189, 248, 0.22) !important;
+  border-color: #38bdf8 !important;
+}
+
+/* 2. Accesibilidad WCAG AA: Contraste y tamaño de fuente mínimo */
+.kpi-label {
+  font-size: 11px !important;
+  color: #94a3b8 !important; /* Contraste > 4.5:1 */
+  font-weight: 700;
+}
+
+.brand-subtitle {
+  font-size: 11px !important;
+  color: #cbd5e1 !important; /* Mucho más legible */
+}
+
+/* 3. Panel de Chat Colapsable */
+.hud-sidebar {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+}
+
+.hud-sidebar.collapsed {
+  transform: translateX(-105%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.v2-collapse-chat-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.18s ease;
+}
+
+.v2-collapse-chat-btn:hover {
+  background: rgba(56, 189, 248, 0.25);
+  color: #38bdf8;
+  border-color: #38bdf8;
+}
+
+.v2-open-chat-tab {
+  position: absolute;
+  top: 90px;
+  left: 24px;
+  z-index: 40;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
+}
+
+.v2-open-chat-tab:hover {
+  background: rgba(14, 165, 233, 0.25);
+  transform: translateY(-1px);
+}
+
+/* 4. Leyenda Interactiva con Clic para Filtrar */
+.hud-legend.interactive {
+  display: flex;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 14px;
+  border-radius: 12px;
+  pointer-events: auto;
+}
+
+.legend-item.clickable {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  user-select: none;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.legend-item.clickable:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.legend-item.active {
+  background: rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+}
+
+.legend-item.dimmed {
+  opacity: 0.35;
+}
+
+/* 5. Modo Presentación (Cinemático) */
+.v2-presentation-btn {
+  background: rgba(245, 158, 11, 0.16);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
+}
+
+.v2-presentation-btn:hover {
+  background: rgba(245, 158, 11, 0.32);
+  transform: translateY(-1px);
+}
+
+.v2-presentation-btn.active {
+  background: #f59e0b;
+  color: #020617;
+}
+
+/* Barra flotante inferior para salir del modo presentación */
+.v2-exit-presentation-bar {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(245, 158, 11, 0.6);
+  padding: 10px 20px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+  animation: v2FadeUp 0.3s ease;
+}
+
+@keyframes v2FadeUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 15px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.v2-presentation-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.v2-presentation-label .pulse-dot {
+  background: #f59e0b;
+  box-shadow: 0 0 10px #f59e0b;
+}
+
+.v2-exit-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f1f5f9;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.v2-exit-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+

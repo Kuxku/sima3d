@@ -24,7 +24,7 @@ export const V2_CONFIG = {
     particles: true,       // Mejora 3b: Partículas en aristas
     labels: true,          // Mejora 4: Etiquetas fijas y tooltips ricos
     depthStyle: true,      // Mejora 5: Estilo visual, niebla y paleta accesible
-    uiPolish: false,       // Mejora 6: UI pulida y modo presentación
+    uiPolish: true,        // Mejora 6: UI pulida y modo presentación
   }
 };
 ```
@@ -83,8 +83,24 @@ export const V2_CONFIG = {
   1. Comunas: `#0ea5e9` (Azul zafiro puro).
   2. Colegios: `#10b981` (Verde esmeralda nítido).
   3. Facultades: `#f59e0b` (Ámbar dorado cálido).
-  4. Probada para distinción óptima bajo condiciones de deuteranopía y protanopía.
-- **Fallback defensivo:** Si `depthStyle: false`, regresa al escalado logarítmico, materiales opacos clásicos y sin niebla.
+### Mejora 6: Interfaz Pulida y Modo Presentación (`uiPolish`)
+- **Problema solucionado:** Chips de preguntas rápidas que se cortaban horizontalmente, contraste subóptimo en etiquetas secundarias y necesidad de una vista limpia para presentaciones ejecutivas o demostraciones en pantallas de Ruta N.
+- **Chips de Sugerencias Envolventes (`flex-wrap`):**
+  1. Los chips de preguntas predefinidas se adaptan en múltiples líneas dinámicas con padding y bordes suaves, sin cortarse ni generar scroll horizontal incómodo.
+- **Accesibilidad y Contraste WCAG AA:**
+  1. Tipografías secundarias (`kpi-label`, `brand-subtitle`, métricas) elevadas a contrastes superiores a 4.5:1 (`#94a3b8` y `#cbd5e1`) y tamaños mínimos de 11px/12px para visualización cómoda en cualquier proyector o pantalla.
+- **Panel de Chat Colapsable:**
+  1. Botón de minimizado en la cabecera del chat (◀) que oculta el panel lateral con una transición fluida.
+  2. Pestaña flotante "Abrir Chat Copilot" para reabrirlo con un solo clic, liberando el 100% del lienzo cuando no se conversa con la IA.
+- **Leyenda Interactiva Filtrable:**
+  1. Clic en "Comunas", "Colegios" o "Facultades" en el pie de página para aislar y resaltar esa categoría en el espacio 3D, atenuando las demás para análisis temático inmediato.
+  2. Un segundo clic sobre la categoría desactiva el filtro y restaura la vista global.
+- **Modo Presentación Cinemático ("📽️ Presentación"):**
+  1. Botón dedicado en el HUD que oculta el chat y controles secundarios, manteniendo visibles únicamente los KPIs globales.
+  2. Activa una **rotación continua y cinemática lenta a 60 FPS** (`autoRotateSpeed: 0.75`), ideal para proyectar en pantallas durante la demo en Ruta N.
+  3. Barra flotante estilizada en la parte inferior para salir del modo presentación con un clic o pulsando la tecla Escape.
+- **Fallback defensivo:** Si `uiPolish: false`, regresa al HUD clásico estático de v1.
+
 
 
 

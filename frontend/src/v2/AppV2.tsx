@@ -95,13 +95,25 @@ export function AppV2() {
   const [inputValue, setInputValue] = useState('');
   const [sending, setSending] = useState(false);
   const [fitTrigger, setFitTrigger] = useState(0);
+
+  // Estados de Mejora 6 (uiPolish)
+  const [chatCollapsed, setChatCollapsed] = useState(false);
+  const [presentationMode, setPresentationMode] = useState(false);
+  const [activeTypeFilter, setActiveTypeFilter] = useState<string | null>(null);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleRefit = () => {
     setSelectedNode(null);
     setHighlightedIds([]);
     setCameraTarget(null);
+    setActiveTypeFilter(null);
     setFitTrigger((prev) => prev + 1);
+  };
+
+  const handleToggleTypeFilter = (type: string) => {
+    if (!flags.uiPolish) return;
+    setActiveTypeFilter((prev) => (prev === type ? null : type));
   };
 
   const toggleFlag = (key: keyof FeatureFlags) => {
@@ -251,6 +263,7 @@ export function AppV2() {
               particlesEnabled={flags.particles}
               labelsEnabled={flags.labels}
               depthStyleEnabled={flags.depthStyle}
+              filterType={activeTypeFilter}
             />
           </FeatureBoundary>
 
@@ -258,7 +271,7 @@ export function AppV2() {
             <AutoFitCamera
               nodePositions={nodePositions}
               controlsRef={controlsRef}
-              enabled={flags.autoFit}
+              enabled={flags.autoFit && !presentationMode}
               targetPos={cameraTarget}
               fitTrigger={fitTrigger}
             />
@@ -267,7 +280,7 @@ export function AppV2() {
           <CameraRigV2
             targetPos={cameraTarget}
             controlsRef={controlsRef}
-            autoFitEnabled={flags.autoFit}
+            autoFitEnabled={flags.autoFit && !presentationMode}
           />
 
           <EffectComposer>
@@ -285,6 +298,8 @@ export function AppV2() {
             dampingFactor={0.06}
             maxDistance={140}
             minDistance={3}
+            autoRotate={flags.uiPolish && presentationMode}
+            autoRotateSpeed={V2_CONFIG.ui.presentationRotateSpeed}
           />
         </Canvas>
       </div>
@@ -318,8 +333,25 @@ export function AppV2() {
             <span className="kpi-value">{graphData.meta.edge_count}</span>
           </div>
 
+          {/* Botón Modo Presentación (Mejora 6) */}
+          {flags.uiPolish && (
+            <button
+              className={`v2-presentation-btn ${presentationMode ? 'active' : ''}`}
+              onClick={() => {
+                setPresentationMode(!presentationMode);
+                if (!presentationMode) {
+                  setSelectedNode(null);
+                  setHighlightedIds([]);
+                }
+              }}
+              title="Modo pantalla completa cinemático con rotación continua"
+            >
+              📽️ {presentationMode ? 'Salir Presentación' : 'Presentación'}
+            </button>
+          )}
+
           {/* Botón Reencuadrar para volver a la vista completa (Mejora 2) */}
-          {flags.autoFit && (
+          {flags.autoFit && !presentationMode && (
             <button
               className="v2-refit-btn"
               onClick={handleRefit}
@@ -329,7 +361,7 @@ export function AppV2() {
             </button>
           )}
 
-          {(selectedNode || highlightedIds.length > 0 || cameraTarget) && (
+          {(selectedNode || highlightedIds.length > 0 || cameraTarget) && !presentationMode && (
             <button className="reset-view-btn" onClick={handleResetView}>
               ⟲ Vista General
             </button>
@@ -337,12 +369,37 @@ export function AppV2() {
         </div>
       </header>
 
-      {/* 3. PANEL LATERAL FLOTANTE: COPILOT IA */}
-      <aside className="hud-sidebar">
+      {/* Pestaña flotante para reabrir chat cuando está colapsado (Mejora 6) */}
+      {flags.uiPolish && chatCollapsed && !presentationMode && (
+        <button
+          className="v2-open-chat-tab"
+          onClick={() => setChatCollapsed(false)}
+          title="Abrir Copilot Analítico"
+        >
+          <span className="ai-badge">IA</span>
+          <span>Abrir Chat Copilot</span>
+        </button>
+      )}
+
+      {/* 3. PANEL LATERAL FLOTANTE: COPILOT IA (Colapsable en Mejora 6) */}
+      <aside
+        className={`hud-sidebar ${
+          flags.uiPolish && (chatCollapsed || presentationMode) ? 'collapsed' : ''
+        }`}
+      >
         <div className="sidebar-header">
           <div className="sidebar-title-row">
             <span className="ai-badge">IA</span>
             <h3>Copilot Analítico</h3>
+            {flags.uiPolish && (
+              <button
+                className="v2-collapse-chat-btn"
+                onClick={() => setChatCollapsed(true)}
+                title="Minimizar panel de chat"
+              >
+                ◀
+              </button>
+            )}
           </div>
           <p>Impulsado por Gemini 3.8 Flash</p>
         </div>
@@ -376,7 +433,7 @@ export function AppV2() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Sugerencias rápidas */}
+        {/* Sugerencias rápidas (Wrap en Mejora 6) */}
         <div className="quick-prompts">
           {QUICK_PROMPTS.map((prompt, i) => (
             <button
@@ -408,7 +465,7 @@ export function AppV2() {
       </aside>
 
       {/* 4. TARJETA INSPECTORA DE NODO SELECCIONADO */}
-      {selectedNode && (
+      {selectedNode && !presentationMode && (
         <section className="hud-inspector">
           <div className="inspector-header">
             <span className={`node-type-tag ${selectedNode.type}`}>
@@ -460,18 +517,52 @@ export function AppV2() {
         </section>
       )}
 
-      {/* 5. LEYENDA INFERIOR DERECHA */}
-      <footer className="hud-legend">
-        <div className="legend-item">
+      {/* 5. LEYENDA INTERACTIVA INFERIOR DERECHA (Mejora 6) */}
+      <footer className={`hud-legend ${flags.uiPolish ? 'interactive' : ''}`}>
+        <div
+          className={`legend-item ${flags.uiPolish ? 'clickable' : ''} ${
+            activeTypeFilter === 'comuna' ? 'active' : activeTypeFilter ? 'dimmed' : ''
+          }`}
+          onClick={() => handleToggleTypeFilter('comuna')}
+          title={flags.uiPolish ? 'Clic para filtrar Comunas' : undefined}
+        >
           <span className="legend-dot comuna" /> Comunas
         </div>
-        <div className="legend-item">
+        <div
+          className={`legend-item ${flags.uiPolish ? 'clickable' : ''} ${
+            activeTypeFilter === 'colegio' ? 'active' : activeTypeFilter ? 'dimmed' : ''
+          }`}
+          onClick={() => handleToggleTypeFilter('colegio')}
+          title={flags.uiPolish ? 'Clic para filtrar Colegios' : undefined}
+        >
           <span className="legend-dot colegio" /> Colegios
         </div>
-        <div className="legend-item">
+        <div
+          className={`legend-item ${flags.uiPolish ? 'clickable' : ''} ${
+            activeTypeFilter === 'facultad' ? 'active' : activeTypeFilter ? 'dimmed' : ''
+          }`}
+          onClick={() => handleToggleTypeFilter('facultad')}
+          title={flags.uiPolish ? 'Clic para filtrar Facultades' : undefined}
+        >
           <span className="legend-dot facultad" /> Facultades
         </div>
       </footer>
+
+      {/* Barra de salida del Modo Presentación (Mejora 6) */}
+      {presentationMode && (
+        <div className="v2-exit-presentation-bar">
+          <div className="v2-presentation-label">
+            <span className="pulse-dot" />
+            <span>MODO PRESENTACIÓN ACTIVO — Rotación Cinemática</span>
+          </div>
+          <button
+            className="v2-exit-btn"
+            onClick={() => setPresentationMode(false)}
+          >
+            ✕ Salir (Esc)
+          </button>
+        </div>
+      )}
     </div>
   );
 }

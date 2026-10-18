@@ -98,7 +98,6 @@ export function AppV2() {
 
   // Estados de Mejora 6 (uiPolish)
   const [chatCollapsed, setChatCollapsed] = useState(false);
-  const [presentationMode, setPresentationMode] = useState(false);
   const [activeTypeFilter, setActiveTypeFilter] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -271,7 +270,7 @@ export function AppV2() {
             <AutoFitCamera
               nodePositions={nodePositions}
               controlsRef={controlsRef}
-              enabled={flags.autoFit && !presentationMode}
+              enabled={flags.autoFit}
               targetPos={cameraTarget}
               fitTrigger={fitTrigger}
             />
@@ -280,7 +279,7 @@ export function AppV2() {
           <CameraRigV2
             targetPos={cameraTarget}
             controlsRef={controlsRef}
-            autoFitEnabled={flags.autoFit && !presentationMode}
+            autoFitEnabled={flags.autoFit}
           />
 
           <EffectComposer>
@@ -298,8 +297,6 @@ export function AppV2() {
             dampingFactor={0.06}
             maxDistance={140}
             minDistance={3}
-            autoRotate={flags.uiPolish && presentationMode}
-            autoRotateSpeed={V2_CONFIG.ui.presentationRotateSpeed}
           />
         </Canvas>
       </div>
@@ -333,25 +330,8 @@ export function AppV2() {
             <span className="kpi-value">{graphData.meta.edge_count}</span>
           </div>
 
-          {/* Botón Modo Presentación (Mejora 6) */}
-          {flags.uiPolish && (
-            <button
-              className={`v2-presentation-btn ${presentationMode ? 'active' : ''}`}
-              onClick={() => {
-                setPresentationMode(!presentationMode);
-                if (!presentationMode) {
-                  setSelectedNode(null);
-                  setHighlightedIds([]);
-                }
-              }}
-              title="Modo pantalla completa cinemático con rotación continua"
-            >
-              📽️ {presentationMode ? 'Salir Presentación' : 'Presentación'}
-            </button>
-          )}
-
           {/* Botón Reencuadrar para volver a la vista completa (Mejora 2) */}
-          {flags.autoFit && !presentationMode && (
+          {flags.autoFit && (
             <button
               className="v2-refit-btn"
               onClick={handleRefit}
@@ -361,7 +341,7 @@ export function AppV2() {
             </button>
           )}
 
-          {(selectedNode || highlightedIds.length > 0 || cameraTarget) && !presentationMode && (
+          {(selectedNode || highlightedIds.length > 0 || cameraTarget) && (
             <button className="reset-view-btn" onClick={handleResetView}>
               ⟲ Vista General
             </button>
@@ -370,7 +350,7 @@ export function AppV2() {
       </header>
 
       {/* Pestaña flotante para reabrir chat cuando está colapsado (Mejora 6) */}
-      {flags.uiPolish && chatCollapsed && !presentationMode && (
+      {flags.uiPolish && chatCollapsed && (
         <button
           className="v2-open-chat-tab"
           onClick={() => setChatCollapsed(false)}
@@ -384,7 +364,7 @@ export function AppV2() {
       {/* 3. PANEL LATERAL FLOTANTE: COPILOT IA (Colapsable en Mejora 6) */}
       <aside
         className={`hud-sidebar ${
-          flags.uiPolish && (chatCollapsed || presentationMode) ? 'collapsed' : ''
+          flags.uiPolish && chatCollapsed ? 'collapsed' : ''
         }`}
       >
         <div className="sidebar-header">
@@ -465,7 +445,7 @@ export function AppV2() {
       </aside>
 
       {/* 4. TARJETA INSPECTORA DE NODO SELECCIONADO */}
-      {selectedNode && !presentationMode && (
+      {selectedNode && (
         <section className="hud-inspector">
           <div className="inspector-header">
             <span className={`node-type-tag ${selectedNode.type}`}>
@@ -547,22 +527,6 @@ export function AppV2() {
           <span className="legend-dot facultad" /> Facultades
         </div>
       </footer>
-
-      {/* Barra de salida del Modo Presentación (Mejora 6) */}
-      {presentationMode && (
-        <div className="v2-exit-presentation-bar">
-          <div className="v2-presentation-label">
-            <span className="pulse-dot" />
-            <span>MODO PRESENTACIÓN ACTIVO — Rotación Cinemática</span>
-          </div>
-          <button
-            className="v2-exit-btn"
-            onClick={() => setPresentationMode(false)}
-          >
-            ✕ Salir (Esc)
-          </button>
-        </div>
-      )}
     </div>
   );
 }

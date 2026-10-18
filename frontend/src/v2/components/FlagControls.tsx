@@ -16,7 +16,7 @@ export function FlagControls({ flags, onToggleFlag }: FlagControlsProps) {
     particles: 'Mejora 3b: Partículas en enlaces activos',
     labels: 'Mejora 4: Etiquetas fijas y tooltips ricos',
     depthStyle: 'Mejora 5: Estilo visual, niebla y paleta accesible',
-    uiPolish: 'Mejora 6: UI pulida y modo presentación',
+    uiPolish: 'Mejora 6: UI pulida, chat colapsable y leyenda interactiva',
   };
 
   return (

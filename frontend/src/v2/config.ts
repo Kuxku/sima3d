@@ -81,9 +81,8 @@ export const V2_CONFIG = {
     translucentOpacity: 0.90,
   },
 
-  // Parámetros de UI y presentación (Mejora 6)
+  // Parámetros de UI y accesibilidad (Mejora 6)
   ui: {
-    presentationRotateSpeed: 0.75, // Velocidad de rotación cinemática lenta
     minFontSizePx: 12,
   },
 

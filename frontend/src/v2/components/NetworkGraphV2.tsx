@@ -135,12 +135,8 @@ export function NetworkGraphV2({
         const isNeighbor = connectedIds.has(node.id);
         const matchesType = filterType === null || node.type === filterType;
 
-        const activeScale =
-          isSelected || isHovered
-            ? baseScale * 1.35
-            : isHighlighted
-              ? baseScale * 1.2
-              : baseScale;
+        // Tamaño estable sin saltos de zoom in/out en hover
+        const activeScale = isSelected ? baseScale * 1.12 : baseScale;
 
         // Bloom selectivo: boost solo en nodos en foco o activos
         const emissiveIntensity =

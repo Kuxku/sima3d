@@ -181,17 +181,15 @@
   min-width: 170px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 20px rgba(56, 189, 248, 0.2);
   pointer-events: none;
-  animation: v2TooltipPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: v2TooltipFade 0.12s ease-out;
 }
 
-@keyframes v2TooltipPop {
+@keyframes v2TooltipFade {
   from {
     opacity: 0;
-    transform: translateY(4px) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -377,93 +375,6 @@
 
 .legend-item.dimmed {
   opacity: 0.35;
-}
-
-/* 5. Modo Presentación (Cinemático) */
-.v2-presentation-btn {
-  background: rgba(245, 158, 11, 0.16);
-  border: 1px solid rgba(245, 158, 11, 0.5);
-  color: #fbbf24;
-  padding: 10px 16px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
-}
-
-.v2-presentation-btn:hover {
-  background: rgba(245, 158, 11, 0.32);
-  transform: translateY(-1px);
-}
-
-.v2-presentation-btn.active {
-  background: #f59e0b;
-  color: #020617;
-}
-
-/* Barra flotante inferior para salir del modo presentación */
-.v2-exit-presentation-bar {
-  position: absolute;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(245, 158, 11, 0.6);
-  padding: 10px 20px;
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
-  animation: v2FadeUp 0.3s ease;
-}
-
-@keyframes v2FadeUp {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 15px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
-.v2-presentation-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: #f8fafc;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.v2-presentation-label .pulse-dot {
-  background: #f59e0b;
-  box-shadow: 0 0 10px #f59e0b;
-}
-
-.v2-exit-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #f1f5f9;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.v2-exit-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
 }
 
 

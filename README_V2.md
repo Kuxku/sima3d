@@ -19,9 +19,9 @@ Todas las mejoras están gobernadas por feature flags. Puedes apagarlas o encend
 export const V2_CONFIG = {
   flags: {
     improvedLayout: true,  // Mejora 1: Layout jerárquico 3D y repulsión
-    autoFit: false,        // Mejora 2: Auto-centrado y botón reencuadre
-    smartEdges: false,     // Mejora 3: Aristas inteligentes y jerarquía
-    particles: false,      // Mejora 3b: Partículas en aristas
+    autoFit: true,         // Mejora 2: Auto-centrado y botón reencuadre
+    smartEdges: true,      // Mejora 3: Aristas inteligentes y jerarquía
+    particles: true,       // Mejora 3b: Partículas en aristas
     labels: false,         // Mejora 4: Etiquetas fijas y tooltips ricos
     depthStyle: false,     // Mejora 5: Estilo visual, niebla y paleta accesible
     uiPolish: false,       // Mejora 6: UI pulida y modo presentación
@@ -53,6 +53,18 @@ export const V2_CONFIG = {
   5. **Botón "⛶ Reencuadrar":** Ubicado en la barra superior del HUD, permite resetear la vista y centrar la constelación completa en cualquier momento.
   6. **Respeto a la interacción:** Se pausa automáticamente cuando el usuario selecciona un nodo o cuando el Copilot ejecuta un enfoque analítico.
 - **Fallback defensivo:** Si `autoFit: false`, la cámara regresa a su posición fija clásica `(0, 0, 38)`.
+
+### Mejora 3: Aristas con Jerarquía Visual (`smartEdges` y `particles`)
+- **Problema solucionado:** Neblina de 380 líneas individuales dibujadas por separado (380 draw calls en cada frame), saturando el lienzo y degradando los FPS.
+- **Renderizado de Alto Rendimiento:**
+  1. **Un solo Draw Call:** Todas las líneas de fondo inactivas se agrupan en una única `BufferGeometry` con `lineSegments`, reduciendo el costo de GPU a prácticamente cero.
+  2. **Degradado Cromático por Vértice (`vertexColors`):** Cada arista interpola suavemente entre el color del nodo origen y el color del nodo destino (azul cian de comunas, esmeralda de colegios y ámbar de facultades).
+  3. **Opacidad Sutil por Defecto:** En reposo, las aristas tienen una presencia muy elegante y no invasiva (`defaultOpacity: 0.12`).
+  4. **Modo Foco Dinámico (Hover y Clic):** Al pasar el cursor o hacer clic sobre cualquier nodo, se iluminan únicamente sus conexiones directas con mayor grosor y brillo emisivo, atenuando el resto de la red (`dimmedOpacity: 0.03`).
+  5. **Grosor Proporcional al Flujo:** El grosor de las líneas activas se modula en función del peso logarítmico del flujo de estudiantes.
+  6. **Partículas Energéticas de Flujo (`particles`):** Cuando una o más aristas están activas, un sistema de partículas (desarrollado con `Points` y memoria preasignada sin asignaciones por frame) viaja en bucle continuo de origen a destino, indicando visualmente el sentido del flujo académico a 60 FPS.
+- **Fallback defensivo:** Si `smartEdges: false`, regresa al renderizado de líneas estándar previo.
+
 
 
 ---

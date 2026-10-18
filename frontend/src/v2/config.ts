@@ -11,9 +11,9 @@ export interface FeatureFlags {
 export const V2_CONFIG = {
   flags: {
     improvedLayout: true,  // Habilitado
-    autoFit: true,         // Mejora 2: Habilitado
-    smartEdges: false,
-    particles: false,
+    autoFit: true,         // Habilitado
+    smartEdges: true,      // Mejora 3: Habilitado
+    particles: true,       // Mejora 3 (opcional): Habilitado
     labels: false,
     depthStyle: false,
     uiPolish: false,

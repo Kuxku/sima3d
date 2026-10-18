@@ -242,6 +242,8 @@ export function AppV2() {
               selectedNode={selectedNode}
               highlightedIds={highlightedIds}
               onSelectNode={handleSelectNode}
+              smartEdgesEnabled={flags.smartEdges}
+              particlesEnabled={flags.particles}
             />
           </FeatureBoundary>
 

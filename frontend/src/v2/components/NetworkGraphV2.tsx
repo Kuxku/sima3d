@@ -1,8 +1,11 @@
 import { useMemo, useState } from 'react';
 import type { GraphPayload, GraphNode } from '../../types/graph';
-import { Line, Html } from '@react-three/drei';
+import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { V2_CONFIG } from '../config';
+import { SmartEdges } from './SmartEdges';
+import { EdgeParticles } from './EdgeParticles';
+import { FeatureBoundary } from './FeatureBoundary';
 
 interface NetworkGraphV2Props {
   data: GraphPayload;
@@ -10,6 +13,8 @@ interface NetworkGraphV2Props {
   selectedNode: GraphNode | null;
   highlightedIds: string[];
   onSelectNode: (node: GraphNode | null) => void;
+  smartEdgesEnabled: boolean;
+  particlesEnabled: boolean;
 }
 
 export function NetworkGraphV2({
@@ -18,26 +23,37 @@ export function NetworkGraphV2({
   selectedNode,
   highlightedIds,
   onSelectNode,
+  smartEdgesEnabled,
+  particlesEnabled,
 }: NetworkGraphV2Props) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const nodes = useMemo(() => data.nodes || [], [data]);
   const edges = useMemo(() => data.edges || [], [data]);
 
-  const hasActiveFilter = selectedNode !== null || highlightedIds.length > 0;
+  // El nodo activo es el seleccionado, o el que tiene hover si no hay ninguno seleccionado
+  const activeNodeId = selectedNode?.id || hoveredId || null;
+  const hasActiveFilter = activeNodeId !== null || highlightedIds.length > 0;
 
+  // Nodos vecinos conectados al nodo activo
   const connectedIds = useMemo(() => {
     const set = new Set<string>();
-    if (selectedNode) {
-      set.add(selectedNode.id);
+    if (activeNodeId) {
+      set.add(activeNodeId);
       edges.forEach((e) => {
-        if (e.source === selectedNode.id) set.add(e.target);
-        if (e.target === selectedNode.id) set.add(e.source);
+        if (e.source === activeNodeId) set.add(e.target);
+        if (e.target === activeNodeId) set.add(e.source);
       });
     }
     highlightedIds.forEach((id) => set.add(id));
     return set;
-  }, [selectedNode, highlightedIds, edges]);
+  }, [activeNodeId, highlightedIds, edges]);
+
+  // Aristas activas para el sistema de partículas
+  const activeEdges = useMemo(() => {
+    if (!activeNodeId) return [];
+    return edges.filter((e) => e.source === activeNodeId || e.target === activeNodeId);
+  }, [edges, activeNodeId]);
 
   const getColor = (type: string) => {
     switch (type) {
@@ -58,37 +74,28 @@ export function NetworkGraphV2({
         onSelectNode(null);
       }}
     >
-      {/* 1. ARISTAS */}
-      {edges.map((edge, idx) => {
-        const sourcePos = nodePositions.get(edge.source);
-        const targetPos = nodePositions.get(edge.target);
-        if (!sourcePos || !targetPos) return null;
+      {/* 1. ARISTAS INTELIGENTES CON JERARQUÍA Y DEGRADADO (Mejora 3) */}
+      <FeatureBoundary featureName="SmartEdges">
+        <SmartEdges
+          edges={edges}
+          nodes={nodes}
+          nodePositions={nodePositions}
+          activeNodeId={activeNodeId}
+          highlightedIds={highlightedIds}
+          enabled={smartEdgesEnabled}
+        />
+      </FeatureBoundary>
 
-        const isConnectedToSelected =
-          selectedNode &&
-          (edge.source === selectedNode.id || edge.target === selectedNode.id);
-        const isHighlightedEdge =
-          highlightedIds.includes(edge.source) &&
-          highlightedIds.includes(edge.target);
+      {/* 2. PARTÍCULAS EN ARISTAS ACTIVAS (Mejora 3b) */}
+      <FeatureBoundary featureName="EdgeParticles">
+        <EdgeParticles
+          activeEdges={activeEdges}
+          nodePositions={nodePositions}
+          enabled={particlesEnabled && activeEdges.length > 0}
+        />
+      </FeatureBoundary>
 
-        const isActiveEdge = isConnectedToSelected || isHighlightedEdge;
-        const lineColor = isActiveEdge ? '#38bdf8' : '#334155';
-        const lineOpacity = hasActiveFilter ? (isActiveEdge ? 0.75 : 0.05) : 0.22;
-        const lineWidth = isActiveEdge ? 1.5 : 0.5;
-
-        return (
-          <Line
-            key={`edge-v2-${idx}`}
-            points={[sourcePos, targetPos]}
-            color={lineColor}
-            lineWidth={lineWidth}
-            transparent
-            opacity={lineOpacity}
-          />
-        );
-      })}
-
-      {/* 2. NODOS INTERACTIVOS */}
+      {/* 3. NODOS INTERACTIVOS */}
       {nodes.map((node) => {
         const volume = node.metrics?.volume || 1;
         const baseScale = Math.max(0.2, Math.min(Math.log10(volume) * 0.24, 0.85));
@@ -108,18 +115,19 @@ export function NetworkGraphV2({
               ? baseScale * 1.2
               : baseScale;
 
+        // Si hay un nodo activo en foco, atenuamos fuertemente los no conectados
         const emissiveIntensity =
           isSelected || isHovered
-            ? 2.0
+            ? 2.2
             : isHighlighted
-              ? 1.5
+              ? 1.6
               : hasActiveFilter
                 ? isNeighbor
-                  ? 0.6
-                  : 0.08
+                  ? 0.75
+                  : 0.04
                 : 0.65;
 
-        const nodeOpacity = hasActiveFilter ? (isNeighbor ? 1.0 : 0.2) : 0.95;
+        const nodeOpacity = hasActiveFilter ? (isNeighbor ? 1.0 : 0.15) : 0.95;
         const showLabel = isSelected || isHovered || isHighlighted;
 
         return (

@@ -10,14 +10,23 @@ export interface FeatureFlags {
 
 export const V2_CONFIG = {
   flags: {
-    improvedLayout: true,  // Habilitado para la Mejora 1
-    autoFit: false,
+    improvedLayout: true,  // Habilitado
+    autoFit: true,         // Mejora 2: Habilitado
     smartEdges: false,
     particles: false,
     labels: false,
     depthStyle: false,
     uiPolish: false,
   } as FeatureFlags,
+
+  // Parámetros de auto-encuadre y centrado (Mejora 2)
+  autoFit: {
+    paddingFactor: 1.28,      // Margen de seguridad para que ningún nodo quede al ras del borde
+    animationSpeed: 4.0,      // Velocidad del lerp de transición
+    defaultCameraZ: 38.0,     // Fallback si no hay nodos
+    minDistance: 15.0,
+    maxDistance: 120.0,
+  },
 
   // Parámetros expuestos para el Layout (Mejora 1)
   layout: {

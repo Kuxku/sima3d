@@ -11,15 +11,18 @@ import { computeHierarchicalPositions, computeOriginalPositions } from './layout
 import { NetworkGraphV2 } from './components/NetworkGraphV2';
 import { FlagControls } from './components/FlagControls';
 import { FeatureBoundary } from './components/FeatureBoundary';
+import { AutoFitCamera } from './components/AutoFitCamera';
 import './v2.css';
 
-// Rig de cámara suave
+// Rig de cámara suave para enfoque de nodos
 function CameraRigV2({
   targetPos,
   controlsRef,
+  autoFitEnabled,
 }: {
   targetPos: THREE.Vector3 | null;
   controlsRef: React.RefObject<OrbitControlsImpl | null>;
+  autoFitEnabled: boolean;
 }) {
   const { camera } = useThree();
   const isAnimating = useRef(false);
@@ -31,12 +34,12 @@ function CameraRigV2({
       desiredTarget.current.copy(targetPos);
       desiredCameraPos.current.set(targetPos.x, targetPos.y + 1.5, targetPos.z + 10);
       isAnimating.current = true;
-    } else {
+    } else if (!autoFitEnabled) {
       desiredTarget.current.set(0, 0, 0);
       desiredCameraPos.current.set(0, 0, 38);
       isAnimating.current = true;
     }
-  }, [targetPos]);
+  }, [targetPos, autoFitEnabled]);
 
   useFrame((_, delta) => {
     if (!isAnimating.current || !controlsRef.current) return;
@@ -90,7 +93,15 @@ export function AppV2() {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [sending, setSending] = useState(false);
+  const [fitTrigger, setFitTrigger] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const handleRefit = () => {
+    setSelectedNode(null);
+    setHighlightedIds([]);
+    setCameraTarget(null);
+    setFitTrigger((prev) => prev + 1);
+  };
 
   const toggleFlag = (key: keyof FeatureFlags) => {
     setFlags((prev) => {
@@ -234,7 +245,21 @@ export function AppV2() {
             />
           </FeatureBoundary>
 
-          <CameraRigV2 targetPos={cameraTarget} controlsRef={controlsRef} />
+          <FeatureBoundary featureName="AutoFitCamera">
+            <AutoFitCamera
+              nodePositions={nodePositions}
+              controlsRef={controlsRef}
+              enabled={flags.autoFit}
+              targetPos={cameraTarget}
+              fitTrigger={fitTrigger}
+            />
+          </FeatureBoundary>
+
+          <CameraRigV2
+            targetPos={cameraTarget}
+            controlsRef={controlsRef}
+            autoFitEnabled={flags.autoFit}
+          />
 
           <EffectComposer>
             <Bloom luminanceThreshold={0.18} luminanceSmoothing={0.9} intensity={1.35} />
@@ -245,7 +270,7 @@ export function AppV2() {
             makeDefault
             enableDamping
             dampingFactor={0.06}
-            maxDistance={120}
+            maxDistance={140}
             minDistance={3}
           />
         </Canvas>
@@ -279,6 +304,17 @@ export function AppV2() {
             <span className="kpi-label">CONEXIONES</span>
             <span className="kpi-value">{graphData.meta.edge_count}</span>
           </div>
+
+          {/* Botón Reencuadrar para volver a la vista completa (Mejora 2) */}
+          {flags.autoFit && (
+            <button
+              className="v2-refit-btn"
+              onClick={handleRefit}
+              title="Ajustar y centrar todos los nodos en pantalla"
+            >
+              ⛶ Reencuadrar
+            </button>
+          )}
 
           {(selectedNode || highlightedIds.length > 0 || cameraTarget) && (
             <button className="reset-view-btn" onClick={handleResetView}>

@@ -22,8 +22,8 @@ export const V2_CONFIG = {
     autoFit: true,         // Mejora 2: Auto-centrado y botón reencuadre
     smartEdges: true,      // Mejora 3: Aristas inteligentes y jerarquía
     particles: true,       // Mejora 3b: Partículas en aristas
-    labels: false,         // Mejora 4: Etiquetas fijas y tooltips ricos
-    depthStyle: false,     // Mejora 5: Estilo visual, niebla y paleta accesible
+    labels: true,          // Mejora 4: Etiquetas fijas y tooltips ricos
+    depthStyle: true,      // Mejora 5: Estilo visual, niebla y paleta accesible
     uiPolish: false,       // Mejora 6: UI pulida y modo presentación
   }
 };
@@ -70,7 +70,22 @@ export const V2_CONFIG = {
   3. **Desvanecimiento por Distancia (Distance Fade):** La opacidad de las etiquetas fijas se interpola dinámicamente según la distancia a la cámara, desvaneciéndose con elegancia al alejarse (`maxVisibleDistance: 55`).
 - **Tooltip Enriquecido (Hover y Selección):**
   1. Al pasar el cursor o hacer clic sobre cualquier nodo, se despliega una tarjeta HUD con glassmorphism que detalla: tipo y color oficial, nombre completo, volumen exacto de estudiantes, estrato socioeconómico mediano, porcentaje de población rural y número de conexiones directas.
-- **Fallback defensivo:** Si `labels: false`, regresa al tooltip flotante básico original.
+### Mejora 5: Tamaño y Profundidad (`depthStyle`)
+- **Problema solucionado:** La compresión logarítmica aplastaba las diferencias visuales entre entidades pequeñas y grandes, faltaba profundidad atmosférica en el fondo 3D y los tonos azul/verde podían generar confusión visual.
+- **Dimensionamiento Físico Proporcional a $\sqrt{\text{estudiantes}}$:**
+  1. El radio de cada nodo se calcula proporcional a la raíz cuadrada del volumen (`sqrtFactor: 0.022`) acotado entre un mínimo de 0.28 y un máximo de 1.45 unidades. Esto otorga una jerarquía visual inmediata donde las facultades y comunas masivas destacan sin tapar a colegios pequeños.
+- **Niebla Tridimensional Sutil (`fog`):**
+  1. Incorpora un gradiente atmosférico (`#020617`, near: 22, far: 105) que atenúa suavemente los nodos más lejanos en Z, potenciando la sensación de inmersión espacial tridimensional.
+- **Bloom Selectivo y Acabado Translúcido:**
+  1. Los nodos utilizan materiales PBR con rugosidad controlada y un 90% de opacidad cristalina.
+  2. El resplandor emisivo (Bloom) se concentra selectivamente en nodos seleccionados, activos o vecinos inmediatos.
+- **Paleta de Alto Contraste y Accesible:**
+  1. Comunas: `#0ea5e9` (Azul zafiro puro).
+  2. Colegios: `#10b981` (Verde esmeralda nítido).
+  3. Facultades: `#f59e0b` (Ámbar dorado cálido).
+  4. Probada para distinción óptima bajo condiciones de deuteranopía y protanopía.
+- **Fallback defensivo:** Si `depthStyle: false`, regresa al escalado logarítmico, materiales opacos clásicos y sin niebla.
+
 
 
 

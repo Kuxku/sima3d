@@ -17,6 +17,7 @@ interface NetworkGraphV2Props {
   smartEdgesEnabled: boolean;
   particlesEnabled: boolean;
   labelsEnabled: boolean;
+  depthStyleEnabled: boolean;
 }
 
 export function NetworkGraphV2({
@@ -28,6 +29,7 @@ export function NetworkGraphV2({
   smartEdgesEnabled,
   particlesEnabled,
   labelsEnabled,
+  depthStyleEnabled,
 }: NetworkGraphV2Props) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -112,7 +114,15 @@ export function NetworkGraphV2({
       {/* 4. NODOS INTERACTIVOS */}
       {nodes.map((node) => {
         const volume = node.metrics?.volume || 1;
-        const baseScale = Math.max(0.2, Math.min(Math.log10(volume) * 0.24, 0.85));
+
+        // Mejora 5: Escala proporcional a sqrt(estudiantes) si depthStyle está activo
+        const baseScale = depthStyleEnabled
+          ? Math.max(
+              V2_CONFIG.depth.minScale,
+              Math.min(Math.sqrt(volume) * V2_CONFIG.depth.sqrtFactor, V2_CONFIG.depth.maxScale)
+            )
+          : Math.max(0.2, Math.min(Math.log10(volume) * 0.24, 0.85));
+
         const pos = nodePositions.get(node.id);
         if (!pos) return null;
 
@@ -129,19 +139,22 @@ export function NetworkGraphV2({
               ? baseScale * 1.2
               : baseScale;
 
-        // Si hay un nodo activo en foco, atenuamos fuertemente los no conectados
+        // Bloom selectivo: boost solo en nodos en foco o activos
         const emissiveIntensity =
           isSelected || isHovered
-            ? 2.2
+            ? 2.3
             : isHighlighted
-              ? 1.6
+              ? 1.7
               : hasActiveFilter
                 ? isNeighbor
                   ? 0.75
                   : 0.04
-                : 0.65;
+                : 0.55;
 
-        const nodeOpacity = hasActiveFilter ? (isNeighbor ? 1.0 : 0.15) : 0.95;
+        // Translucidez sutil para orbes de cristal espacial
+        const baseOpacity = depthStyleEnabled ? V2_CONFIG.depth.translucentOpacity : 0.95;
+        const nodeOpacity = hasActiveFilter ? (isNeighbor ? 1.0 : 0.15) : baseOpacity;
+
         // Solo mostrar etiqueta básica si labels está apagado
         const showFallbackLabel = !labelsEnabled && (isSelected || isHovered || isHighlighted);
 
@@ -167,8 +180,8 @@ export function NetworkGraphV2({
                 color={color}
                 emissive={color}
                 emissiveIntensity={emissiveIntensity}
-                roughness={0.15}
-                metalness={0.8}
+                roughness={depthStyleEnabled ? 0.22 : 0.15}
+                metalness={depthStyleEnabled ? 0.65 : 0.8}
                 transparent
                 opacity={nodeOpacity}
               />

@@ -14,8 +14,8 @@ export const V2_CONFIG = {
     autoFit: true,         // Habilitado
     smartEdges: true,      // Habilitado
     particles: true,       // Habilitado
-    labels: true,          // Mejora 4: Habilitado
-    depthStyle: false,
+    labels: true,          // Habilitado
+    depthStyle: true,      // Mejora 5: Habilitado
     uiPolish: false,
   } as FeatureFlags,
 
@@ -64,12 +64,29 @@ export const V2_CONFIG = {
     maxVisibleDistance: 55,
   },
 
-  // Estilos de profundidad y paleta accesible (Preparados para Mejora 5)
+  // Parámetros de profundidad 3D y dimensionamiento (Mejora 5)
+  depth: {
+    // Escala del nodo proporcional a sqrt(volumen)
+    minScale: 0.28,
+    maxScale: 1.45,
+    sqrtFactor: 0.022,
+    // Niebla atmosférica sutil
+    fog: {
+      color: '#020617',
+      near: 22,
+      far: 105,
+    },
+    // Parámetros de Bloom y translucidez
+    bloomIntensity: 1.25,
+    translucentOpacity: 0.90,
+  },
+
+  // Estilos de profundidad y paleta accesible (Mejora 5)
   colors: {
-    // Paleta optimizada para contraste y daltonismo
-    comuna: '#0284c7',    // Azul cielo saturado y legible
-    colegio: '#10b981',   // Esmeralda vibrante
-    facultad: '#f59e0b',  // Ámbar / Oro cálido
+    // Paleta optimizada para contraste y daltonismo (Deuteranopía / Protanopía)
+    comuna: '#0ea5e9',    // Azul zafiro puro (fácilmente distinguible)
+    colegio: '#10b981',   // Esmeralda brillante
+    facultad: '#f59e0b',  // Ámbar cálido / Oro solar
     neutral: '#94a3b8',
   },
 };

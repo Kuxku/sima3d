@@ -12,6 +12,7 @@ import { NetworkGraphV2 } from './components/NetworkGraphV2';
 import { FlagControls } from './components/FlagControls';
 import { FeatureBoundary } from './components/FeatureBoundary';
 import { AutoFitCamera } from './components/AutoFitCamera';
+import { DepthFog } from './components/DepthFog';
 import './v2.css';
 
 // Rig de cámara suave para enfoque de nodos
@@ -235,6 +236,10 @@ export function AppV2() {
           <pointLight position={[20, 20, 20]} intensity={2.0} color="#ffffff" />
           <directionalLight position={[-20, -15, -10]} intensity={0.8} color="#38bdf8" />
 
+          <FeatureBoundary featureName="DepthFog">
+            <DepthFog enabled={flags.depthStyle} />
+          </FeatureBoundary>
+
           <FeatureBoundary featureName="NetworkGraphV2">
             <NetworkGraphV2
               data={graphData}
@@ -245,6 +250,7 @@ export function AppV2() {
               smartEdgesEnabled={flags.smartEdges}
               particlesEnabled={flags.particles}
               labelsEnabled={flags.labels}
+              depthStyleEnabled={flags.depthStyle}
             />
           </FeatureBoundary>
 
@@ -265,7 +271,11 @@ export function AppV2() {
           />
 
           <EffectComposer>
-            <Bloom luminanceThreshold={0.18} luminanceSmoothing={0.9} intensity={1.35} />
+            <Bloom
+              luminanceThreshold={flags.depthStyle ? 0.22 : 0.18}
+              luminanceSmoothing={0.9}
+              intensity={flags.depthStyle ? V2_CONFIG.depth.bloomIntensity : 1.35}
+            />
           </EffectComposer>
 
           <OrbitControls

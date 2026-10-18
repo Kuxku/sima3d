@@ -12,9 +12,9 @@ export const V2_CONFIG = {
   flags: {
     improvedLayout: true,  // Habilitado
     autoFit: true,         // Habilitado
-    smartEdges: true,      // Mejora 3: Habilitado
-    particles: true,       // Mejora 3 (opcional): Habilitado
-    labels: false,
+    smartEdges: true,      // Habilitado
+    particles: true,       // Habilitado
+    labels: true,          // Mejora 4: Habilitado
     depthStyle: false,
     uiPolish: false,
   } as FeatureFlags,
@@ -58,10 +58,10 @@ export const V2_CONFIG = {
     activeWidth: 2.0,
   },
 
-  // Parámetros de etiquetas (Preparados para Mejora 4)
+  // Parámetros de etiquetas (Mejora 4)
   labels: {
-    permanentVolumeThreshold: 1500, // Volumen mínimo para etiqueta fija
-    maxVisibleDistance: 45,
+    permanentVolumeThreshold: 800, // Nodos principales (facultades y comunas grandes)
+    maxVisibleDistance: 55,
   },
 
   // Estilos de profundidad y paleta accesible (Preparados para Mejora 5)

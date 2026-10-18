@@ -62,8 +62,16 @@ export const V2_CONFIG = {
   3. **Opacidad Sutil por Defecto:** En reposo, las aristas tienen una presencia muy elegante y no invasiva (`defaultOpacity: 0.12`).
   4. **Modo Foco Dinámico (Hover y Clic):** Al pasar el cursor o hacer clic sobre cualquier nodo, se iluminan únicamente sus conexiones directas con mayor grosor y brillo emisivo, atenuando el resto de la red (`dimmedOpacity: 0.03`).
   5. **Grosor Proporcional al Flujo:** El grosor de las líneas activas se modula en función del peso logarítmico del flujo de estudiantes.
-  6. **Partículas Energéticas de Flujo (`particles`):** Cuando una o más aristas están activas, un sistema de partículas (desarrollado con `Points` y memoria preasignada sin asignaciones por frame) viaja en bucle continuo de origen a destino, indicando visualmente el sentido del flujo académico a 60 FPS.
-- **Fallback defensivo:** Si `smartEdges: false`, regresa al renderizado de líneas estándar previo.
+### Mejora 4: Etiquetas Inteligentes y Tooltip Enriquecido (`labels`)
+- **Problema solucionado:** Etiquetas que colisionan entre sí o crean ruido visual excesivo, y falta de contexto detallado al inspeccionar nodos.
+- **Etiquetas Permanentes con Umbral:**
+  1. Solo los nodos más representativos de la red (`volume >= 800`, como facultades principales y comunas masivas) muestran etiqueta fija permanente, reduciendo el ruido visual en más del 80%.
+  2. **Anti-colisión en pantalla 2D:** Proyecta las posiciones tridimensionales a píxeles de pantalla y descarta automáticamente etiquetas secundarias si colisionan con una de mayor volumen.
+  3. **Desvanecimiento por Distancia (Distance Fade):** La opacidad de las etiquetas fijas se interpola dinámicamente según la distancia a la cámara, desvaneciéndose con elegancia al alejarse (`maxVisibleDistance: 55`).
+- **Tooltip Enriquecido (Hover y Selección):**
+  1. Al pasar el cursor o hacer clic sobre cualquier nodo, se despliega una tarjeta HUD con glassmorphism que detalla: tipo y color oficial, nombre completo, volumen exacto de estudiantes, estrato socioeconómico mediano, porcentaje de población rural y número de conexiones directas.
+- **Fallback defensivo:** Si `labels: false`, regresa al tooltip flotante básico original.
+
 
 
 

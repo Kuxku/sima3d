@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { V2_CONFIG } from '../config';
 import { SmartEdges } from './SmartEdges';
 import { EdgeParticles } from './EdgeParticles';
+import { NodeLabels } from './NodeLabels';
 import { FeatureBoundary } from './FeatureBoundary';
 
 interface NetworkGraphV2Props {
@@ -15,6 +16,7 @@ interface NetworkGraphV2Props {
   onSelectNode: (node: GraphNode | null) => void;
   smartEdgesEnabled: boolean;
   particlesEnabled: boolean;
+  labelsEnabled: boolean;
 }
 
 export function NetworkGraphV2({
@@ -25,6 +27,7 @@ export function NetworkGraphV2({
   onSelectNode,
   smartEdgesEnabled,
   particlesEnabled,
+  labelsEnabled,
 }: NetworkGraphV2Props) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -95,7 +98,18 @@ export function NetworkGraphV2({
         />
       </FeatureBoundary>
 
-      {/* 3. NODOS INTERACTIVOS */}
+      {/* 3. ETIQUETAS PERMANENTES Y TOOLTIPS ENRIQUECIDOS (Mejora 4) */}
+      <FeatureBoundary featureName="NodeLabels">
+        <NodeLabels
+          nodes={nodes}
+          nodePositions={nodePositions}
+          hoveredNode={nodes.find((n) => n.id === hoveredId) || null}
+          selectedNode={selectedNode}
+          enabled={labelsEnabled}
+        />
+      </FeatureBoundary>
+
+      {/* 4. NODOS INTERACTIVOS */}
       {nodes.map((node) => {
         const volume = node.metrics?.volume || 1;
         const baseScale = Math.max(0.2, Math.min(Math.log10(volume) * 0.24, 0.85));
@@ -128,7 +142,8 @@ export function NetworkGraphV2({
                 : 0.65;
 
         const nodeOpacity = hasActiveFilter ? (isNeighbor ? 1.0 : 0.15) : 0.95;
-        const showLabel = isSelected || isHovered || isHighlighted;
+        // Solo mostrar etiqueta básica si labels está apagado
+        const showFallbackLabel = !labelsEnabled && (isSelected || isHovered || isHighlighted);
 
         return (
           <group key={node.id} position={[pos.x, pos.y, pos.z]}>
@@ -171,7 +186,7 @@ export function NetworkGraphV2({
               </mesh>
             )}
 
-            {showLabel && (
+            {showFallbackLabel && (
               <Html distanceFactor={18} position={[0, activeScale + 0.45, 0]} center zIndexRange={[100, 0]}>
                 <div className="node-tooltip">
                   <span className="node-tooltip-badge" style={{ backgroundColor: color }} />

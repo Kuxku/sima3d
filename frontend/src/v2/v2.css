@@ -1,0 +1,125 @@
+@import '../App.css';
+
+/* V2 Feature Flag Panel */
+.v2-flag-panel {
+  position: absolute;
+  top: 86px;
+  right: 24px;
+  z-index: 50;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  transition: all 0.25s ease;
+  min-width: 280px;
+  max-width: 360px;
+  pointer-events: auto;
+}
+
+.v2-flag-panel.collapsed {
+  min-width: auto;
+  max-width: auto;
+}
+
+.v2-flag-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  background: rgba(2, 6, 23, 0.6);
+  user-select: none;
+}
+
+.v2-flag-panel-header:hover {
+  background: rgba(2, 6, 23, 0.85);
+}
+
+.v2-badge {
+  background: #0284c7;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.v2-flag-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e2e8f0;
+  flex: 1;
+}
+
+.v2-toggle-btn {
+  background: transparent;
+  border: none;
+  color: #38bdf8;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.v2-flag-list {
+  padding: 8px 12px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.v2-flag-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #cbd5e1;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.v2-flag-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.v2-flag-item input[type='checkbox'] {
+  margin-top: 3px;
+  accent-color: #38bdf8;
+  cursor: pointer;
+}
+
+.v2-flag-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.v2-flag-name {
+  font-weight: 600;
+  color: #f1f5f9;
+  font-size: 11px;
+  font-family: monospace;
+}
+
+.v2-flag-desc {
+  font-size: 10px;
+  color: #94a3b8;
+  line-height: 1.3;
+}
+
+/* Indicador de versión V2 */
+.v2-version-tag {
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  color: #020617;
+  font-weight: 900;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-left: 6px;
+}

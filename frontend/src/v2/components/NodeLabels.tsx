@@ -150,63 +150,6 @@ export function NodeLabels({
           </Html>
         );
       })}
-
-      {/* 2. TOOLTIP ENRIQUECIDO EN HOVER O SELECCIÓN */}
-      {activeFocusNode && activePos && (
-        <Html
-          position={[activePos.x, activePos.y + 1.2, activePos.z]}
-          center
-          distanceFactor={18}
-          zIndexRange={[100, 10]}
-        >
-          <div className="v2-rich-tooltip">
-            <div className="v2-tooltip-header">
-              <span
-                className="v2-tooltip-badge"
-                style={{ backgroundColor: getColor(activeFocusNode.type) }}
-              >
-                {activeFocusNode.type.toUpperCase()}
-              </span>
-              <span className="v2-tooltip-title">{activeFocusNode.label}</span>
-            </div>
-
-            <div className="v2-tooltip-body">
-              <div className="v2-tooltip-row">
-                <span className="v2-tooltip-lbl">Estudiantes:</span>
-                <span className="v2-tooltip-val">
-                  {activeFocusNode.metrics.volume.toLocaleString()}
-                </span>
-              </div>
-
-              {activeFocusNode.metrics.estrato_median !== undefined &&
-                activeFocusNode.metrics.estrato_median !== null && (
-                  <div className="v2-tooltip-row">
-                    <span className="v2-tooltip-lbl">Estrato Mediano:</span>
-                    <span className="v2-tooltip-val">
-                      Estrato {activeFocusNode.metrics.estrato_median}
-                    </span>
-                  </div>
-                )}
-
-              {activeFocusNode.metrics.rural_share !== undefined && (
-                <div className="v2-tooltip-row">
-                  <span className="v2-tooltip-lbl">Pob. Rural:</span>
-                  <span className="v2-tooltip-val">
-                    {((activeFocusNode.metrics.rural_share || 0) * 100).toFixed(1)}%
-                  </span>
-                </div>
-              )}
-
-              {activeFocusNode.metrics.degree !== undefined && (
-                <div className="v2-tooltip-row">
-                  <span className="v2-tooltip-lbl">Conexiones:</span>
-                  <span className="v2-tooltip-val">{activeFocusNode.metrics.degree}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </Html>
-      )}
     </group>
   );
 }

@@ -3,7 +3,7 @@
 /* V2 Feature Flag Panel */
 .v2-flag-panel {
   position: absolute;
-  top: 86px;
+  bottom: 56px;
   right: 24px;
   z-index: 50;
   background: rgba(15, 23, 42, 0.88);
@@ -376,5 +376,92 @@
 .legend-item.dimmed {
   opacity: 0.35;
 }
+
+/* ============================================================
+   Tarjeta Inspectora Lateral Derecha (Hover y Selección)
+   Aprovecha el espacio lateral derecho para una vista despejada
+   ============================================================ */
+.v2-lateral-inspector {
+  position: absolute;
+  top: 86px;
+  right: 24px;
+  width: 320px;
+  z-index: 30;
+  background: rgba(15, 23, 42, 0.84);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(56, 189, 248, 0.12);
+  pointer-events: auto;
+  animation: lateralSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes lateralSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.v2-lateral-inspector.standby {
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  background: rgba(15, 23, 42, 0.42);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  padding: 16px 18px;
+}
+
+.standby-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.standby-icon {
+  color: #38bdf8;
+  font-size: 14px;
+}
+
+.standby-hint {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.inspector-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inspector-mode-tag {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.6px;
+}
+
+.inspector-mode-tag.preview {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.inspector-mode-tag.pinned {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+}
+
 
 

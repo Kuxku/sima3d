@@ -14,6 +14,7 @@ interface NetworkGraphV2Props {
   selectedNode: GraphNode | null;
   highlightedIds: string[];
   onSelectNode: (node: GraphNode | null) => void;
+  onHoverNode?: (node: GraphNode | null) => void;
   smartEdgesEnabled: boolean;
   particlesEnabled: boolean;
   labelsEnabled: boolean;
@@ -27,6 +28,7 @@ export function NetworkGraphV2({
   selectedNode,
   highlightedIds,
   onSelectNode,
+  onHoverNode,
   smartEdgesEnabled,
   particlesEnabled,
   labelsEnabled,
@@ -171,10 +173,12 @@ export function NetworkGraphV2({
               onPointerOver={(e) => {
                 e.stopPropagation();
                 setHoveredId(node.id);
+                onHoverNode?.(node);
                 document.body.style.cursor = 'pointer';
               }}
               onPointerOut={() => {
                 setHoveredId(null);
+                onHoverNode?.(null);
                 document.body.style.cursor = 'auto';
               }}
             >

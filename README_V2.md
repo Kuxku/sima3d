@@ -68,8 +68,10 @@ export const V2_CONFIG = {
   1. Solo los nodos más representativos de la red (`volume >= 800`, como facultades principales y comunas masivas) muestran etiqueta fija permanente, reduciendo el ruido visual en más del 80%.
   2. **Anti-colisión en pantalla 2D:** Proyecta las posiciones tridimensionales a píxeles de pantalla y descarta automáticamente etiquetas secundarias si colisionan con una de mayor volumen.
   3. **Desvanecimiento por Distancia (Distance Fade):** La opacidad de las etiquetas fijas se interpola dinámicamente según la distancia a la cámara, desvaneciéndose con elegancia al alejarse (`maxVisibleDistance: 55`).
-- **Tooltip Enriquecido (Hover y Selección):**
-  1. Al pasar el cursor o hacer clic sobre cualquier nodo, se despliega una tarjeta HUD con glassmorphism que detalla: tipo y color oficial, nombre completo, volumen exacto de estudiantes, estrato socioeconómico mediano, porcentaje de población rural y número de conexiones directas.
+- **Tarjeta Inspectora Lateral HUD (Hover y Selección):**
+  1. La tarjeta de información ya no flota encima del nodo dentro de la escena 3D, liberando el 100% del lienzo espacial sin tapar geometrías ni aristas.
+  2. Ahora se despliega dinámicamente en el **panel lateral derecho del HUD**, mostrando al instante la telemetría del nodo activo (tipo, nombre, volumen exacto, estrato mediano, ruralidad y conexiones directas), con indicador de modo (`○ VISTA PREVIA` en hover o `● FIJADO` al hacer clic) y botón para análisis con el Copilot de IA.
+- **Fallback defensivo:** Si `labels: false`, regresa al tooltip flotante básico original.
 ### Mejora 5: Tamaño y Profundidad (`depthStyle`)
 - **Problema solucionado:** La compresión logarítmica aplastaba las diferencias visuales entre entidades pequeñas y grandes, faltaba profundidad atmosférica en el fondo 3D y los tonos azul/verde podían generar confusión visual.
 - **Dimensionamiento Físico Proporcional a $\sqrt{\text{estudiantes}}$:**

@@ -81,6 +81,7 @@ export function AppV2() {
 
   // Estados de interacción 3D
   const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
   const [highlightedIds, setHighlightedIds] = useState<string[]>([]);
   const [cameraTarget, setCameraTarget] = useState<THREE.Vector3 | null>(null);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
@@ -258,6 +259,7 @@ export function AppV2() {
               selectedNode={selectedNode}
               highlightedIds={highlightedIds}
               onSelectNode={handleSelectNode}
+              onHoverNode={setHoveredNode}
               smartEdgesEnabled={flags.smartEdges}
               particlesEnabled={flags.particles}
               labelsEnabled={flags.labels}
@@ -444,58 +446,90 @@ export function AppV2() {
         </form>
       </aside>
 
-      {/* 4. TARJETA INSPECTORA DE NODO SELECCIONADO */}
-      {selectedNode && (
-        <section className="hud-inspector">
-          <div className="inspector-header">
-            <span className={`node-type-tag ${selectedNode.type}`}>
-              {selectedNode.type.toUpperCase()}
-            </span>
-            <button className="close-btn" onClick={() => handleSelectNode(null)}>
-              ✕
-            </button>
-          </div>
-          <h4 className="inspector-title">{selectedNode.label}</h4>
-          <p className="inspector-id">{selectedNode.id}</p>
+      {/* 4. TARJETA INSPECTORA LATERAL DERECHA (Hover o Selección) */}
+      {(() => {
+        const activeDetailNode = hoveredNode || selectedNode;
+        const isPinned = selectedNode !== null && selectedNode.id === activeDetailNode?.id;
 
-          <div className="inspector-metrics">
-            <div className="metric-box">
-              <span className="metric-name">Volumen Estudiantes</span>
-              <span className="metric-val">
-                {selectedNode.metrics.volume.toLocaleString()}
-              </span>
-            </div>
-            <div className="metric-box">
-              <span className="metric-name">Estrato Mediano</span>
-              <span className="metric-val">
-                {selectedNode.metrics.estrato_median ?? 'N/A'}
-              </span>
-            </div>
-            <div className="metric-box">
-              <span className="metric-name">Participación Rural</span>
-              <span className="metric-val">
-                {((selectedNode.metrics.rural_share || 0) * 100).toFixed(1)}%
-              </span>
-            </div>
-            {selectedNode.metrics.degree !== undefined && (
-              <div className="metric-box">
-                <span className="metric-name">Conexiones Directas</span>
-                <span className="metric-val">{selectedNode.metrics.degree}</span>
+        if (!activeDetailNode) {
+          return (
+            <aside className="v2-lateral-inspector standby">
+              <div className="standby-header">
+                <span className="standby-icon">✦</span>
+                <span className="standby-title">Telemetría de Red</span>
               </div>
-            )}
-          </div>
+              <p className="standby-hint">
+                Pasa el cursor sobre cualquier nodo o selecciónalo para ver sus métricas y relaciones en este panel.
+              </p>
+            </aside>
+          );
+        }
 
-          <button
-            className="ask-ai-node-btn"
-            onClick={() =>
-              sendQuery(`Analiza el perfil e impacto de ${selectedNode.label} en la red.`)
-            }
-            disabled={sending}
-          >
-            ✨ Analizar con Copilot
-          </button>
-        </section>
-      )}
+        return (
+          <aside className={`v2-lateral-inspector active ${isPinned ? 'pinned' : 'preview'}`}>
+            <div className="inspector-header">
+              <div className="inspector-badge-row">
+                <span className={`node-type-tag ${activeDetailNode.type}`}>
+                  {activeDetailNode.type.toUpperCase()}
+                </span>
+                <span className={`inspector-mode-tag ${isPinned ? 'pinned' : 'preview'}`}>
+                  {isPinned ? '● FIJADO' : '○ VISTA PREVIA'}
+                </span>
+              </div>
+              {isPinned && (
+                <button
+                  className="close-btn"
+                  onClick={() => handleSelectNode(null)}
+                  title="Desfijar nodo"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            <h4 className="inspector-title">{activeDetailNode.label}</h4>
+            <p className="inspector-id">{activeDetailNode.id}</p>
+
+            <div className="inspector-metrics">
+              <div className="metric-box">
+                <span className="metric-name">Volumen Estudiantes</span>
+                <span className="metric-val">
+                  {activeDetailNode.metrics.volume.toLocaleString()}
+                </span>
+              </div>
+              <div className="metric-box">
+                <span className="metric-name">Estrato Mediano</span>
+                <span className="metric-val">
+                  {activeDetailNode.metrics.estrato_median ?? 'N/A'}
+                </span>
+              </div>
+              <div className="metric-box">
+                <span className="metric-name">Participación Rural</span>
+                <span className="metric-val">
+                  {((activeDetailNode.metrics.rural_share || 0) * 100).toFixed(1)}%
+                </span>
+              </div>
+              {activeDetailNode.metrics.degree !== undefined && (
+                <div className="metric-box">
+                  <span className="metric-name">Conexiones Directas</span>
+                  <span className="metric-val">{activeDetailNode.metrics.degree}</span>
+                </div>
+              )}
+            </div>
+
+            <button
+              className="ask-ai-node-btn"
+              onClick={() => {
+                handleSelectNode(activeDetailNode);
+                sendQuery(`Analiza el perfil e impacto de ${activeDetailNode.label} en la red.`);
+              }}
+              disabled={sending}
+            >
+              ✨ Analizar con Copilot
+            </button>
+          </aside>
+        );
+      })()}
 
       {/* 5. LEYENDA INTERACTIVA INFERIOR DERECHA (Mejora 6) */}
       <footer className={`hud-legend ${flags.uiPolish ? 'interactive' : ''}`}>

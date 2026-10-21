@@ -209,14 +209,37 @@ export function computeHierarchicalPositions(
     nodeRadii.set(n.id, r);
   });
 
-  // 6. PASADAS SÍNCRONAS DE RELAJACIÓN Y COLISIÓN (determinado, rápido < 5ms)
+  // 6. SIMULACIÓN FÍSICA SÍNCRONA DE GRAVEDAD, RESORTES Y COLISIÓN
   const nodeIds = nodes.map((n) => n.id);
   const iterations = layout.repulsionIterations;
   const dt = layout.repulsionStrength;
 
   for (let iter = 0; iter < iterations; iter++) {
-    const factor = (1 - iter / iterations) * dt;
+    // Factor de enfriamiento suave (simulated annealing)
+    const factor = Math.pow(1 - iter / iterations, 1.2) * dt;
 
+    // 6a. FÍSICA DE RESORTES (Hooke's Law): Atrae nodos conectados según peso del flujo
+    edges.forEach((edge) => {
+      const posSource = positions.get(edge.source);
+      const posTarget = positions.get(edge.target);
+      if (!posSource || !posTarget) return;
+
+      const diff = posTarget.clone().sub(posSource);
+      const dist = diff.length();
+      if (dist < 0.001) return;
+
+      const weight = edge.weight || 1;
+      // Distancia de reposo física: flujos mayores atraen con mayor proximidad
+      const restLength = Math.max(5.0, 9.5 - Math.log10(weight + 1) * 1.5);
+      const displacement = dist - restLength;
+      const springK = Math.min(0.06, 0.015 + Math.log10(weight + 1) * 0.012);
+      const force = diff.normalize().multiplyScalar(displacement * springK * factor);
+
+      posSource.add(force);
+      posTarget.sub(force);
+    });
+
+    // 6b. FÍSICA DE REPULSIÓN Y COLISIÓN DE CUERPOS SÓLIDOS (Anti-empalme)
     for (let i = 0; i < nodeIds.length; i++) {
       const idA = nodeIds[i];
       const posA = positions.get(idA);
@@ -237,22 +260,22 @@ export function computeHierarchicalPositions(
           diff.set((rand() - 0.5) * 0.1, (rand() - 0.5) * 0.1, (rand() - 0.5) * 0.1);
         }
 
-        // Colisión física dura si se empalman
+        // Colisión elástica directa si se solapan
         if (dist < minDist) {
           const overlap = minDist - dist;
-          const correction = diff.normalize().multiplyScalar(overlap * 0.5 * factor);
+          const correction = diff.normalize().multiplyScalar(overlap * 0.55 * factor);
           posA.add(correction);
           posB.sub(correction);
-        } else if (dist < minDist * 2.2) {
-          // Repulsión suave entre vecinos cercanos
-          const repulsion = (minDist * 2.2 - dist) / (minDist * 2.2);
-          const force = diff.normalize().multiplyScalar(repulsion * 0.3 * factor);
+        } else if (dist < minDist * 2.5) {
+          // Repulsión electrostática de Coulomb entre esferas cercanas
+          const repulsion = (minDist * 2.5 - dist) / (minDist * 2.5);
+          const force = diff.normalize().multiplyScalar(repulsion * 0.35 * factor);
           posA.add(force);
           posB.sub(force);
         }
       }
 
-      // Restricción al radio envolvente máximo
+      // Restricción al radio envolvente máximo para mantener armonía
       const currentDist = posA.length();
       if (currentDist > layout.maxBoundingRadius) {
         posA.normalize().multiplyScalar(layout.maxBoundingRadius);

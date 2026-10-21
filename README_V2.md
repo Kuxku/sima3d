@@ -102,33 +102,44 @@ export const V2_CONFIG = {
   2. El tooltip aparece con una transición de opacidad pura sin movimientos de rebote.
 - **Fallback defensivo:** Si `uiPolish: false`, regresa al HUD clásico estático de v1.
 
-### Entorno Visual: Sala 3D de Rejilla en Perspectiva (Wireframe Grid Room)
+### Entorno Visual: Escenario Ciclorama Infinito (Grid Cyclorama Stage)
 - **Fondo de Perspectiva 3D (`GridRoom.tsx`):**
-  1. Recrea con exactitud matemática la sala/túnel de rejilla de la imagen de referencia: cuadrículas continuas en piso, techo y paredes laterales cuyas líneas longitudinales convergen hacia el horizonte oscuro central en Z.
-  2. **Desvanecimiento cromático por profundidad:** Las líneas frontales presentan tonos plateados/acero claros (`#64748b` con `opacity: 0.55`) y se atenúan gradualmente hacia el abismo negro `#090c14` a medida que se adentran en el fondo.
-  3. **Profundidad Parallax:** Al orbitar o mover la constelación de nodos con el ratón, la sala tridimensional genera un efecto de inmersión espacial cyber-futurista de 60 FPS sin ningún costo perceptible de GPU.
+  1. Recrea con exactitud matemática el ciclorama de estudio en perspectiva con fondo infinito de la imagen de referencia: plano de piso horizontal que retrocede en profundidad hacia Z negativo y pared de ciclorama vertical en Z de fondo que se eleva hacia arriba, encontrándose en una línea de horizonte continua.
+  2. **Perspectiva convergente:** Las líneas del suelo y de la pared coinciden milimétricamente en la línea de horizonte, creando una sensación de amplitud y profundidad sin encierro de túnel.
+  3. **Líneas claras de alta fidelidad:** Blanco y plata nívea (`#e2e8f0` al 52% de opacidad) sobre fondos negro azabache mate (`#020306`), proporcionando el contraste exacto de estudio de visualización de datos.
 
-### Dashboard Lateral: Estilo Recomendado (Consola de Inteligencia Aeroespacial / Cyber-Obsidian Glass)
-- **Concepto de Diseño Senior Frontend:**
-  En lugar de arcilla gruesa que sobrecargaba los paneles laterales, se implementó una **Consola de Inteligencia Espacial en Vidrio Obsidiana Esmerilado (`Cyber-Obsidian Glassmorphism`)**:
-  1. **Vidrio Ahumado de Alta Fidelidad:** Paneles ultra-nítidos con `background: rgba(10, 14, 24, 0.78)`, `backdrop-filter: blur(24px) saturate(180%)`, micro-bordes de `1px solid rgba(255, 255, 255, 0.08)` y acentos luminosos cian.
-  2. **Panel Inspector Lateral Derecho:**
-     - Bloques de telemetría de red con celdas de precisión semitransparentes (`rgba(14, 20, 32, 0.65)`).
-     - Tipografía monoespaciada para métricas cuantitativas (estudiantes, estrato, ruralidad, grado).
-     - Micro-etiquetas luminosas con micro-dots para diferenciar comunas (cian), colegios (esmeralda) y facultades (ámbar).
-     - Botón de análisis con Copilot integrado con gradiente cian aeroespacial interactivo.
-  3. **Copilot IA (Panel Izquierdo):**
-     - Burbujas del bot con bisel lateral cian luminoso y tipografía de alta legibilidad.
-     - Burbujas del usuario en azul eléctrico profundo con sombra difusa.
-     - Chips de sugerencias como micro-píldoras de vidrio con brillo al hover.
+### Barra de Navegación Master con Design Thinking (`AppV2.tsx`)
+- **Problema Solucionado:** Las píldoras flotantes inconexas de la navbar anterior lucían como prototipos artificiales, poco profesionales y causaban solapamiento físico con los controles de mejoras.
+- **Arquitectura de 3 Zonas Unificadas:**
+  1. **Zona 1 (Identidad y Contexto):** Logotipo `SIMA-3D v2`, pulso verde en vivo (`#10b981`) y subtítulo institucional (`MOVILIDAD ACADÉMICA · Ruta N · Medellín`).
+  2. **Zona 2 (Telemetría de Datos Integrada):** Cintas continuas de métricas clave con números tabulares y separadores finos (`29,014 ESTUDIANTES` · `78 NODOS` · `380 CONEXIONES`), legibles al instante para cualquier tomador de decisiones.
+  3. **Zona 3 (Hub de Acciones Globales):** Acciones agrupadas en un solo flexbox sin posibilidad de solapamiento:
+     - `💡 ¿Cómo funciona?` (Abre la Guía Amigable e interactiva).
+     - `⛶ Reencuadrar` (Centra la constelación 3D).
+     - `⟲ Vista General` (Restaura la selección activa).
+     - `⚙ Mejoras (7/7)` (Acceso directo al modal de control de feature flags).
 
-### Control de Mejoras Discreto: Ventana Modal In-Page (`FlagControls.tsx`)
-- **Problema Solucionado:** El panel de flags anterior ocupaba permanentemente la esquina superior derecha del HUD, tapando parte de la escena.
-- **Implementación Limpia y Oculta:**
-  1. **Botón Discreto Flotante (`⚙ Mejoras v2`):** Un botón compacto y elegante con icono rotativo, etiqueta y contador de flags activas (ej. `7/7`), liberando el 100% del espacio visual.
-  2. **Ventana Modal In-Page:** Al presionar el botón, se despliega una ventana modal interactiva centrada sobre un fondo oscuro desenfocado (`backdrop-filter: blur(10px)`).
-  3. **Interruptores iOS / Cyber-Switches:** Cada mejora cuenta con su interruptor táctil, badge descriptivo (Mejora 1 a 6) y explicación detallada.
-  4. **Atajos y Cierre Rápido:** Permite cerrar con la tecla <kbd>ESC</kbd>, clic en el fondo exterior o botón ✕, e incluye botones rápidos de "Activar Todas" y "Restablecer".
+### Experiencia Amigable para Público No Técnico (Accesibilidad Cognitiva)
+- **Modal de Inducción Rápida (`FriendlyGuideModal.tsx`):**
+  - Botón visible `💡 ¿Cómo funciona?` y sugerencia flotante en la esquina inferior izquierda.
+  - Explicación visual en 4 pasos sencillos sin jerga técnica:
+    1. **¿Qué es cada esfera?** Código de color cotidiano (🔵 Comunas/Territorio, 🟢 Colegios donde nacen los sueños, 🟡 Facultades/Destino universitario).
+    2. **¿Por qué hay esferas más grandes?** El tamaño representa el volumen directo de jóvenes atendidos.
+    3. **¿Qué son los rayos de luz?** Rutas y caminos de movilidad estudiantil; a mayor flujo, más brillante y visible la conexión.
+    4. **¿Cómo moverte en 3D?** Instrucciones directas de ratón y táctil (girar, desplazar, acercar).
+- **Lenguaje Humanizado en el Panel Inspector:**
+  - Sustitución de términos fríos ("In-Degree", "Out-Degree", "Weight") por conceptos accesibles: `Jóvenes Vinculados`, `Estrato Predominante`, `Procedencia Urbana`, `Rutas de Movilidad`.
+  - Tarjeta en reposo con leyenda explicativa visual y chips de colores para guiar al usuario que entra por primera vez.
+- **Preguntas Rápidas del Copilot para Ciudadanos:**
+  - Enfoque en preguntas cotidianas como *"¿De qué colegios llegan más estudiantes?"* y *"¿Cuáles son las comunas con mayor movilidad?"*.
+
+### Física Mejorada de Nodos (Dual-Layer Physics Engine)
+- **Capa 1: Física de Posicionamiento Topológico (Offline Spring Relaxation):**
+  - Implementación síncrona de resortes de Hooke ($F = k \cdot (d - L_0)$) con amortiguamiento y repulsión electrostática de Coulomb ($F_r = k_e / d^2$) en `hierarchicalLayout.ts`.
+  - Las facultades actúan como centros gravitacionales de atracción ponderada por volumen de estudiantes; los colegios con mayores flujos son atraídos hacia su facultad principal de forma orgánica, eliminando amontonamientos y preservando relaciones espaciales reales.
+- **Capa 2: Micro-Física Cero-G y Elevación Suave en Tres Dimensiones:**
+  - `NodeMeshWithPhysics` con oscilación armónica de gravedad cero en `useFrame`: cada nodo respira verticalmente ($Y \pm 0.12$) con una fase periódica determinista basada en su posición.
+  - Al interactuar (hover), el nodo se eleva suavemente hacia la cámara ($+0.22$ en Y) mediante interpolación matemática lerp, sin brincos bruscos de escala ni fatiga visual.
 
 ---
 
@@ -138,3 +149,4 @@ export const V2_CONFIG = {
 2. Revertir la adición de entrada `v2` en `frontend/vite.config.ts`.
 3. Borrar este archivo `README_V2.md`.
 4. Regresar a la rama principal (`git checkout main` o `master`).
+

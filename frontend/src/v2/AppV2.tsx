@@ -13,6 +13,7 @@ import { FlagControls } from './components/FlagControls';
 import { FeatureBoundary } from './components/FeatureBoundary';
 import { AutoFitCamera } from './components/AutoFitCamera';
 import { DepthFog } from './components/DepthFog';
+import { GridRoom } from './components/GridRoom';
 import './v2.css';
 
 // Rig de cámara suave para enfoque de nodos
@@ -122,6 +123,34 @@ export function AppV2() {
       V2_CONFIG.flags[key] = next[key];
       return next;
     });
+  };
+
+  const handleResetFlags = () => {
+    const defaults = {
+      improvedLayout: true,
+      autoFit: true,
+      smartEdges: true,
+      particles: true,
+      labels: true,
+      depthStyle: true,
+      uiPolish: true,
+    };
+    setFlags(defaults);
+    Object.assign(V2_CONFIG.flags, defaults);
+  };
+
+  const handleEnableAllFlags = () => {
+    const all = {
+      improvedLayout: true,
+      autoFit: true,
+      smartEdges: true,
+      particles: true,
+      labels: true,
+      depthStyle: true,
+      uiPolish: true,
+    };
+    setFlags(all);
+    Object.assign(V2_CONFIG.flags, all);
   };
 
   useEffect(() => {
@@ -250,6 +279,9 @@ export function AppV2() {
           <directionalLight position={[-20, -15, -10]} intensity={0.75} color="#38bdf8" />
           <pointLight position={[0, -25, 15]} intensity={0.5} color="#0f172a" />
 
+          {/* Fondo de Sala / Túnel de Rejilla 3D en Perspectiva */}
+          <GridRoom />
+
           <FeatureBoundary featureName="DepthFog">
             <DepthFog enabled={flags.depthStyle} />
           </FeatureBoundary>
@@ -305,8 +337,13 @@ export function AppV2() {
         </Canvas>
       </div>
 
-      {/* Control de Feature Flags */}
-      <FlagControls flags={flags} onToggleFlag={toggleFlag} />
+      {/* Control de Feature Flags en Ventana Modal Discreta */}
+      <FlagControls
+        flags={flags}
+        onToggleFlag={toggleFlag}
+        onResetDefaults={handleResetFlags}
+        onEnableAll={handleEnableAllFlags}
+      />
 
       {/* 2. BARRA SUPERIOR HUD */}
       <header className="hud-topbar">

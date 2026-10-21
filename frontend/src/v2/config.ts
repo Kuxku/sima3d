@@ -70,11 +70,11 @@ export const V2_CONFIG = {
     minScale: 0.28,
     maxScale: 1.45,
     sqrtFactor: 0.022,
-    // Niebla atmosférica sutil
+    // Niebla atmosférica adaptada a la sala de rejilla en perspectiva
     fog: {
-      color: '#020617',
-      near: 22,
-      far: 105,
+      color: '#080a10',
+      near: 35,
+      far: 145,
     },
     // Parámetros de Bloom y translucidez
     bloomIntensity: 1.25,

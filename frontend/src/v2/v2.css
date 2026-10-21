@@ -1,194 +1,188 @@
 @import '../App.css';
 
 /* ============================================================
-   SIMA-3D v2: SISTEMA DE DISEÑO CLAYMORFISMO (DARK CLAY)
-   Inspirado en superficies infladas 3D, sombras suaves duales,
-   resaltes interiores táctiles y bordes redondeados orgánicos.
+   SIMA-3D v2: ESTILO CONSOLA DE INTELIGENCIA AEROESPACIAL
+   (CYBER-OBSIDIAN GLASSMORPHISM & PRECISION TELEMETRY HUD)
+   Diseñado específicamente para armonizar con la sala 3D de rejilla
+   en perspectiva y los nodos táctiles volumétricos.
    ============================================================ */
 
 :root {
-  /* Paleta Clay Base */
-  --clay-bg-space: #080c16;
-  --clay-surface-main: linear-gradient(150deg, #1c2436 0%, #121824 100%);
-  --clay-surface-elevated: linear-gradient(150deg, #222d42 0%, #161e2e 100%);
-  --clay-surface-recessed: linear-gradient(150deg, #0d121c 0%, #151d2a 100%);
-  --clay-surface-glass: rgba(22, 30, 46, 0.88);
-
-  /* Acentos Clay */
-  --clay-accent-cyan: linear-gradient(145deg, #0284c7 0%, #0369a1 100%);
-  --clay-accent-emerald: linear-gradient(145deg, #059669 0%, #047857 100%);
-  --clay-accent-amber: linear-gradient(145deg, #d97706 0%, #b45309 100%);
-  --clay-accent-purple: linear-gradient(145deg, #7c3aed 0%, #6d28d9 100%);
-
-  /* Sombras y Luces Clay (El secreto del Claymorfismo) */
-  --clay-shadow-outer-sm: 0 6px 16px -2px rgba(0, 0, 0, 0.55), 0 2px 6px -1px rgba(0, 0, 0, 0.4);
-  --clay-shadow-outer-md: 0 14px 30px -4px rgba(0, 0, 0, 0.65), 0 6px 14px -2px rgba(0, 0, 0, 0.45);
-  --clay-shadow-outer-lg: 0 22px 50px -8px rgba(0, 0, 0, 0.75), 0 10px 22px -4px rgba(0, 0, 0, 0.5);
-
-  --clay-light-inner: inset 2px 2.5px 5px rgba(255, 255, 255, 0.16);
-  --clay-light-inner-bright: inset 2px 3px 6px rgba(255, 255, 255, 0.35);
-  --clay-dark-inner: inset -3px -3.5px 7px rgba(0, 0, 0, 0.55);
-  --clay-recessed-inner: inset 3px 4px 8px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.08);
-
-  /* Radios Clay Orgánicos */
-  --clay-rad-sm: 12px;
-  --clay-rad-md: 18px;
-  --clay-rad-lg: 24px;
-  --clay-rad-xl: 30px;
-  --clay-rad-pill: 9999px;
+  /* Fondo Espacial Idéntico a la Sala de Rejilla */
+  --hud-bg-space: #080a10;
+  
+  /* Vidrio Obsidiana Esmerilado de Alta Precisión */
+  --hud-glass-surface: rgba(10, 14, 24, 0.78);
+  --hud-glass-surface-elevated: rgba(16, 23, 38, 0.88);
+  --hud-glass-surface-recessed: rgba(6, 9, 16, 0.7);
+  --hud-glass-border: rgba(255, 255, 255, 0.08);
+  --hud-glass-border-focus: rgba(56, 189, 248, 0.45);
+  
+  /* Acentos Cibernéticos Luminosos */
+  --hud-cyan: #38bdf8;
+  --hud-cyan-glow: rgba(56, 189, 248, 0.35);
+  --hud-emerald: #10b981;
+  --hud-amber: #f59e0b;
+  
+  /* Radios y Sombras de Precisión */
+  --hud-rad-sm: 8px;
+  --hud-rad-md: 14px;
+  --hud-rad-lg: 18px;
+  --hud-rad-pill: 9999px;
+  --hud-shadow-ambient: 0 16px 40px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --hud-shadow-glow: 0 0 24px rgba(56, 189, 248, 0.18);
 }
 
-/* Lienzo Espacial Claymórfico */
+/* Lienzo Espacial */
 .sima-viewport {
-  background: radial-gradient(ellipse at 50% 35%, #141c2c 0%, #090e18 60%, #04060b 100%) !important;
+  background: var(--hud-bg-space) !important;
 }
 
 /* ============================================================
-   1. BARRA SUPERIOR HUD (CLAYMORFISMO)
+   1. BARRA SUPERIOR HUD (CONSOLA DE TELEMETRÍA)
    ============================================================ */
 .hud-topbar {
   pointer-events: none;
 }
 
 .brand-block {
-  background: var(--clay-surface-main) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-radius: var(--clay-rad-lg) !important;
-  padding: 10px 22px !important;
-  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner), var(--clay-dark-inner) !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--hud-glass-surface) !important;
+  backdrop-filter: blur(20px) saturate(170%) !important;
+  border: 1px solid var(--hud-glass-border) !important;
+  border-radius: var(--hud-rad-md) !important;
+  padding: 9px 18px !important;
+  box-shadow: var(--hud-shadow-ambient) !important;
+  transition: all 0.25s ease;
 }
 
 .brand-block:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--clay-shadow-outer-lg), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+  box-shadow: var(--hud-shadow-ambient), var(--hud-shadow-glow) !important;
 }
 
 .brand-logo {
   font-weight: 800;
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
   color: #f8fafc;
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 16px !important;
 }
 
 .v2-version-tag {
-  background: var(--clay-accent-cyan);
-  color: #ffffff;
+  background: rgba(14, 165, 233, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  color: #38bdf8;
   font-size: 10px;
   font-weight: 800;
-  padding: 3px 8px;
-  border-radius: var(--clay-rad-pill);
-  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4), inset 1px 1px 2px rgba(255, 255, 255, 0.4), inset -1px -2px 3px rgba(0, 0, 0, 0.4);
-  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: var(--hud-rad-pill);
+  letter-spacing: 0.8px;
 }
 
 .pulse-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: #38bdf8;
   border-radius: 50%;
-  box-shadow: 0 0 14px #38bdf8, inset 1px 1px 2px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 10px #38bdf8;
 }
 
 .kpi-group {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* Píldoras de Métricas Clay */
 .kpi-pill {
-  background: var(--clay-surface-main) !important;
-  border: 1px solid rgba(255, 255, 255, 0.11) !important;
-  border-radius: var(--clay-rad-md) !important;
-  padding: 8px 18px !important;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: var(--hud-glass-surface) !important;
+  backdrop-filter: blur(20px) saturate(170%) !important;
+  border: 1px solid var(--hud-glass-border) !important;
+  border-radius: var(--hud-rad-md) !important;
+  padding: 7px 16px !important;
+  box-shadow: var(--hud-shadow-ambient) !important;
+  transition: all 0.2s ease;
 }
 
 .kpi-pill:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  transform: translateY(-1px);
 }
 
 .kpi-label {
-  font-size: 10px !important;
+  font-size: 9px !important;
   color: #94a3b8 !important;
   font-weight: 700 !important;
-  letter-spacing: 1px !important;
+  letter-spacing: 1.2px !important;
+  font-family: monospace;
 }
 
 .kpi-value {
-  font-size: 16px !important;
+  font-size: 15px !important;
   font-weight: 800 !important;
-  color: #f1f5f9 !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: #f8fafc !important;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Botón Reencuadrar Clay Táctil */
+/* Botón Reencuadrar Tecnológico */
 .v2-refit-btn {
-  background: var(--clay-accent-cyan) !important;
-  border: 1px solid rgba(255, 255, 255, 0.22) !important;
-  color: #ffffff !important;
-  padding: 10px 18px !important;
-  border-radius: var(--clay-rad-md) !important;
+  background: rgba(14, 165, 233, 0.14) !important;
+  border: 1px solid rgba(56, 189, 248, 0.4) !important;
+  color: #38bdf8 !important;
+  padding: 9px 16px !important;
+  border-radius: var(--hud-rad-md) !important;
   font-size: 12px !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 10px 24px rgba(2, 132, 199, 0.45), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .v2-refit-btn:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 14px 30px rgba(2, 132, 199, 0.55), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  background: rgba(14, 165, 233, 0.25) !important;
+  border-color: #38bdf8 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.35) !important;
 }
 
 .v2-refit-btn:active {
-  transform: translateY(1px) scale(0.97) !important;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35), var(--clay-recessed-inner) !important;
+  transform: translateY(1px);
 }
 
-/* Botón Vista General */
 .reset-view-btn {
-  background: var(--clay-surface-main) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  color: #38bdf8 !important;
-  padding: 10px 18px !important;
-  border-radius: var(--clay-rad-md) !important;
+  background: var(--hud-glass-surface) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #cbd5e1 !important;
+  padding: 9px 16px !important;
+  border-radius: var(--hud-rad-md) !important;
   font-size: 12px !important;
   font-weight: 700 !important;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--hud-shadow-ambient) !important;
+  transition: all 0.2s ease !important;
 }
 
 .reset-view-btn:hover {
-  transform: translateY(-2px);
-  color: #7dd3fc !important;
-  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
-}
-
-.reset-view-btn:active {
-  transform: translateY(1px) scale(0.97) !important;
-  box-shadow: var(--clay-recessed-inner) !important;
+  border-color: #38bdf8 !important;
+  color: #38bdf8 !important;
 }
 
 /* ============================================================
-   2. PANEL LATERAL: COPILOT IA (GABINETE CLAYMORFICO)
+   2. DASHBOARD LATERAL IZQUIERDO: COPILOT IA (CONSOLA CIBERNÉTICA)
    ============================================================ */
 .hud-sidebar {
-  background: var(--clay-surface-glass) !important;
-  backdrop-filter: blur(24px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  border-radius: var(--clay-rad-xl) !important;
-  box-shadow: var(--clay-shadow-outer-lg), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  background: var(--hud-glass-surface) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid var(--hud-glass-border) !important;
+  border-radius: var(--hud-rad-lg) !important;
+  box-shadow: var(--hud-shadow-ambient), 0 0 30px rgba(0, 0, 0, 0.5) !important;
   overflow: hidden;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease !important;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
 }
 
 .hud-sidebar.collapsed {
@@ -198,9 +192,9 @@
 }
 
 .sidebar-header {
-  padding: 18px 22px !important;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.15) 100%) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 16px 20px !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.12) 100%) !important;
+  border-bottom: 1px solid var(--hud-glass-border) !important;
 }
 
 .sidebar-title-row {
@@ -209,196 +203,183 @@
   justify-content: space-between;
 }
 
+.sidebar-header h3 {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #f8fafc !important;
+  letter-spacing: 0.3px;
+}
+
 .ai-badge {
-  background: var(--clay-accent-cyan) !important;
+  background: linear-gradient(135deg, #0ea5e9, #2563eb) !important;
   color: #ffffff !important;
-  font-size: 11px !important;
+  font-size: 10px !important;
   font-weight: 800 !important;
-  padding: 3px 9px !important;
-  border-radius: var(--clay-rad-pill) !important;
-  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4), inset 1px 1px 2px rgba(255, 255, 255, 0.4), inset -1px -2px 3px rgba(0, 0, 0, 0.4) !important;
+  padding: 2px 7px !important;
+  border-radius: var(--hud-rad-sm) !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.4);
 }
 
 .v2-collapse-chat-btn {
-  background: var(--clay-surface-elevated) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  color: #cbd5e1 !important;
-  width: 32px !important;
-  height: 32px !important;
-  border-radius: var(--clay-rad-sm) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94a3b8 !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: var(--hud-rad-sm) !important;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 13px !important;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  transition: all 0.18s ease;
 }
 
 .v2-collapse-chat-btn:hover {
-  transform: scale(1.08);
+  background: rgba(56, 189, 248, 0.18) !important;
+  border-color: #38bdf8 !important;
   color: #38bdf8 !important;
-  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
-}
-
-.v2-collapse-chat-btn:active {
-  transform: scale(0.92) !important;
-  box-shadow: var(--clay-recessed-inner) !important;
 }
 
 .v2-open-chat-tab {
   position: absolute;
-  top: 90px;
+  top: 86px;
   left: 24px;
   z-index: 40;
-  background: var(--clay-surface-main) !important;
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  background: var(--hud-glass-surface) !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--hud-glass-border-focus) !important;
   color: #38bdf8 !important;
-  padding: 10px 18px !important;
-  border-radius: var(--clay-rad-lg) !important;
-  font-size: 13px !important;
+  padding: 9px 16px !important;
+  border-radius: var(--hud-rad-md) !important;
+  font-size: 12px !important;
   font-weight: 700 !important;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner), var(--clay-dark-inner) !important;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  box-shadow: var(--hud-shadow-ambient), var(--hud-shadow-glow) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .v2-open-chat-tab:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: var(--clay-shadow-outer-lg), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  transform: translateY(-2px);
+  background: rgba(14, 165, 233, 0.22) !important;
 }
 
-.v2-open-chat-tab:active {
-  transform: translateY(1px) scale(0.97) !important;
-  box-shadow: var(--clay-recessed-inner) !important;
-}
-
-/* Burbujas de Chat: Almohadillas Clay Infladas */
+/* Mensajes de Chat: Tarjetas de Precisión */
 .chat-messages {
-  padding: 18px 20px !important;
-  gap: 14px !important;
+  padding: 16px 18px !important;
+  gap: 12px !important;
 }
 
 .chat-bubble.bot {
-  background: var(--clay-surface-elevated) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-radius: 20px 20px 20px 6px !important;
+  background: rgba(16, 23, 38, 0.82) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: 2px solid #38bdf8 !important;
+  border-radius: var(--hud-rad-md) !important;
   color: #e2e8f0 !important;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
-  padding: 13px 16px !important;
+  padding: 12px 14px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
   line-height: 1.5 !important;
 }
 
 .chat-bubble.user {
-  background: var(--clay-accent-cyan) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  border-radius: 20px 20px 6px 20px !important;
+  background: linear-gradient(135deg, #0284c7 0%, #1e40af 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: var(--hud-rad-md) !important;
   color: #ffffff !important;
-  box-shadow: 0 10px 24px rgba(2, 132, 199, 0.45), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
-  padding: 13px 16px !important;
+  padding: 12px 14px !important;
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35) !important;
   line-height: 1.5 !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 .camera-action-tag {
-  background: var(--clay-surface-recessed) !important;
+  background: rgba(14, 165, 233, 0.12) !important;
   border: 1px solid rgba(56, 189, 248, 0.35) !important;
-  border-radius: var(--clay-rad-pill) !important;
-  box-shadow: var(--clay-recessed-inner) !important;
-  padding: 6px 12px !important;
+  border-radius: var(--hud-rad-sm) !important;
+  padding: 5px 10px !important;
+  font-size: 11px !important;
   font-weight: 700;
+  color: #38bdf8 !important;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 8px;
   transition: all 0.18s ease;
 }
 
 .camera-action-tag:hover {
-  background: rgba(56, 189, 248, 0.2) !important;
+  background: rgba(14, 165, 233, 0.25) !important;
   transform: translateY(-1px);
 }
 
-/* Chips de Sugerencias Clay */
 .quick-prompts {
-  padding: 12px 18px !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  background: rgba(0, 0, 0, 0.15) !important;
+  padding: 10px 16px !important;
+  background: rgba(6, 9, 16, 0.6) !important;
+  border-top: 1px solid var(--hud-glass-border) !important;
 }
 
 .prompt-chip {
-  background: var(--clay-surface-main) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(22, 30, 48, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   color: #cbd5e1 !important;
-  border-radius: var(--clay-rad-pill) !important;
-  padding: 8px 14px !important;
+  border-radius: var(--hud-rad-pill) !important;
+  padding: 6px 12px !important;
   font-size: 11px !important;
   font-weight: 600 !important;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  transition: all 0.18s ease !important;
 }
 
 .prompt-chip:hover:not(:disabled) {
-  background: var(--clay-surface-elevated) !important;
-  color: #38bdf8 !important;
-  transform: translateY(-2px) scale(1.02);
+  background: rgba(14, 165, 233, 0.2) !important;
   border-color: rgba(56, 189, 248, 0.45) !important;
-  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  color: #38bdf8 !important;
+  transform: translateY(-1px);
 }
 
-.prompt-chip:active:not(:disabled) {
-  transform: translateY(1px) scale(0.97) !important;
-  box-shadow: var(--clay-recessed-inner) !important;
-}
-
-/* Barra de Entrada de Chat: Canal Recesado Clay */
 .chat-input-bar {
-  background: var(--clay-surface-recessed) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.4) !important;
-  padding: 14px 18px !important;
+  background: rgba(6, 9, 16, 0.75) !important;
+  border-top: 1px solid var(--hud-glass-border) !important;
+  padding: 12px 16px !important;
+  display: flex;
+  gap: 8px;
 }
 
 .chat-input-bar input {
-  background: var(--clay-surface-main) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  border-radius: var(--clay-rad-md) !important;
-  box-shadow: var(--clay-recessed-inner) !important;
+  background: rgba(15, 22, 36, 0.8) !important;
+  border: 1px solid var(--hud-glass-border) !important;
+  border-radius: var(--hud-rad-sm) !important;
   color: #f8fafc !important;
-  padding: 11px 16px !important;
-  font-size: 13px !important;
+  padding: 10px 14px !important;
+  font-size: 12px !important;
   outline: none;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .chat-input-bar input:focus {
   border-color: #38bdf8 !important;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2), var(--clay-recessed-inner) !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
 }
 
 .chat-input-bar button {
-  background: var(--clay-accent-cyan) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  border-radius: var(--clay-rad-md) !important;
-  width: 44px !important;
-  height: 40px !important;
-  box-shadow: 0 8px 18px rgba(2, 132, 199, 0.4), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: var(--hud-rad-sm) !important;
+  width: 40px !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
 }
 
 .chat-input-bar button:hover:not(:disabled) {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 12px 24px rgba(2, 132, 199, 0.55), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
-}
-
-.chat-input-bar button:active:not(:disabled) {
-  transform: translateY(1px) scale(0.95) !important;
-  box-shadow: var(--clay-recessed-inner) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
 }
 
 /* ============================================================
-   3. TARJETA INSPECTORA LATERAL DERECHA (CLAYMORFICA)
-   Aprovecha el espacio lateral derecho para un panel táctil de lujo
+   3. DASHBOARD LATERAL DERECHO: INSPECTOR DE RED & TELEMETRÍA
+   (ESTILO RECOMENDADO: PANEL DE INTELIGENCIA AEROESPACIAL)
    ============================================================ */
 .v2-lateral-inspector {
   position: absolute;
@@ -406,48 +387,46 @@
   right: 24px;
   width: 320px;
   z-index: 30;
-  background: var(--clay-surface-glass) !important;
-  backdrop-filter: blur(24px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  border-radius: var(--clay-rad-xl) !important;
-  padding: 20px !important;
-  box-shadow: var(--clay-shadow-outer-lg), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  background: var(--hud-glass-surface) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid var(--hud-glass-border) !important;
+  border-radius: var(--hud-rad-lg) !important;
+  padding: 18px !important;
+  box-shadow: var(--hud-shadow-ambient), 0 0 30px rgba(0, 0, 0, 0.5) !important;
   pointer-events: auto;
-  animation: lateralSlideIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: lateralSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes lateralSlideIn {
   from {
     opacity: 0;
-    transform: translateX(16px) scale(0.98);
+    transform: translateX(14px);
   }
   to {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateX(0);
   }
 }
 
 .v2-lateral-inspector.standby {
-  border: 1px dashed rgba(255, 255, 255, 0.18) !important;
-  background: rgba(18, 24, 38, 0.55) !important;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
-  padding: 18px 20px !important;
+  border: 1px dashed rgba(255, 255, 255, 0.14) !important;
+  background: rgba(10, 14, 24, 0.55) !important;
+  padding: 18px !important;
 }
 
 .standby-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   color: #cbd5e1;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .standby-icon {
   color: #38bdf8;
-  font-size: 16px;
-  text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+  font-size: 15px;
 }
 
 .standby-hint {
@@ -470,362 +449,597 @@
   gap: 8px;
 }
 
-/* Píldoras Clay de Tipo de Entidad */
+/* Badges de Tipo con Micro-glow */
 .node-type-tag {
-  font-size: 10px !important;
+  font-size: 9px !important;
   font-weight: 800 !important;
-  padding: 4px 10px !important;
-  border-radius: var(--clay-rad-pill) !important;
+  padding: 3px 8px !important;
+  border-radius: var(--hud-rad-sm) !important;
   letter-spacing: 0.8px !important;
-  color: #ffffff !important;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  font-family: monospace;
 }
 
 .node-type-tag.comuna {
-  background: var(--clay-accent-cyan) !important;
-  border: 1px solid rgba(255, 255, 255, 0.28) !important;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  background: rgba(14, 165, 233, 0.16) !important;
+  border: 1px solid rgba(56, 189, 248, 0.45) !important;
+  color: #38bdf8 !important;
 }
 
 .node-type-tag.colegio {
-  background: var(--clay-accent-emerald) !important;
-  border: 1px solid rgba(255, 255, 255, 0.28) !important;
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  background: rgba(16, 185, 129, 0.16) !important;
+  border: 1px solid rgba(16, 185, 129, 0.45) !important;
+  color: #34d399 !important;
 }
 
 .node-type-tag.facultad {
-  background: var(--clay-accent-amber) !important;
-  border: 1px solid rgba(255, 255, 255, 0.28) !important;
-  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  background: rgba(245, 158, 11, 0.16) !important;
+  border: 1px solid rgba(245, 158, 11, 0.45) !important;
+  color: #fbbf24 !important;
 }
 
 .inspector-mode-tag {
   font-size: 9px;
-  font-weight: 800;
-  padding: 3px 8px;
-  border-radius: var(--clay-rad-pill);
-  letter-spacing: 0.6px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--hud-rad-sm);
+  letter-spacing: 0.5px;
+  font-family: monospace;
 }
 
 .inspector-mode-tag.preview {
-  background: var(--clay-surface-main);
-  color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner);
+  background: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .inspector-mode-tag.pinned {
-  background: var(--clay-accent-amber);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4), var(--clay-light-inner-bright), var(--clay-dark-inner);
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
 }
 
 .close-btn {
-  background: var(--clay-surface-main) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: #94a3b8 !important;
   width: 26px !important;
   height: 26px !important;
-  border-radius: 50% !important;
+  border-radius: var(--hud-rad-sm) !important;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
   transition: all 0.18s ease;
 }
 
 .close-btn:hover {
   color: #f8fafc !important;
-  transform: scale(1.1);
-  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
-}
-
-.close-btn:active {
-  transform: scale(0.92) !important;
-  box-shadow: var(--clay-recessed-inner) !important;
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
 }
 
 .inspector-title {
   margin: 6px 0 4px 0 !important;
-  font-size: 17px !important;
+  font-size: 16px !important;
   font-weight: 800 !important;
   color: #f8fafc !important;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
 }
 
 .inspector-id {
-  margin: 0 0 16px 0 !important;
+  margin: 0 0 14px 0 !important;
   font-size: 11px !important;
   color: #64748b !important;
   font-family: monospace;
 }
 
-/* Bloques de Métricas: Cavidades Clay Grabadas */
+/* Tarjetas de Métrica: Celdas de Precisión */
 .inspector-metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px !important;
-  margin-bottom: 18px !important;
+  gap: 10px !important;
+  margin-bottom: 16px !important;
 }
 
 .metric-box {
-  background: var(--clay-surface-recessed) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: var(--clay-recessed-inner) !important;
-  padding: 12px 14px !important;
-  border-radius: var(--clay-rad-md) !important;
+  background: rgba(14, 20, 32, 0.65) !important;
+  border: 1px solid var(--hud-glass-border) !important;
+  padding: 10px 12px !important;
+  border-radius: var(--hud-rad-md) !important;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  transition: all 0.2s ease;
+  gap: 3px;
+  transition: border-color 0.2s ease;
 }
 
 .metric-box:hover {
-  background: var(--clay-surface-main) !important;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
-  transform: translateY(-1px);
+  border-color: rgba(56, 189, 248, 0.3) !important;
 }
 
 .metric-name {
-  font-size: 10px !important;
+  font-size: 9px !important;
   color: #94a3b8 !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.4px;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .metric-val {
-  font-size: 16px !important;
+  font-size: 15px !important;
   font-weight: 800 !important;
   color: #38bdf8 !important;
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  font-family: monospace;
 }
 
-/* Botón de Acción con IA en Inspector */
+/* Botón de Análisis IA en Inspector */
 .ask-ai-node-btn {
   width: 100% !important;
-  background: var(--clay-accent-cyan) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  color: #ffffff !important;
-  padding: 12px 16px !important;
-  border-radius: var(--clay-rad-md) !important;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.22), rgba(37, 99, 235, 0.32)) !important;
+  border: 1px solid rgba(56, 189, 248, 0.45) !important;
+  color: #e0f2fe !important;
+  padding: 11px 14px !important;
+  border-radius: var(--hud-rad-md) !important;
   font-size: 12px !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(2, 132, 199, 0.45), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.2) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .ask-ai-node-btn:hover:not(:disabled) {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 14px 30px rgba(2, 132, 199, 0.55), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.38), rgba(37, 99, 235, 0.48)) !important;
+  border-color: #38bdf8 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.35) !important;
 }
 
 .ask-ai-node-btn:active:not(:disabled) {
-  transform: translateY(1px) scale(0.97) !important;
-  box-shadow: var(--clay-recessed-inner) !important;
+  transform: translateY(1px);
 }
 
 /* ============================================================
-   4. LEYENDA INFERIOR DERECHA (BASE CLAYMORFICA FLOTANTE)
+   4. LEYENDA INFERIOR DERECHA (DOCK CIBERNÉTICO)
    ============================================================ */
 .hud-legend.interactive {
   display: flex;
-  gap: 12px;
-  background: var(--clay-surface-glass) !important;
-  backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  padding: 8px 16px !important;
-  border-radius: var(--clay-rad-xl) !important;
-  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  gap: 10px;
+  background: var(--hud-glass-surface) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid var(--hud-glass-border) !important;
+  padding: 6px 14px !important;
+  border-radius: var(--hud-rad-md) !important;
+  box-shadow: var(--hud-shadow-ambient) !important;
   pointer-events: auto;
 }
 
 .legend-item.clickable {
   cursor: pointer;
-  padding: 6px 12px !important;
-  border-radius: var(--clay-rad-pill) !important;
-  font-size: 12px !important;
+  padding: 5px 10px !important;
+  border-radius: var(--hud-rad-sm) !important;
+  font-size: 11px !important;
   font-weight: 700 !important;
   color: #cbd5e1 !important;
   border: 1px solid transparent;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  transition: all 0.18s ease !important;
 }
 
 .legend-item.clickable:hover {
-  background: var(--clay-surface-main) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
-  transform: translateY(-2px);
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
 }
 
 .legend-item.active {
-  background: var(--clay-surface-elevated) !important;
+  background: rgba(14, 165, 233, 0.18) !important;
   border-color: rgba(56, 189, 248, 0.45) !important;
   color: #38bdf8 !important;
-  transform: translateY(-2px);
-  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
 }
 
 .legend-item.dimmed {
-  opacity: 0.35;
+  opacity: 0.3;
 }
 
 .legend-dot {
-  width: 10px !important;
-  height: 10px !important;
+  width: 8px !important;
+  height: 8px !important;
   border-radius: 50% !important;
-  box-shadow: var(--clay-shadow-outer-sm), inset 1px 1px 2px rgba(255, 255, 255, 0.5) !important;
 }
 
 /* ============================================================
-   5. PANEL DE FEATURE FLAGS (CLAYMORFISMO)
+   5. CONTROL DE MEJORAS DISCRETO: BOTÓN Y MODAL IN-PAGE
+   (RESPONDE A LA PETICIÓN DEL USUARIO: "VUÉLVELA MÁS OCULTA")
    ============================================================ */
-.v2-flag-panel {
+
+/* Botón Discreto Flotante (Esquina Superior Derecha o Dock) */
+.v2-gear-trigger-btn {
   position: absolute;
-  top: 86px;
+  top: 24px;
   right: 24px;
-  z-index: 50;
-  background: var(--clay-surface-glass) !important;
-  backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  border-radius: var(--clay-rad-lg) !important;
-  box-shadow: var(--clay-shadow-outer-lg), var(--clay-light-inner), var(--clay-dark-inner) !important;
-  overflow: hidden;
-  transition: all 0.25s ease;
-  min-width: 290px;
-  max-width: 370px;
+  z-index: 25;
+  background: var(--hud-glass-surface);
+  backdrop-filter: blur(18px) saturate(170%);
+  border: 1px solid var(--hud-glass-border);
+  color: #cbd5e1;
+  padding: 8px 14px;
+  border-radius: var(--hud-rad-md);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--hud-shadow-ambient);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: auto;
 }
 
-.v2-flag-panel.collapsed {
-  min-width: auto;
-  max-width: auto;
-}
-
-.v2-flag-panel-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px !important;
-  cursor: pointer;
-  background: var(--clay-surface-main) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-  user-select: none;
-}
-
-.v2-flag-panel-header:hover {
-  background: var(--clay-surface-elevated) !important;
-}
-
-.v2-badge {
-  background: var(--clay-accent-cyan) !important;
-  color: #ffffff !important;
-  font-size: 10px !important;
-  font-weight: 800 !important;
-  padding: 2px 7px !important;
-  border-radius: var(--clay-rad-pill) !important;
-  box-shadow: 0 4px 8px rgba(2, 132, 199, 0.4), inset 1px 1px 2px rgba(255, 255, 255, 0.4);
-}
-
-.v2-flag-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: #f1f5f9;
-  flex: 1;
-}
-
-.v2-toggle-btn {
-  background: transparent;
-  border: none;
+.v2-gear-trigger-btn:hover {
+  background: rgba(16, 24, 38, 0.95);
+  border-color: rgba(56, 189, 248, 0.45);
   color: #38bdf8;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
+  transform: translateY(-1px);
+  box-shadow: var(--hud-shadow-ambient), var(--hud-shadow-glow);
 }
 
-.v2-flag-list {
-  padding: 10px 14px 14px 14px !important;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 400px;
-  overflow-y: auto;
+.v2-gear-trigger-btn .gear-icon {
+  font-size: 13px;
+  transition: transform 0.4s ease;
 }
 
-.v2-flag-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  cursor: pointer;
-  font-size: 12px;
-  color: #cbd5e1;
-  padding: 6px 8px !important;
-  border-radius: var(--clay-rad-sm) !important;
-  transition: all 0.15s ease;
+.v2-gear-trigger-btn:hover .gear-icon {
+  transform: rotate(60deg);
 }
 
-.v2-flag-item:hover {
-  background: var(--clay-surface-main) !important;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner);
-}
-
-.v2-flag-item input[type='checkbox'] {
-  margin-top: 3px;
-  accent-color: #38bdf8;
-  cursor: pointer;
-}
-
-.v2-flag-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.v2-flag-name {
-  font-weight: 700;
-  color: #f8fafc;
-  font-size: 11px;
+.gear-counter {
+  background: rgba(14, 165, 233, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: var(--hud-rad-pill);
   font-family: monospace;
 }
 
-.v2-flag-desc {
-  font-size: 10px;
+/* Modal Backdrop */
+.v2-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(2, 6, 14, 0.72);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Ventana Modal */
+.v2-modal-window {
+  width: 580px;
+  max-width: 95vw;
+  max-height: 85vh;
+  background: rgba(12, 17, 28, 0.96);
+  backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: var(--hud-rad-lg);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(56, 189, 248, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalScaleIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.v2-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.2) 100%);
+}
+
+.v2-modal-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.v2-modal-badge {
+  background: rgba(14, 165, 233, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: var(--hud-rad-sm);
+  letter-spacing: 0.8px;
+  font-family: monospace;
+}
+
+.v2-modal-status-pill {
   color: #94a3b8;
-  line-height: 1.3;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+.v2-modal-title {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.v2-modal-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.v2-modal-close-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--hud-rad-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.18s ease;
+}
+
+.v2-modal-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+.v2-modal-body {
+  padding: 16px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Fila de cada mejora en el modal */
+.v2-flag-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(16, 24, 38, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--hud-rad-md);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.v2-flag-row:hover {
+  background: rgba(22, 32, 50, 0.7);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.v2-flag-row.is-active {
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(14, 165, 233, 0.06);
+}
+
+.v2-flag-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-right: 16px;
+}
+
+.v2-flag-title-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.v2-flag-pill-tag {
+  background: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--hud-rad-sm);
+  font-family: monospace;
+}
+
+.v2-flag-row.is-active .v2-flag-pill-tag {
+  background: rgba(14, 165, 233, 0.2);
+  color: #38bdf8;
+}
+
+.v2-flag-item-title {
+  font-size: 13px;
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.v2-flag-item-desc {
+  margin: 0;
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+/* Switch Toggle iOS Style */
+.v2-switch-wrapper {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.v2-switch-wrapper input[type='checkbox'] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.v2-switch-slider {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: var(--hud-rad-pill);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: block;
+}
+
+.slider-thumb {
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.v2-switch-wrapper input:checked + .v2-switch-slider {
+  background: #0284c7;
+  box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
+}
+
+.v2-switch-wrapper input:checked + .v2-switch-slider .slider-thumb {
+  transform: translateX(20px);
+}
+
+/* Footer del Modal */
+.v2-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(8, 12, 20, 0.8);
+}
+
+.v2-modal-hint {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.v2-modal-hint kbd {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-family: monospace;
+  font-size: 10px;
+}
+
+.v2-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.v2-modal-btn {
+  padding: 8px 16px;
+  border-radius: var(--hud-rad-sm);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.v2-modal-btn.secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+}
+
+.v2-modal-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.v2-modal-btn.primary {
+  background: rgba(14, 165, 233, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+.v2-modal-btn.primary:hover {
+  background: rgba(14, 165, 233, 0.28);
+}
+
+.v2-modal-btn.confirm {
+  background: #0284c7;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.v2-modal-btn.confirm:hover {
+  background: #0369a1;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
 }
 
 /* ============================================================
-   6. ETIQUETAS PERMANENTES EN EL ESPACIO 3D (MINI-CLAY)
+   6. ETIQUETAS PERMANENTES 3D (CYBER-TAGS DISCRETAS)
    ============================================================ */
 .v2-permanent-label {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--clay-surface-glass) !important;
+  background: rgba(8, 12, 20, 0.85) !important;
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  padding: 4px 10px !important;
-  border-radius: var(--clay-rad-pill) !important;
-  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding: 3px 8px !important;
+  border-radius: var(--hud-rad-sm) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
   pointer-events: none;
   white-space: nowrap;
   transition: opacity 0.2s ease;
 }
 
 .v2-label-indicator {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
-  box-shadow: 0 0 6px currentColor, inset 1px 1px 2px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 6px currentColor;
 }
 
 .v2-label-text {
-  font-size: 11px !important;
+  font-size: 10px !important;
   font-weight: 700 !important;
-  color: #f1f5f9 !important;
+  color: #e2e8f0 !important;
   letter-spacing: 0.3px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  font-family: monospace;
 }

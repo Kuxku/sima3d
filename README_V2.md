@@ -102,24 +102,33 @@ export const V2_CONFIG = {
   2. El tooltip aparece con una transición de opacidad pura sin movimientos de rebote.
 - **Fallback defensivo:** Si `uiPolish: false`, regresa al HUD clásico estático de v1.
 
-### Rediseño Visual Completo: Estilo Claymorfismo (Dark Claymorphism)
-- **Concepto Estético:**
-  Transformación visual integral de la versión v2 basada en **Claymorfismo Oscuro (Dark Claymorphism)**, combinando superficies 3D infladas de aspecto táctil, bordes orgánicos redondeados (`18px` a `30px`), iluminación dual (resaltes superiores difusos y sombras inferiores profundas) y micro-interacciones táctiles suaves con respuesta de presión física.
-- **Componentes Transformados en la Interfaz HUD:**
-  1. **Topbar y Cápsulas KPI:** Pastillas infladas con sombras exteriores multi-capa y biseles interiores de luz blanca difusa (`inset 2px 2.5px 5px rgba(255, 255, 255, 0.16)`) y sombra profunda (`inset -3px -3.5px 7px rgba(0, 0, 0, 0.55)`).
-  2. **Botón Táctil Reencuadrar ("⛶ Reencuadrar"):** Botón de arcilla cian viva con efecto de elevación al hover y compresión squishy (`transform: translateY(1px) scale(0.97)`) al hacer clic.
-  3. **Gabinete de Copilot IA y Almohadillas de Chat:**
-     - El contenedor lateral adopta curvas suaves de 24px (`--clay-rad-xl`).
-     - Burbujas del bot estilizadas como almohadillas de arcilla oscura grafito con resalte superior.
-     - Burbujas del usuario en arcilla azul/cian eléctrico inflado.
-     - Chips de sugerencias como píldoras táctiles con relieve y retroalimentación táctil.
-     - Barra de entrada de texto como canal recesado con sombra interior de hendidura.
-  4. **Tarjeta Inspectora Lateral Derecha:** Panel de arcilla táctil flotante en la derecha con cavidades grabadas para las métricas de estudiantes, estrato y conexiones, más etiquetas redondeadas de tipo (Comunas en arcilla cian, Colegios en esmeralda y Facultades en ámbar).
-  5. **Base Flotante de Leyenda:** Muelle de arcilla redondeado en la esquina inferior con esferas de color PBR y botones interactivos.
-  6. **Panel de Flags y Etiquetas 3D:** Etiquetas y controles encapsulados en mini-pastillas de arcilla mate con sombra suave de proximidad.
-- **Renderizado 3D de Nodos Claymórficos:**
-  1. **Material de Plastilina/Arcilla Mate PBR:** Se reemplazó el acabado metálico y reflectante anterior por un material suave mate con `roughness: 0.72` y `metalness: 0.06`, dispersando la luz suavemente por la curvatura de las esferas.
-  2. **Iluminación de Estudio Tridimensional:** Luz direccional cálida cenital (`#fff7ed`), luz de relleno cian (`#38bdf8`) y luz ambiental equilibrada (`#1e293b`) que revelan el volumen esférico táctil de cada nodo en el espacio 3D.
+### Entorno Visual: Sala 3D de Rejilla en Perspectiva (Wireframe Grid Room)
+- **Fondo de Perspectiva 3D (`GridRoom.tsx`):**
+  1. Recrea con exactitud matemática la sala/túnel de rejilla de la imagen de referencia: cuadrículas continuas en piso, techo y paredes laterales cuyas líneas longitudinales convergen hacia el horizonte oscuro central en Z.
+  2. **Desvanecimiento cromático por profundidad:** Las líneas frontales presentan tonos plateados/acero claros (`#64748b` con `opacity: 0.55`) y se atenúan gradualmente hacia el abismo negro `#090c14` a medida que se adentran en el fondo.
+  3. **Profundidad Parallax:** Al orbitar o mover la constelación de nodos con el ratón, la sala tridimensional genera un efecto de inmersión espacial cyber-futurista de 60 FPS sin ningún costo perceptible de GPU.
+
+### Dashboard Lateral: Estilo Recomendado (Consola de Inteligencia Aeroespacial / Cyber-Obsidian Glass)
+- **Concepto de Diseño Senior Frontend:**
+  En lugar de arcilla gruesa que sobrecargaba los paneles laterales, se implementó una **Consola de Inteligencia Espacial en Vidrio Obsidiana Esmerilado (`Cyber-Obsidian Glassmorphism`)**:
+  1. **Vidrio Ahumado de Alta Fidelidad:** Paneles ultra-nítidos con `background: rgba(10, 14, 24, 0.78)`, `backdrop-filter: blur(24px) saturate(180%)`, micro-bordes de `1px solid rgba(255, 255, 255, 0.08)` y acentos luminosos cian.
+  2. **Panel Inspector Lateral Derecho:**
+     - Bloques de telemetría de red con celdas de precisión semitransparentes (`rgba(14, 20, 32, 0.65)`).
+     - Tipografía monoespaciada para métricas cuantitativas (estudiantes, estrato, ruralidad, grado).
+     - Micro-etiquetas luminosas con micro-dots para diferenciar comunas (cian), colegios (esmeralda) y facultades (ámbar).
+     - Botón de análisis con Copilot integrado con gradiente cian aeroespacial interactivo.
+  3. **Copilot IA (Panel Izquierdo):**
+     - Burbujas del bot con bisel lateral cian luminoso y tipografía de alta legibilidad.
+     - Burbujas del usuario en azul eléctrico profundo con sombra difusa.
+     - Chips de sugerencias como micro-píldoras de vidrio con brillo al hover.
+
+### Control de Mejoras Discreto: Ventana Modal In-Page (`FlagControls.tsx`)
+- **Problema Solucionado:** El panel de flags anterior ocupaba permanentemente la esquina superior derecha del HUD, tapando parte de la escena.
+- **Implementación Limpia y Oculta:**
+  1. **Botón Discreto Flotante (`⚙ Mejoras v2`):** Un botón compacto y elegante con icono rotativo, etiqueta y contador de flags activas (ej. `7/7`), liberando el 100% del espacio visual.
+  2. **Ventana Modal In-Page:** Al presionar el botón, se despliega una ventana modal interactiva centrada sobre un fondo oscuro desenfocado (`backdrop-filter: blur(10px)`).
+  3. **Interruptores iOS / Cyber-Switches:** Cada mejora cuenta con su interruptor táctil, badge descriptivo (Mejora 1 a 6) y explicación detallada.
+  4. **Atajos y Cierre Rápido:** Permite cerrar con la tecla <kbd>ESC</kbd>, clic en el fondo exterior o botón ✕, e incluye botones rápidos de "Activar Todas" y "Restablecer".
 
 ---
 

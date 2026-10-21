@@ -337,56 +337,79 @@ export function AppV2() {
         </Canvas>
       </div>
 
-      {/* Control de Feature Flags en Ventana Modal Discreta */}
-      <FlagControls
-        flags={flags}
-        onToggleFlag={toggleFlag}
-        onResetDefaults={handleResetFlags}
-        onEnableAll={handleEnableAllFlags}
-      />
-
-      {/* 2. BARRA SUPERIOR HUD */}
-      <header className="hud-topbar">
-        <div className="brand-block">
-          <div className="brand-logo">
-            <span className="pulse-dot" />
-            SIMA-3D <span className="v2-version-tag">v2</span>
+      {/* 2. BARRA SUPERIOR HUD: CONSOLA MAESTRA UNIFICADA (DESIGN THINKING NAVBAR) */}
+      <header className="v2-master-navbar">
+        {/* ZONA 1: IDENTIDAD & TELEMETRÍA DE SISTEMA */}
+        <div className="v2-nav-brand-zone">
+          <div className="v2-brand-badge-group">
+            <span className="v2-brand-pulse-dot" />
+            <h1 className="v2-brand-title">SIMA-3D</h1>
+            <span className="v2-brand-version-pill">v2</span>
           </div>
-          <span className="brand-subtitle">Inteligencia Espacial Educativa</span>
+          <span className="v2-brand-divider" />
+          <div className="v2-brand-meta">
+            <span className="v2-meta-label">MOVILIDAD ACADÉMICA</span>
+            <span className="v2-meta-location">Ruta N · Medellín</span>
+          </div>
         </div>
 
-        <div className="kpi-group">
-          <div className="kpi-pill">
-            <span className="kpi-label">ESTUDIANTES</span>
-            <span className="kpi-value">
+        {/* ZONA 2: PULSO DE TELEMETRÍA EN VIVO (MÉTRICAS UNIFICADAS) */}
+        <div className="v2-nav-telemetry-strip">
+          <div className="v2-telemetry-item">
+            <span className="v2-telemetry-label">ESTUDIANTES</span>
+            <span className="v2-telemetry-value highlight">
               {graphData.meta.total_records?.toLocaleString() || 'N/A'}
             </span>
           </div>
-          <div className="kpi-pill">
-            <span className="kpi-label">NODOS ACTIVOS</span>
-            <span className="kpi-value">{graphData.meta.node_count}</span>
+          <span className="v2-telemetry-separator" />
+          <div className="v2-telemetry-item">
+            <span className="v2-telemetry-label">NODOS</span>
+            <span className="v2-telemetry-value">
+              {graphData.meta.node_count}
+            </span>
           </div>
-          <div className="kpi-pill">
-            <span className="kpi-label">CONEXIONES</span>
-            <span className="kpi-value">{graphData.meta.edge_count}</span>
+          <span className="v2-telemetry-separator" />
+          <div className="v2-telemetry-item">
+            <span className="v2-telemetry-label">CONEXIONES</span>
+            <span className="v2-telemetry-value">
+              {graphData.meta.edge_count}
+            </span>
           </div>
+        </div>
 
-          {/* Botón Reencuadrar para volver a la vista completa (Mejora 2) */}
+        {/* ZONA 3: HUB DE ACCIONES Y MEJORAS INTEGRADAS (CERO COLISIONES) */}
+        <div className="v2-nav-action-hub">
           {flags.autoFit && (
             <button
-              className="v2-refit-btn"
+              className="v2-nav-action-btn primary"
               onClick={handleRefit}
               title="Ajustar y centrar todos los nodos en pantalla"
+              type="button"
             >
-              ⛶ Reencuadrar
+              <span className="btn-icon">⛶</span>
+              <span>Reencuadrar</span>
             </button>
           )}
 
           {(selectedNode || highlightedIds.length > 0 || cameraTarget) && (
-            <button className="reset-view-btn" onClick={handleResetView}>
-              ⟲ Vista General
+            <button
+              className="v2-nav-action-btn neutral"
+              onClick={handleResetView}
+              title="Restaurar vista global"
+              type="button"
+            >
+              <span className="btn-icon">⟲</span>
+              <span>Vista General</span>
             </button>
           )}
+
+          {/* Control de Feature Flags integrado en el flujo de la barra: ¡SIN COLISIÓN! */}
+          <FlagControls
+            flags={flags}
+            onToggleFlag={toggleFlag}
+            onResetDefaults={handleResetFlags}
+            onEnableAll={handleEnableAllFlags}
+          />
         </div>
       </header>
 

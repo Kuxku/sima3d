@@ -2,42 +2,45 @@ import { useMemo } from 'react';
 import * as THREE from 'three';
 
 interface GridRoomProps {
-  width?: number;
-  height?: number;
-  depth?: number;
-  centerZ?: number;
+  stageWidth?: number;
+  stageDepth?: number;
+  wallHeight?: number;
+  floorY?: number;
+  wallZ?: number;
   gridStep?: number;
   lineColor?: string;
-  fadeColor?: string;
   opacity?: number;
 }
 
 /**
- * GridRoom: Renderiza una sala / túnel de rejilla en perspectiva tridimensional
- * idéntica a la imagen de referencia (piso, techo y paredes con líneas en fuga
- * hacia el horizonte oscuro).
+ * GridRoom (Studio Infinity Grid Stage / Cyclorama):
+ * Recrea con exactitud matemática el fondo de estudio virtual de la imagen de referencia:
+ * 1. Piso horizontal con líneas en fuga hacia la profundidad Z.
+ * 2. Pared vertical de fondo que nace exactamente donde termina el piso.
+ * 3. Líneas de cuadrícula perfectamente alineadas en la juntura (seam) del horizonte.
+ * 4. Espacio negro azabache puro con líneas blancas finas y limpias.
  */
 export function GridRoom({
-  width = 96,
-  height = 54,
-  depth = 140,
-  centerZ = -20,
-  gridStep = 6,
-  lineColor = '#64748b',
-  fadeColor = '#090c14',
-  opacity = 0.55,
+  stageWidth = 180,
+  stageDepth = 110,
+  wallHeight = 90,
+  floorY = -22,
+  wallZ = -45,
+  gridStep = 5,
+  lineColor = '#e2e8f0',
+  opacity = 0.52,
 }: GridRoomProps) {
-  const { lineGeometry, boxBounds } = useMemo(() => {
-    const halfW = width / 2;
-    const halfH = height / 2;
-    const zMin = centerZ - depth / 2;
-    const zMax = centerZ + depth / 2;
+  const { lineGeometry, floorBackdrop, wallBackdrop } = useMemo(() => {
+    const halfW = stageWidth / 2;
+    const zFront = wallZ + stageDepth; // Frente del piso (cerca de la cámara)
+    const zBack = wallZ;              // Juntura horizonte con la pared
+    const yFloor = floorY;
+    const yTop = floorY + wallHeight; // Tope de la pared vertical
 
     const positions: number[] = [];
     const colors: number[] = [];
 
-    const colorNear = new THREE.Color(lineColor);
-    const colorFar = new THREE.Color(fadeColor);
+    const color = new THREE.Color(lineColor);
 
     const addSegment = (
       x1: number,
@@ -45,51 +48,48 @@ export function GridRoom({
       z1: number,
       x2: number,
       y2: number,
-      z2: number
+      z2: number,
+      alphaFactor = 1.0
     ) => {
       positions.push(x1, y1, z1, x2, y2, z2);
-
-      // Interpolación de color según profundidad Z para desvanecer hacia el fondo
-      const t1 = Math.max(0, Math.min(1, (z1 - zMin) / (zMax - zMin)));
-      const t2 = Math.max(0, Math.min(1, (z2 - zMin) / (zMax - zMin)));
-
-      const c1 = colorFar.clone().lerp(colorNear, t1 * t1);
-      const c2 = colorFar.clone().lerp(colorNear, t2 * t2);
-
-      colors.push(c1.r, c1.g, c1.b, c2.r, c2.g, c2.b);
+      const c = color.clone().multiplyScalar(alphaFactor);
+      colors.push(c.r, c.g, c.b, c.r, c.g, c.b);
     };
 
-    // 1. LÍNEAS LONGITUDINALES (En fuga hacia Z)
-    // Piso (y = -halfH) y Techo (y = +halfH)
+    // ========================================================
+    // 1. PISO HORIZONTAL (Desde zFront hacia zBack en yFloor)
+    // ========================================================
+
+    // Líneas longitudinales en Z (convergen hacia la pared)
     for (let x = -halfW; x <= halfW + 0.01; x += gridStep) {
-      addSegment(x, -halfH, zMin, x, -halfH, zMax);
-      addSegment(x, halfH, zMin, x, halfH, zMax);
+      addSegment(x, yFloor, zFront, x, yFloor, zBack, 0.95);
     }
 
-    // Paredes izquierda (x = -halfW) y derecha (x = +halfW)
-    for (let y = -halfH; y <= halfH + 0.01; y += gridStep) {
-      addSegment(-halfW, y, zMin, -halfW, y, zMax);
-      addSegment(halfW, y, zMin, halfW, y, zMax);
+    // Líneas transversales en X a lo largo del piso
+    for (let z = zBack; z <= zFront + 0.01; z += gridStep) {
+      // Atenuación suave hacia el frente para no deslumbrar en cámara cercana
+      const distRatio = Math.max(0.4, 1 - (z - zBack) / (zFront - zBack) * 0.45);
+      addSegment(-halfW, yFloor, z, halfW, yFloor, z, distRatio);
     }
 
-    // 2. LÍNEAS TRANSVERSALES (Anillos de cuadrícula a lo largo de Z)
-    for (let z = zMin; z <= zMax + 0.01; z += gridStep) {
-      // Líneas horizontales en piso y techo
-      addSegment(-halfW, -halfH, z, halfW, -halfH, z);
-      addSegment(-halfW, halfH, z, halfW, halfH, z);
+    // ========================================================
+    // 2. PARED VERTICAL DE FONDO (Nace en yFloor en zBack hasta yTop)
+    // ========================================================
 
-      // Líneas verticales en pared izquierda y derecha
-      addSegment(-halfW, -halfH, z, -halfW, halfH, z);
-      addSegment(halfW, -halfH, z, halfW, halfH, z);
+    // Líneas verticales en Y (continúan exactamente las líneas del piso)
+    for (let x = -halfW; x <= halfW + 0.01; x += gridStep) {
+      addSegment(x, yFloor, zBack, x, yTop, zBack, 0.95);
     }
 
-    // 3. FONDO OSCURO (Pared posterior en zMin con cuadrícula sutil)
-    for (let x = -halfW; x <= halfW + 0.01; x += gridStep * 2) {
-      addSegment(x, -halfH, zMin, x, halfH, zMin);
+    // Líneas horizontales en X a lo largo de la pared vertical
+    for (let y = yFloor; y <= yTop + 0.01; y += gridStep) {
+      addSegment(-halfW, y, zBack, halfW, y, zBack, 0.9);
     }
-    for (let y = -halfH; y <= halfH + 0.01; y += gridStep * 2) {
-      addSegment(-halfW, y, zMin, halfW, y, zMin);
-    }
+
+    // ========================================================
+    // 3. LÍNEA DE JUNTURA HORIZONTE (Destacada y precisa)
+    // ========================================================
+    addSegment(-halfW, yFloor, zBack, halfW, yFloor, zBack, 1.2);
 
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
@@ -97,19 +97,37 @@ export function GridRoom({
 
     return {
       lineGeometry: geometry,
-      boxBounds: [width, height, depth] as [number, number, number],
+      floorBackdrop: {
+        width: stageWidth + 2,
+        depth: stageDepth + 2,
+        position: [0, yFloor - 0.05, (zBack + zFront) / 2] as [number, number, number],
+      },
+      wallBackdrop: {
+        width: stageWidth + 2,
+        height: wallHeight + 2,
+        position: [0, (yFloor + yTop) / 2, zBack - 0.05] as [number, number, number],
+      },
     };
-  }, [width, height, depth, centerZ, gridStep, lineColor, fadeColor]);
+  }, [stageWidth, stageDepth, wallHeight, floorY, wallZ, gridStep, lineColor]);
 
   return (
     <group position={[0, 0, 0]}>
-      {/* Caja envolvente oscura que absorbe la luz y recrea el abismo de la imagen */}
-      <mesh position={[0, 0, centerZ]}>
-        <boxGeometry args={[boxBounds[0] + 0.5, boxBounds[1] + 0.5, boxBounds[2] + 0.5]} />
-        <meshBasicMaterial color="#080a10" side={THREE.BackSide} />
+      {/* Fondo negro puro para el piso */}
+      <mesh
+        position={floorBackdrop.position}
+        rotation={[-Math.PI / 2, 0, 0]}
+      >
+        <planeGeometry args={[floorBackdrop.width, floorBackdrop.depth]} />
+        <meshBasicMaterial color="#020306" depthWrite={false} />
       </mesh>
 
-      {/* Estructura de líneas en perspectiva */}
+      {/* Fondo negro puro para la pared vertical */}
+      <mesh position={wallBackdrop.position}>
+        <planeGeometry args={[wallBackdrop.width, wallBackdrop.height]} />
+        <meshBasicMaterial color="#020306" depthWrite={false} />
+      </mesh>
+
+      {/* Líneas de rejilla del estudio infinito */}
       <lineSegments geometry={lineGeometry}>
         <lineBasicMaterial
           vertexColors

@@ -73,15 +73,15 @@ export function FlagControls({
 
   return (
     <>
-      {/* Botón Discreto Flotante (Control de Mejoras Oculto) */}
+      {/* Botón Discreto Integrado en la Navbar */}
       <button
-        className="v2-gear-trigger-btn"
+        className="v2-nav-action-btn gear-trigger"
         onClick={() => setIsOpen(true)}
-        title="Abrir configuración de mejoras visuales"
+        title="Configurar módulos y mejoras visuales (v2)"
         type="button"
       >
-        <span className="gear-icon">⚙</span>
-        <span className="gear-label">Mejoras v2</span>
+        <span className="btn-icon gear-icon">⚙</span>
+        <span>Mejoras</span>
         <span className="gear-counter">
           {activeCount}/{totalCount}
         </span>

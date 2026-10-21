@@ -97,7 +97,6 @@ export function NodeLabels({
 
   // Nodo activo en foco para el tooltip enriquecido
   const activeFocusNode = hoveredNode || selectedNode || null;
-  const activePos = activeFocusNode ? nodePositions.get(activeFocusNode.id) : null;
 
   const getColor = (type: string) => {
     switch (type) {

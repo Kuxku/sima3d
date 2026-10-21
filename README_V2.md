@@ -102,10 +102,24 @@ export const V2_CONFIG = {
   2. El tooltip aparece con una transición de opacidad pura sin movimientos de rebote.
 - **Fallback defensivo:** Si `uiPolish: false`, regresa al HUD clásico estático de v1.
 
-
-
-
-
+### Rediseño Visual Completo: Estilo Claymorfismo (Dark Claymorphism)
+- **Concepto Estético:**
+  Transformación visual integral de la versión v2 basada en **Claymorfismo Oscuro (Dark Claymorphism)**, combinando superficies 3D infladas de aspecto táctil, bordes orgánicos redondeados (`18px` a `30px`), iluminación dual (resaltes superiores difusos y sombras inferiores profundas) y micro-interacciones táctiles suaves con respuesta de presión física.
+- **Componentes Transformados en la Interfaz HUD:**
+  1. **Topbar y Cápsulas KPI:** Pastillas infladas con sombras exteriores multi-capa y biseles interiores de luz blanca difusa (`inset 2px 2.5px 5px rgba(255, 255, 255, 0.16)`) y sombra profunda (`inset -3px -3.5px 7px rgba(0, 0, 0, 0.55)`).
+  2. **Botón Táctil Reencuadrar ("⛶ Reencuadrar"):** Botón de arcilla cian viva con efecto de elevación al hover y compresión squishy (`transform: translateY(1px) scale(0.97)`) al hacer clic.
+  3. **Gabinete de Copilot IA y Almohadillas de Chat:**
+     - El contenedor lateral adopta curvas suaves de 24px (`--clay-rad-xl`).
+     - Burbujas del bot estilizadas como almohadillas de arcilla oscura grafito con resalte superior.
+     - Burbujas del usuario en arcilla azul/cian eléctrico inflado.
+     - Chips de sugerencias como píldoras táctiles con relieve y retroalimentación táctil.
+     - Barra de entrada de texto como canal recesado con sombra interior de hendidura.
+  4. **Tarjeta Inspectora Lateral Derecha:** Panel de arcilla táctil flotante en la derecha con cavidades grabadas para las métricas de estudiantes, estrato y conexiones, más etiquetas redondeadas de tipo (Comunas en arcilla cian, Colegios en esmeralda y Facultades en ámbar).
+  5. **Base Flotante de Leyenda:** Muelle de arcilla redondeado en la esquina inferior con esferas de color PBR y botones interactivos.
+  6. **Panel de Flags y Etiquetas 3D:** Etiquetas y controles encapsulados en mini-pastillas de arcilla mate con sombra suave de proximidad.
+- **Renderizado 3D de Nodos Claymórficos:**
+  1. **Material de Plastilina/Arcilla Mate PBR:** Se reemplazó el acabado metálico y reflectante anterior por un material suave mate con `roughness: 0.72` y `metalness: 0.06`, dispersando la luz suavemente por la curvatura de las esferas.
+  2. **Iluminación de Estudio Tridimensional:** Luz direccional cálida cenital (`#fff7ed`), luz de relleno cian (`#38bdf8`) y luz ambiental equilibrada (`#1e293b`) que revelan el volumen esférico táctil de cada nodo en el espacio 3D.
 
 ---
 

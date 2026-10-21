@@ -187,8 +187,8 @@ export function NetworkGraphV2({
                 color={color}
                 emissive={color}
                 emissiveIntensity={emissiveIntensity}
-                roughness={depthStyleEnabled ? 0.22 : 0.15}
-                metalness={depthStyleEnabled ? 0.65 : 0.8}
+                roughness={0.72}
+                metalness={0.06}
                 transparent
                 opacity={nodeOpacity}
               />

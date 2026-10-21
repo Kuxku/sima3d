@@ -244,9 +244,11 @@ export function AppV2() {
       {/* 1. LIENZO WEBGL A PANTALLA COMPLETA */}
       <div className="canvas-wrapper">
         <Canvas camera={{ position: [0, 0, 38], fov: 50 }}>
-          <ambientLight intensity={0.35} />
-          <pointLight position={[20, 20, 20]} intensity={2.0} color="#ffffff" />
-          <directionalLight position={[-20, -15, -10]} intensity={0.8} color="#38bdf8" />
+          {/* Iluminación Claymórfica Volumétrica */}
+          <ambientLight intensity={0.65} color="#1e293b" />
+          <directionalLight position={[24, 28, 20]} intensity={1.8} color="#fff7ed" />
+          <directionalLight position={[-20, -15, -10]} intensity={0.75} color="#38bdf8" />
+          <pointLight position={[0, -25, 15]} intensity={0.5} color="#0f172a" />
 
           <FeatureBoundary featureName="DepthFog">
             <DepthFog enabled={flags.depthStyle} />

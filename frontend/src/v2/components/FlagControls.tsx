@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { V2_CONFIG, type FeatureFlags } from '../config';
+import type { FeatureFlags } from '../config';
 
 interface FlagControlsProps {
   flags: FeatureFlags;

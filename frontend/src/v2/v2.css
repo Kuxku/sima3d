@@ -1,20 +1,702 @@
 @import '../App.css';
 
-/* V2 Feature Flag Panel */
+/* ============================================================
+   SIMA-3D v2: SISTEMA DE DISEÑO CLAYMORFISMO (DARK CLAY)
+   Inspirado en superficies infladas 3D, sombras suaves duales,
+   resaltes interiores táctiles y bordes redondeados orgánicos.
+   ============================================================ */
+
+:root {
+  /* Paleta Clay Base */
+  --clay-bg-space: #080c16;
+  --clay-surface-main: linear-gradient(150deg, #1c2436 0%, #121824 100%);
+  --clay-surface-elevated: linear-gradient(150deg, #222d42 0%, #161e2e 100%);
+  --clay-surface-recessed: linear-gradient(150deg, #0d121c 0%, #151d2a 100%);
+  --clay-surface-glass: rgba(22, 30, 46, 0.88);
+
+  /* Acentos Clay */
+  --clay-accent-cyan: linear-gradient(145deg, #0284c7 0%, #0369a1 100%);
+  --clay-accent-emerald: linear-gradient(145deg, #059669 0%, #047857 100%);
+  --clay-accent-amber: linear-gradient(145deg, #d97706 0%, #b45309 100%);
+  --clay-accent-purple: linear-gradient(145deg, #7c3aed 0%, #6d28d9 100%);
+
+  /* Sombras y Luces Clay (El secreto del Claymorfismo) */
+  --clay-shadow-outer-sm: 0 6px 16px -2px rgba(0, 0, 0, 0.55), 0 2px 6px -1px rgba(0, 0, 0, 0.4);
+  --clay-shadow-outer-md: 0 14px 30px -4px rgba(0, 0, 0, 0.65), 0 6px 14px -2px rgba(0, 0, 0, 0.45);
+  --clay-shadow-outer-lg: 0 22px 50px -8px rgba(0, 0, 0, 0.75), 0 10px 22px -4px rgba(0, 0, 0, 0.5);
+
+  --clay-light-inner: inset 2px 2.5px 5px rgba(255, 255, 255, 0.16);
+  --clay-light-inner-bright: inset 2px 3px 6px rgba(255, 255, 255, 0.35);
+  --clay-dark-inner: inset -3px -3.5px 7px rgba(0, 0, 0, 0.55);
+  --clay-recessed-inner: inset 3px 4px 8px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.08);
+
+  /* Radios Clay Orgánicos */
+  --clay-rad-sm: 12px;
+  --clay-rad-md: 18px;
+  --clay-rad-lg: 24px;
+  --clay-rad-xl: 30px;
+  --clay-rad-pill: 9999px;
+}
+
+/* Lienzo Espacial Claymórfico */
+.sima-viewport {
+  background: radial-gradient(ellipse at 50% 35%, #141c2c 0%, #090e18 60%, #04060b 100%) !important;
+}
+
+/* ============================================================
+   1. BARRA SUPERIOR HUD (CLAYMORFISMO)
+   ============================================================ */
+.hud-topbar {
+  pointer-events: none;
+}
+
+.brand-block {
+  background: var(--clay-surface-main) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: var(--clay-rad-lg) !important;
+  padding: 10px 22px !important;
+  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.brand-block:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--clay-shadow-outer-lg), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.brand-logo {
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.v2-version-tag {
+  background: var(--clay-accent-cyan);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--clay-rad-pill);
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4), inset 1px 1px 2px rgba(255, 255, 255, 0.4), inset -1px -2px 3px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  background: #38bdf8;
+  border-radius: 50%;
+  box-shadow: 0 0 14px #38bdf8, inset 1px 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.kpi-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Píldoras de Métricas Clay */
+.kpi-pill {
+  background: var(--clay-surface-main) !important;
+  border: 1px solid rgba(255, 255, 255, 0.11) !important;
+  border-radius: var(--clay-rad-md) !important;
+  padding: 8px 18px !important;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.kpi-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.kpi-label {
+  font-size: 10px !important;
+  color: #94a3b8 !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+}
+
+.kpi-value {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  color: #f1f5f9 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Botón Reencuadrar Clay Táctil */
+.v2-refit-btn {
+  background: var(--clay-accent-cyan) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  padding: 10px 18px !important;
+  border-radius: var(--clay-rad-md) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 24px rgba(2, 132, 199, 0.45), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.v2-refit-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 30px rgba(2, 132, 199, 0.55), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.v2-refit-btn:active {
+  transform: translateY(1px) scale(0.97) !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35), var(--clay-recessed-inner) !important;
+}
+
+/* Botón Vista General */
+.reset-view-btn {
+  background: var(--clay-surface-main) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #38bdf8 !important;
+  padding: 10px 18px !important;
+  border-radius: var(--clay-rad-md) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.reset-view-btn:hover {
+  transform: translateY(-2px);
+  color: #7dd3fc !important;
+  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.reset-view-btn:active {
+  transform: translateY(1px) scale(0.97) !important;
+  box-shadow: var(--clay-recessed-inner) !important;
+}
+
+/* ============================================================
+   2. PANEL LATERAL: COPILOT IA (GABINETE CLAYMORFICO)
+   ============================================================ */
+.hud-sidebar {
+  background: var(--clay-surface-glass) !important;
+  backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: var(--clay-rad-xl) !important;
+  box-shadow: var(--clay-shadow-outer-lg), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease !important;
+}
+
+.hud-sidebar.collapsed {
+  transform: translateX(-108%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.sidebar-header {
+  padding: 18px 22px !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.15) 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.sidebar-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ai-badge {
+  background: var(--clay-accent-cyan) !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  padding: 3px 9px !important;
+  border-radius: var(--clay-rad-pill) !important;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4), inset 1px 1px 2px rgba(255, 255, 255, 0.4), inset -1px -2px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+.v2-collapse-chat-btn {
+  background: var(--clay-surface-elevated) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #cbd5e1 !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: var(--clay-rad-sm) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px !important;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.v2-collapse-chat-btn:hover {
+  transform: scale(1.08);
+  color: #38bdf8 !important;
+  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.v2-collapse-chat-btn:active {
+  transform: scale(0.92) !important;
+  box-shadow: var(--clay-recessed-inner) !important;
+}
+
+.v2-open-chat-tab {
+  position: absolute;
+  top: 90px;
+  left: 24px;
+  z-index: 40;
+  background: var(--clay-surface-main) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  color: #38bdf8 !important;
+  padding: 10px 18px !important;
+  border-radius: var(--clay-rad-lg) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.v2-open-chat-tab:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--clay-shadow-outer-lg), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.v2-open-chat-tab:active {
+  transform: translateY(1px) scale(0.97) !important;
+  box-shadow: var(--clay-recessed-inner) !important;
+}
+
+/* Burbujas de Chat: Almohadillas Clay Infladas */
+.chat-messages {
+  padding: 18px 20px !important;
+  gap: 14px !important;
+}
+
+.chat-bubble.bot {
+  background: var(--clay-surface-elevated) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 20px 20px 20px 6px !important;
+  color: #e2e8f0 !important;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  padding: 13px 16px !important;
+  line-height: 1.5 !important;
+}
+
+.chat-bubble.user {
+  background: var(--clay-accent-cyan) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 20px 20px 6px 20px !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 24px rgba(2, 132, 199, 0.45), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  padding: 13px 16px !important;
+  line-height: 1.5 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.camera-action-tag {
+  background: var(--clay-surface-recessed) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  border-radius: var(--clay-rad-pill) !important;
+  box-shadow: var(--clay-recessed-inner) !important;
+  padding: 6px 12px !important;
+  font-weight: 700;
+  transition: all 0.18s ease;
+}
+
+.camera-action-tag:hover {
+  background: rgba(56, 189, 248, 0.2) !important;
+  transform: translateY(-1px);
+}
+
+/* Chips de Sugerencias Clay */
+.quick-prompts {
+  padding: 12px 18px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: rgba(0, 0, 0, 0.15) !important;
+}
+
+.prompt-chip {
+  background: var(--clay-surface-main) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #cbd5e1 !important;
+  border-radius: var(--clay-rad-pill) !important;
+  padding: 8px 14px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.prompt-chip:hover:not(:disabled) {
+  background: var(--clay-surface-elevated) !important;
+  color: #38bdf8 !important;
+  transform: translateY(-2px) scale(1.02);
+  border-color: rgba(56, 189, 248, 0.45) !important;
+  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.prompt-chip:active:not(:disabled) {
+  transform: translateY(1px) scale(0.97) !important;
+  box-shadow: var(--clay-recessed-inner) !important;
+}
+
+/* Barra de Entrada de Chat: Canal Recesado Clay */
+.chat-input-bar {
+  background: var(--clay-surface-recessed) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.4) !important;
+  padding: 14px 18px !important;
+}
+
+.chat-input-bar input {
+  background: var(--clay-surface-main) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: var(--clay-rad-md) !important;
+  box-shadow: var(--clay-recessed-inner) !important;
+  color: #f8fafc !important;
+  padding: 11px 16px !important;
+  font-size: 13px !important;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.chat-input-bar input:focus {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2), var(--clay-recessed-inner) !important;
+}
+
+.chat-input-bar button {
+  background: var(--clay-accent-cyan) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: var(--clay-rad-md) !important;
+  width: 44px !important;
+  height: 40px !important;
+  box-shadow: 0 8px 18px rgba(2, 132, 199, 0.4), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.chat-input-bar button:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(2, 132, 199, 0.55), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.chat-input-bar button:active:not(:disabled) {
+  transform: translateY(1px) scale(0.95) !important;
+  box-shadow: var(--clay-recessed-inner) !important;
+}
+
+/* ============================================================
+   3. TARJETA INSPECTORA LATERAL DERECHA (CLAYMORFICA)
+   Aprovecha el espacio lateral derecho para un panel táctil de lujo
+   ============================================================ */
+.v2-lateral-inspector {
+  position: absolute;
+  top: 86px;
+  right: 24px;
+  width: 320px;
+  z-index: 30;
+  background: var(--clay-surface-glass) !important;
+  backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: var(--clay-rad-xl) !important;
+  padding: 20px !important;
+  box-shadow: var(--clay-shadow-outer-lg), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  pointer-events: auto;
+  animation: lateralSlideIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes lateralSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.v2-lateral-inspector.standby {
+  border: 1px dashed rgba(255, 255, 255, 0.18) !important;
+  background: rgba(18, 24, 38, 0.55) !important;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  padding: 18px 20px !important;
+}
+
+.standby-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.standby-icon {
+  color: #38bdf8;
+  font-size: 16px;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+}
+
+.standby-hint {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.inspector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.inspector-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Píldoras Clay de Tipo de Entidad */
+.node-type-tag {
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  padding: 4px 10px !important;
+  border-radius: var(--clay-rad-pill) !important;
+  letter-spacing: 0.8px !important;
+  color: #ffffff !important;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.node-type-tag.comuna {
+  background: var(--clay-accent-cyan) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.node-type-tag.colegio {
+  background: var(--clay-accent-emerald) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.node-type-tag.facultad {
+  background: var(--clay-accent-amber) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.inspector-mode-tag {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--clay-rad-pill);
+  letter-spacing: 0.6px;
+}
+
+.inspector-mode-tag.preview {
+  background: var(--clay-surface-main);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner);
+}
+
+.inspector-mode-tag.pinned {
+  background: var(--clay-accent-amber);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4), var(--clay-light-inner-bright), var(--clay-dark-inner);
+}
+
+.close-btn {
+  background: var(--clay-surface-main) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #94a3b8 !important;
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  transition: all 0.18s ease;
+}
+
+.close-btn:hover {
+  color: #f8fafc !important;
+  transform: scale(1.1);
+  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.close-btn:active {
+  transform: scale(0.92) !important;
+  box-shadow: var(--clay-recessed-inner) !important;
+}
+
+.inspector-title {
+  margin: 6px 0 4px 0 !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  color: #f8fafc !important;
+  letter-spacing: 0.3px;
+}
+
+.inspector-id {
+  margin: 0 0 16px 0 !important;
+  font-size: 11px !important;
+  color: #64748b !important;
+  font-family: monospace;
+}
+
+/* Bloques de Métricas: Cavidades Clay Grabadas */
+.inspector-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px !important;
+  margin-bottom: 18px !important;
+}
+
+.metric-box {
+  background: var(--clay-surface-recessed) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: var(--clay-recessed-inner) !important;
+  padding: 12px 14px !important;
+  border-radius: var(--clay-rad-md) !important;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.metric-box:hover {
+  background: var(--clay-surface-main) !important;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  transform: translateY(-1px);
+}
+
+.metric-name {
+  font-size: 10px !important;
+  color: #94a3b8 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
+}
+
+.metric-val {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  color: #38bdf8 !important;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Botón de Acción con IA en Inspector */
+.ask-ai-node-btn {
+  width: 100% !important;
+  background: var(--clay-accent-cyan) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  padding: 12px 16px !important;
+  border-radius: var(--clay-rad-md) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(2, 132, 199, 0.45), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.ask-ai-node-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 30px rgba(2, 132, 199, 0.55), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.ask-ai-node-btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.97) !important;
+  box-shadow: var(--clay-recessed-inner) !important;
+}
+
+/* ============================================================
+   4. LEYENDA INFERIOR DERECHA (BASE CLAYMORFICA FLOTANTE)
+   ============================================================ */
+.hud-legend.interactive {
+  display: flex;
+  gap: 12px;
+  background: var(--clay-surface-glass) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  padding: 8px 16px !important;
+  border-radius: var(--clay-rad-xl) !important;
+  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner), var(--clay-dark-inner) !important;
+  pointer-events: auto;
+}
+
+.legend-item.clickable {
+  cursor: pointer;
+  padding: 6px 12px !important;
+  border-radius: var(--clay-rad-pill) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #cbd5e1 !important;
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.legend-item.clickable:hover {
+  background: var(--clay-surface-main) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
+}
+
+.legend-item.active {
+  background: var(--clay-surface-elevated) !important;
+  border-color: rgba(56, 189, 248, 0.45) !important;
+  color: #38bdf8 !important;
+  transform: translateY(-2px);
+  box-shadow: var(--clay-shadow-outer-md), var(--clay-light-inner-bright), var(--clay-dark-inner) !important;
+}
+
+.legend-item.dimmed {
+  opacity: 0.35;
+}
+
+.legend-dot {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  box-shadow: var(--clay-shadow-outer-sm), inset 1px 1px 2px rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ============================================================
+   5. PANEL DE FEATURE FLAGS (CLAYMORFISMO)
+   ============================================================ */
 .v2-flag-panel {
   position: absolute;
-  bottom: 56px;
+  top: 86px;
   right: 24px;
   z-index: 50;
-  background: rgba(15, 23, 42, 0.88);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  border-radius: 12px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  background: var(--clay-surface-glass) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: var(--clay-rad-lg) !important;
+  box-shadow: var(--clay-shadow-outer-lg), var(--clay-light-inner), var(--clay-dark-inner) !important;
   overflow: hidden;
   transition: all 0.25s ease;
-  min-width: 280px;
-  max-width: 360px;
+  min-width: 290px;
+  max-width: 370px;
   pointer-events: auto;
 }
 
@@ -27,30 +709,31 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 12px;
+  padding: 10px 16px !important;
   cursor: pointer;
-  background: rgba(2, 6, 23, 0.6);
+  background: var(--clay-surface-main) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   user-select: none;
 }
 
 .v2-flag-panel-header:hover {
-  background: rgba(2, 6, 23, 0.85);
+  background: var(--clay-surface-elevated) !important;
 }
 
 .v2-badge {
-  background: #0284c7;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
-  letter-spacing: 0.5px;
+  background: var(--clay-accent-cyan) !important;
+  color: #ffffff !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  padding: 2px 7px !important;
+  border-radius: var(--clay-rad-pill) !important;
+  box-shadow: 0 4px 8px rgba(2, 132, 199, 0.4), inset 1px 1px 2px rgba(255, 255, 255, 0.4);
 }
 
 .v2-flag-title {
   font-size: 12px;
-  font-weight: 600;
-  color: #e2e8f0;
+  font-weight: 700;
+  color: #f1f5f9;
   flex: 1;
 }
 
@@ -59,13 +742,12 @@
   border: none;
   color: #38bdf8;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  padding: 2px 4px;
 }
 
 .v2-flag-list {
-  padding: 8px 12px 12px 12px;
+  padding: 10px 14px 14px 14px !important;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -80,13 +762,14 @@
   cursor: pointer;
   font-size: 12px;
   color: #cbd5e1;
-  padding: 4px;
-  border-radius: 6px;
-  transition: background 0.15s ease;
+  padding: 6px 8px !important;
+  border-radius: var(--clay-rad-sm) !important;
+  transition: all 0.15s ease;
 }
 
 .v2-flag-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--clay-surface-main) !important;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner);
 }
 
 .v2-flag-item input[type='checkbox'] {
@@ -101,8 +784,8 @@
 }
 
 .v2-flag-name {
-  font-weight: 600;
-  color: #f1f5f9;
+  font-weight: 700;
+  color: #f8fafc;
   font-size: 11px;
   font-family: monospace;
 }
@@ -113,355 +796,36 @@
   line-height: 1.3;
 }
 
-/* Botón Reencuadrar (Mejora 2) */
-.v2-refit-btn {
-  background: rgba(14, 165, 233, 0.18);
-  border: 1px solid rgba(56, 189, 248, 0.5);
-  color: #38bdf8;
-  padding: 10px 16px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.25);
-}
-
-.v2-refit-btn:hover {
-  background: rgba(14, 165, 233, 0.35);
-  border-color: #38bdf8;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
-}
-
-.v2-refit-btn:active {
-  transform: translateY(0);
-}
-
-/* Mejora 4: Etiquetas Permanentes y Tooltip Enriquecido */
+/* ============================================================
+   6. ETIQUETAS PERMANENTES EN EL ESPACIO 3D (MINI-CLAY)
+   ============================================================ */
 .v2-permanent-label {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(2, 6, 23, 0.75);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 3px 8px;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  background: var(--clay-surface-glass) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  padding: 4px 10px !important;
+  border-radius: var(--clay-rad-pill) !important;
+  box-shadow: var(--clay-shadow-outer-sm), var(--clay-light-inner), var(--clay-dark-inner) !important;
   pointer-events: none;
   white-space: nowrap;
   transition: opacity 0.2s ease;
 }
 
 .v2-label-indicator {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor, inset 1px 1px 2px rgba(255, 255, 255, 0.6);
 }
 
 .v2-label-text {
-  font-size: 10px;
-  font-weight: 600;
-  color: #e2e8f0;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #f1f5f9 !important;
   letter-spacing: 0.3px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
-
-/* Tooltip Rico en Hover/Selección */
-.v2-rich-tooltip {
-  background: rgba(15, 23, 42, 0.94);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  border-radius: 10px;
-  padding: 10px 14px;
-  min-width: 170px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 20px rgba(56, 189, 248, 0.2);
-  pointer-events: none;
-  animation: v2TooltipFade 0.12s ease-out;
-}
-
-@keyframes v2TooltipFade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.v2-tooltip-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 6px;
-  margin-bottom: 6px;
-}
-
-.v2-tooltip-badge {
-  font-size: 8px;
-  font-weight: 800;
-  color: #020617;
-  padding: 2px 5px;
-  border-radius: 4px;
-  letter-spacing: 0.5px;
-}
-
-.v2-tooltip-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: #f8fafc;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.v2-tooltip-body {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.v2-tooltip-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-}
-
-.v2-tooltip-lbl {
-  color: #94a3b8;
-  font-weight: 500;
-}
-
-.v2-tooltip-val {
-  color: #38bdf8;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ============================================================
-   Mejora 6: UI Polish, Chat Colapsable, Leyenda y Presentación
-   ============================================================ */
-
-/* 1. Chips de sugerencias del chat envolventes sin cortarse */
-.quick-prompts {
-  display: flex;
-  flex-wrap: wrap !important;
-  gap: 8px !important;
-  overflow-x: visible !important;
-  padding-bottom: 4px;
-}
-
-.prompt-chip {
-  white-space: normal !important;
-  text-align: left;
-  line-height: 1.35;
-  font-size: 11px !important;
-  padding: 6px 10px !important;
-  border-radius: 8px !important;
-  transition: all 0.18s ease;
-}
-
-.prompt-chip:hover {
-  background: rgba(56, 189, 248, 0.22) !important;
-  border-color: #38bdf8 !important;
-}
-
-/* 2. Accesibilidad WCAG AA: Contraste y tamaño de fuente mínimo */
-.kpi-label {
-  font-size: 11px !important;
-  color: #94a3b8 !important; /* Contraste > 4.5:1 */
-  font-weight: 700;
-}
-
-.brand-subtitle {
-  font-size: 11px !important;
-  color: #cbd5e1 !important; /* Mucho más legible */
-}
-
-/* 3. Panel de Chat Colapsable */
-.hud-sidebar {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
-}
-
-.hud-sidebar.collapsed {
-  transform: translateX(-105%) !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-.v2-collapse-chat-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #cbd5e1;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.18s ease;
-}
-
-.v2-collapse-chat-btn:hover {
-  background: rgba(56, 189, 248, 0.25);
-  color: #38bdf8;
-  border-color: #38bdf8;
-}
-
-.v2-open-chat-tab {
-  position: absolute;
-  top: 90px;
-  left: 24px;
-  z-index: 40;
-  background: rgba(15, 23, 42, 0.88);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  color: #38bdf8;
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-  transition: all 0.2s ease;
-}
-
-.v2-open-chat-tab:hover {
-  background: rgba(14, 165, 233, 0.25);
-  transform: translateY(-1px);
-}
-
-/* 4. Leyenda Interactiva con Clic para Filtrar */
-.hud-legend.interactive {
-  display: flex;
-  gap: 12px;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 14px;
-  border-radius: 12px;
-  pointer-events: auto;
-}
-
-.legend-item.clickable {
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  user-select: none;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.legend-item.clickable:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.legend-item.active {
-  background: rgba(56, 189, 248, 0.2);
-  border: 1px solid rgba(56, 189, 248, 0.5);
-}
-
-.legend-item.dimmed {
-  opacity: 0.35;
-}
-
-/* ============================================================
-   Tarjeta Inspectora Lateral Derecha (Hover y Selección)
-   Aprovecha el espacio lateral derecho para una vista despejada
-   ============================================================ */
-.v2-lateral-inspector {
-  position: absolute;
-  top: 86px;
-  right: 24px;
-  width: 320px;
-  z-index: 30;
-  background: rgba(15, 23, 42, 0.84);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(56, 189, 248, 0.28);
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(56, 189, 248, 0.12);
-  pointer-events: auto;
-  animation: lateralSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes lateralSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.v2-lateral-inspector.standby {
-  border: 1px dashed rgba(255, 255, 255, 0.12);
-  background: rgba(15, 23, 42, 0.42);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  padding: 16px 18px;
-}
-
-.standby-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #94a3b8;
-  margin-bottom: 6px;
-}
-
-.standby-icon {
-  color: #38bdf8;
-  font-size: 14px;
-}
-
-.standby-hint {
-  font-size: 11px;
-  color: #64748b;
-  margin: 0;
-  line-height: 1.5;
-}
-
-.inspector-badge-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.inspector-mode-tag {
-  font-size: 9px;
-  font-weight: 800;
-  padding: 2px 7px;
-  border-radius: 4px;
-  letter-spacing: 0.6px;
-}
-
-.inspector-mode-tag.preview {
-  background: rgba(56, 189, 248, 0.12);
-  color: #38bdf8;
-  border: 1px solid rgba(56, 189, 248, 0.3);
-}
-
-.inspector-mode-tag.pinned {
-  background: rgba(245, 158, 11, 0.2);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.45);
-}
-
-
-

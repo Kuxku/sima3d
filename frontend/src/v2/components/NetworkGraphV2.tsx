@@ -163,6 +163,8 @@ export function NetworkGraphV2({
 
         // Solo mostrar etiqueta básica si labels está apagado
         const showFallbackLabel = !labelsEnabled && (isSelected || isHovered || isHighlighted);
+        const activeFocusId = selectedNode?.id || hoveredId;
+        const activeFocusPos = activeFocusId ? nodePositions.get(activeFocusId) : null;
 
         return (
           <NodeMeshWithPhysics
@@ -176,6 +178,8 @@ export function NetworkGraphV2({
             isSelected={isSelected}
             isHovered={isHovered}
             isHighlighted={isHighlighted}
+            isNeighbor={isNeighbor}
+            activeFocusPos={activeFocusPos}
             showFallbackLabel={showFallbackLabel}
             onSelectNode={onSelectNode}
             setHoveredId={setHoveredId}
@@ -188,8 +192,7 @@ export function NetworkGraphV2({
 }
 
 /**
- * Componente individual de nodo con micro-física armónica de levitación Zero-G,
- * respuesta táctil elástica al pasar el cursor y etiquetas didácticas amigables.
+ * Componente individual de nodo con micro-física armónica Zero-G y resonancia elástica gravitacional.
  */
 function NodeMeshWithPhysics({
   node,
@@ -201,6 +204,8 @@ function NodeMeshWithPhysics({
   isSelected,
   isHovered,
   isHighlighted,
+  isNeighbor,
+  activeFocusPos,
   showFallbackLabel,
   onSelectNode,
   setHoveredId,
@@ -215,6 +220,8 @@ function NodeMeshWithPhysics({
   isSelected: boolean;
   isHovered: boolean;
   isHighlighted: boolean;
+  isNeighbor: boolean;
+  activeFocusPos: THREE.Vector3 | null | undefined;
   showFallbackLabel: boolean;
   onSelectNode: (node: GraphNode) => void;
   setHoveredId: (id: string | null) => void;
@@ -229,20 +236,35 @@ function NodeMeshWithPhysics({
     return (hash % 1000) * 0.01;
   }, [node.id]);
 
-  // Micro-física armónica continua: flotación ingrávida suave y respuesta al hover
+  // Micro-física armónica continua con resonancia gravitatoria en red
   useFrame((state) => {
     if (!groupRef.current) return;
     const t = state.clock.getElapsedTime();
-    // Oscilación vertical suave (amplitud de 0.12 unidades a 1.2 rad/s)
+    // Oscilación vertical armónica de gravedad cero
     const floatY = Math.sin(t * 1.2 + phase) * 0.12;
-    // Elevación suave e intuitiva al pasar el cursor o enfocar
+    // Elevación suave e intuitiva al pasar el cursor o seleccionar
     const hoverOffset = isSelected ? 0.35 : isHovered ? 0.22 : 0;
 
-    groupRef.current.position.y = THREE.MathUtils.lerp(
-      groupRef.current.position.y,
-      pos.y + floatY + hoverOffset,
-      0.1
-    );
+    let targetX = pos.x;
+    let targetY = pos.y + floatY + hoverOffset;
+    let targetZ = pos.z;
+
+    // Resonancia gravitatoria: vecinos conectados se inclinan elásticamente hacia el nodo activo
+    if (isNeighbor && activeFocusPos && !isSelected && !isHovered) {
+      const pull = activeFocusPos.clone().sub(pos);
+      const pullDist = pull.length();
+      if (pullDist > 0.1) {
+        const pullFactor = Math.min(0.38, 1.1 / Math.sqrt(pullDist));
+        targetX += (pull.x / pullDist) * pullFactor;
+        targetY += (pull.y / pullDist) * pullFactor;
+        targetZ += (pull.z / pullDist) * pullFactor;
+      }
+    }
+
+    const step = 0.12;
+    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, step);
+    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, step);
+    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, step);
   });
 
   return (

@@ -129,13 +129,23 @@ export const V2_CONFIG = {
   2. Consultas analíticas directas sobre distribución territorial, matrícula y flujos interinstitucionales.
   3. Paleta de alto contraste sin resplandores ni efectos distractores de ciencia ficción.
 
-### Física Mejorada de Nodos (Dual-Layer Physics Engine)
-- **Capa 1: Física de Posicionamiento Topológico (Offline Spring Relaxation):**
-  - Implementación síncrona de resortes de Hooke ($F = k \cdot (d - L_0)$) con amortiguamiento y repulsión electrostática de Coulomb ($F_r = k_e / d^2$) en `hierarchicalLayout.ts`.
-  - Las facultades actúan como centros gravitacionales de atracción ponderada por volumen de estudiantes; los colegios con mayores flujos son atraídos hacia su facultad principal de forma orgánica, eliminando amontonamientos y preservando relaciones espaciales reales.
-- **Capa 2: Micro-Física Cero-G y Elevación Suave en Tres Dimensiones:**
-  - `NodeMeshWithPhysics` con oscilación armónica de gravedad cero en `useFrame`: cada nodo respira verticalmente ($Y \pm 0.12$) con una fase periódica determinista basada en su posición.
-  - Al interactuar (hover), el nodo se eleva suavemente hacia la cámara ($+0.22$ en Y) mediante interpolación matemática lerp, sin brincos bruscos de escala ni fatiga visual.
+### Sustitución de Kamada-Kawai por Stratified Force-Directed 3D
+- **Por qué Kamada-Kawai era sub-óptimo para movilidad estudiantil:**
+  1. Kamada-Kawai optimiza distancias teóricas más cortas en grafo no dirigido ($d(u, v)$); no contempla la magnitud del flujo estudiantil ponderado ni la masa jerárquica de las facultades.
+  2. Provocaba un apelotonamiento central (*central hairball*) donde las facultades universitarias colisionaban en el núcleo y quedaban ocultas tras colegios pequeños.
+- **Nuevo Algoritmo: Stratified Force-Directed 3D (`pipeline/compute_layout.py`):**
+  1. **Atracción por flujo real ($w_{ij}$):** Implementación de resortes elásticos ponderados en NetworkX (`spring_layout` con `weight='weight'`), donde colegios con cientos de estudiantes son atraídos fuertemente hacia sus facultades receptoras, revelando cuencas de captación académica naturales.
+  2. **Estratificación semántica 3D:** Distribuye facultades como anclas estructurales en un volumen exterior y ubica colegios y comunas en capas espaciales legibles.
+  3. **Pase anti-colisión multi-cuerpo en Python:** Separa esferas solapadas en función de su radio volumétrico antes de normalizar deterministamente a $[-100, 100]$.
+
+### Física de Nodos de Alto Rendimiento (Dual-Layer Physics Engine)
+- **Capa 1: Simulación Física por Integración Velocity Verlet (`hierarchicalLayout.ts`):**
+  - **Inercia y Masa Gravitacional ($F = m \cdot a$):** Nodos con masa proporcional a su volumen de estudiantes. Las facultades actúan como anclas gravitacionales de alta masa ($m \approx 12.0$); los colegios orbitan de manera fluida y armónica sin perturbar los centros universitarios.
+  - **Integración Velocity Verlet con Fricción Viscosa ($\gamma = 0.76$):** Calcula aceleraciones, actualiza velocidades y aplica amortiguamiento para que la red alcance un estado de equilibrio de mínima energía sin oscilaciones caóticas.
+  - **Repulsión Coulombiana Cuadrática y Contacto de Cuerpos Sólidos:** Descarte estricto de solapamientos con fuerza elástica inmediata ($F \propto \text{overlap}$) y repulsión electrostática de Coulomb entre pares cercanos.
+- **Capa 2: Micro-Física Interactiva y Resonancia Gravitatoria en Canvas (`NetworkGraphV2.tsx`):**
+  - **Levitación Zero-G Armónica:** Cada nodo respira verticalmente ($Y \pm 0.12$) con una fase armónica periódica determinista basada en su ID.
+  - **Resonancia Gravitatoria Interconectada:** Al posar el cursor o seleccionar un nodo, todas sus entidades vecinas conectadas experimentan una atracción elástica sutil hacia él ($\approx 0.38$ unidades en la dirección del enlace), visualizando físicamente la tracción del flujo de movilidad, y retornando suavemente a su posición de reposo al deseleccionar.
 
 ---
 

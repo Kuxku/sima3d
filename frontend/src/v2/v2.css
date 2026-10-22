@@ -400,6 +400,22 @@
   color: #93c5fd !important;
 }
 
+.fallback-tag {
+  background: rgba(245, 158, 11, 0.12) !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  border-radius: var(--hud-rad-sm) !important;
+  padding: 2px 7px !important;
+  font-size: 10px !important;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #fbbf24 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  margin-right: 6px;
+}
+
 .quick-prompts {
   padding: 8px 14px !important;
   background: rgba(11, 15, 25, 0.5) !important;

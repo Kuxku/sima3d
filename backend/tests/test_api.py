@@ -69,3 +69,20 @@ def test_chat_copilot_mocked(client, mocker):
     assert data["status"] == "ok"
     assert data["answer"] == "Análisis simulado perfecto."
     assert data["camera_command"]["target_node_id"] == "comuna:robledo"
+
+def test_fallback_engine_direct():
+    """Valida que FallbackEngine construya respuestas estructuradas sin fallar."""
+    from app.services.fallback_engine import FallbackEngine
+    
+    # 1. Prueba de consulta de comunas
+    resp_comunas = FallbackEngine.generate_response("¿Cuáles son las comunas con mayor movilidad?")
+    assert resp_comunas["status"] == "fallback"
+    assert "comuna" in resp_comunas["answer"].lower()
+    assert resp_comunas["camera_command"]["action"] == "focus_node"
+    assert len(resp_comunas["highlighted_node_ids"]) > 0
+
+    # 2. Prueba con nodo seleccionado
+    resp_node = FallbackEngine.generate_response("Analiza este nodo", selected_node_id="comuna:robledo")
+    assert resp_node["status"] == "fallback"
+    assert "robledo" in resp_node["answer"].lower()
+    assert resp_node["camera_command"]["target_node_id"] == "comuna:robledo"

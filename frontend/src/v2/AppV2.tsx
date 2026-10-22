@@ -66,6 +66,7 @@ interface ChatMessage {
   sender: 'user' | 'bot';
   text: string;
   command?: CameraCommand | null;
+  status?: string;
 }
 
 const QUICK_PROMPTS = [
@@ -214,6 +215,7 @@ export function AppV2() {
           sender: 'bot',
           text: response.answer,
           command: response.camera_command,
+          status: response.status,
         },
       ]);
 
@@ -453,6 +455,14 @@ export function AppV2() {
           {messages.map((msg, idx) => (
             <div key={idx} className={`chat-bubble ${msg.sender}`}>
               <div className="bubble-text">{msg.text}</div>
+              {msg.status === 'fallback' && (
+                <div
+                  className="fallback-tag"
+                  title="Análisis generado por el motor topológico determinista local (alta disponibilidad ante saturación temporal de la nube)"
+                >
+                  <span>⚡</span> Síntesis Topológica Local
+                </div>
+              )}
               {msg.command && msg.command.target_node_id && (
                 <div
                   className="camera-action-tag"

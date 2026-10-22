@@ -345,11 +345,11 @@ export function AppV2() {
           <div className="v2-brand-badge-group">
             <span className="v2-brand-pulse-dot" />
             <h1 className="v2-brand-title">SIMA-3D</h1>
-            <span className="v2-brand-version-pill">v2</span>
+            <span className="v2-brand-version-pill">PRO</span>
           </div>
           <span className="v2-brand-divider" />
           <div className="v2-brand-meta">
-            <span className="v2-meta-label">MOVILIDAD ACADÉMICA</span>
+            <span className="v2-meta-label">OBSERVATORIO DE MOVILIDAD</span>
             <span className="v2-meta-location">Ruta N · Medellín</span>
           </div>
         </div>
@@ -357,21 +357,21 @@ export function AppV2() {
         {/* ZONA 2: PULSO DE TELEMETRÍA EN VIVO (MÉTRICAS UNIFICADAS) */}
         <div className="v2-nav-telemetry-strip">
           <div className="v2-telemetry-item">
-            <span className="v2-telemetry-label">ESTUDIANTES</span>
+            <span className="v2-telemetry-label">Estudiantes</span>
             <span className="v2-telemetry-value highlight">
               {graphData.meta.total_records?.toLocaleString() || 'N/A'}
             </span>
           </div>
           <span className="v2-telemetry-separator" />
           <div className="v2-telemetry-item">
-            <span className="v2-telemetry-label">NODOS</span>
+            <span className="v2-telemetry-label">Nodos</span>
             <span className="v2-telemetry-value">
               {graphData.meta.node_count}
             </span>
           </div>
           <span className="v2-telemetry-separator" />
           <div className="v2-telemetry-item">
-            <span className="v2-telemetry-label">CONEXIONES</span>
+            <span className="v2-telemetry-label">Flujos</span>
             <span className="v2-telemetry-value">
               {graphData.meta.edge_count}
             </span>
@@ -419,10 +419,10 @@ export function AppV2() {
         <button
           className="v2-open-chat-tab"
           onClick={() => setChatCollapsed(false)}
-          title="Abrir Copilot Analítico"
+          title="Abrir Asistente Analítico"
         >
           <span className="ai-badge">IA</span>
-          <span>Abrir Chat Copilot</span>
+          <span>Abrir Asistente</span>
         </button>
       )}
 
@@ -435,7 +435,7 @@ export function AppV2() {
         <div className="sidebar-header">
           <div className="sidebar-title-row">
             <span className="ai-badge">IA</span>
-            <h3>Copilot Analítico</h3>
+            <h3>Asistente Analítico</h3>
             {flags.uiPolish && (
               <button
                 className="v2-collapse-chat-btn"
@@ -446,7 +446,7 @@ export function AppV2() {
               </button>
             )}
           </div>
-          <p>Impulsado por Gemini 3.8 Flash</p>
+          <p>Análisis de Movilidad Estudiantil</p>
         </div>
 
         <div className="chat-messages">
@@ -584,7 +584,7 @@ export function AppV2() {
               }}
               disabled={sending}
             >
-              ✨ Consultar Copiloto IA
+              Consultar Análisis en Asistente
             </button>
           </aside>
         );

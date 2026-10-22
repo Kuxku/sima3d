@@ -141,17 +141,17 @@ export function NetworkGraphV2({
         // Tamaño estable sin saltos de zoom in/out en hover
         const activeScale = isSelected ? baseScale * 1.12 : baseScale;
 
-        // Bloom selectivo: boost solo en nodos en foco o activos
+        // Iluminación satinada sobria sin sobreexposición ni deslumbramiento
         const emissiveIntensity =
           isSelected || isHovered
-            ? 2.3
+            ? 0.85
             : isHighlighted
-              ? 1.7
+              ? 0.65
               : hasActiveFilter
                 ? matchesType && (isNeighbor || filterType !== null)
-                  ? 0.85
-                  : 0.04
-                : 0.55;
+                  ? 0.45
+                  : 0.05
+                : 0.20;
 
         // Translucidez sutil para orbes de cristal espacial
         const baseOpacity = depthStyleEnabled ? V2_CONFIG.depth.translucentOpacity : 0.95;

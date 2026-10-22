@@ -77,11 +77,11 @@ export function FlagControls({
       <button
         className="v2-nav-action-btn gear-trigger"
         onClick={() => setIsOpen(true)}
-        title="Configurar módulos y mejoras visuales (v2)"
+        title="Configurar módulos de visualización"
         type="button"
       >
         <span className="btn-icon gear-icon">⚙</span>
-        <span>Mejoras</span>
+        <span>Módulos</span>
         <span className="gear-counter">
           {activeCount}/{totalCount}
         </span>
@@ -100,14 +100,14 @@ export function FlagControls({
             <div className="v2-modal-header">
               <div className="v2-modal-title-group">
                 <div className="v2-modal-badge-row">
-                  <span className="v2-modal-badge">SISTEMA MODULAR V2</span>
+                  <span className="v2-modal-badge">CONFIGURACIÓN</span>
                   <span className="v2-modal-status-pill">
-                    {activeCount} de {totalCount} activas
+                    {activeCount} de {totalCount} activos
                   </span>
                 </div>
-                <h3 className="v2-modal-title">Control de Mejoras Visuales</h3>
+                <h3 className="v2-modal-title">Módulos del Sistema</h3>
                 <p className="v2-modal-subtitle">
-                  Enciende o apaga módulos dinámicos en tiempo real para comparar con la versión estable.
+                  Activa o desactiva módulos de renderizado y análisis en tiempo real.
                 </p>
               </div>
               <button

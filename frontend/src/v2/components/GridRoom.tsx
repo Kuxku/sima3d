@@ -26,9 +26,9 @@ export function GridRoom({
   wallHeight = 90,
   floorY = -22,
   wallZ = -45,
-  gridStep = 5,
-  lineColor = '#e2e8f0',
-  opacity = 0.52,
+  gridStep = 6,
+  lineColor = '#475569',
+  opacity = 0.22,
 }: GridRoomProps) {
   const { lineGeometry, floorBackdrop, wallBackdrop } = useMemo(() => {
     const halfW = stageWidth / 2;
@@ -112,19 +112,19 @@ export function GridRoom({
 
   return (
     <group position={[0, 0, 0]}>
-      {/* Fondo negro puro para el piso */}
+      {/* Fondo institucional sobrio para el piso */}
       <mesh
         position={floorBackdrop.position}
         rotation={[-Math.PI / 2, 0, 0]}
       >
         <planeGeometry args={[floorBackdrop.width, floorBackdrop.depth]} />
-        <meshBasicMaterial color="#020306" depthWrite={false} />
+        <meshBasicMaterial color="#0b0f19" depthWrite={false} />
       </mesh>
 
-      {/* Fondo negro puro para la pared vertical */}
+      {/* Fondo institucional sobrio para la pared vertical */}
       <mesh position={wallBackdrop.position}>
         <planeGeometry args={[wallBackdrop.width, wallBackdrop.height]} />
-        <meshBasicMaterial color="#020306" depthWrite={false} />
+        <meshBasicMaterial color="#0b0f19" depthWrite={false} />
       </mesh>
 
       {/* Líneas de rejilla del estudio infinito */}

@@ -102,27 +102,32 @@ export const V2_CONFIG = {
   2. El tooltip aparece con una transición de opacidad pura sin movimientos de rebote.
 - **Fallback defensivo:** Si `uiPolish: false`, regresa al HUD clásico estático de v1.
 
-### Entorno Visual: Escenario Ciclorama Infinito (Grid Cyclorama Stage)
+### Entorno Visual: Escenario Arquitectónico Sobrio (Grid Stage)
 - **Fondo de Perspectiva 3D (`GridRoom.tsx`):**
-  1. Recrea con exactitud matemática el ciclorama de estudio en perspectiva con fondo infinito de la imagen de referencia: plano de piso horizontal que retrocede en profundidad hacia Z negativo y pared de ciclorama vertical en Z de fondo que se eleva hacia arriba, encontrándose en una línea de horizonte continua.
-  2. **Perspectiva convergente:** Las líneas del suelo y de la pared coinciden milimétricamente en la línea de horizonte, creando una sensación de amplitud y profundidad sin encierro de túnel.
-  3. **Líneas claras de alta fidelidad:** Blanco y plata nívea (`#e2e8f0` al 52% de opacidad) sobre fondos negro azabache mate (`#020306`), proporcionando el contraste exacto de estudio de visualización de datos.
+  1. Recrea un escenario de estudio sobrio y arquitectónico: plano de suelo horizontal y pared vertical de fondo con líneas de fuga limpias y no invasivas.
+  2. **Perspectiva convergente sobria:** Cuadrícula en gris pizarra arquitectónico (`#475569` al 22% de opacidad) sobre fondo slate oscuro institucional (`#0b0f19`), eliminando destellos fluorescentes de estilo de ciencia ficción.
+  3. **Profundidad espacial calibrada:** Niebla atmosférica suave en `#0b0f19` y bloom satinado calibrado (`0.35`) que garantiza legibilidad y presencia sin deslumbramiento.
 
-### Barra de Navegación Master con Design Thinking (`AppV2.tsx`)
-- **Problema Solucionado:** Las píldoras flotantes inconexas de la navbar anterior lucían como prototipos artificiales, poco profesionales y causaban solapamiento físico con los controles de mejoras.
-- **Arquitectura de 3 Zonas Unificadas:**
-  1. **Zona 1 (Identidad y Contexto):** Logotipo `SIMA-3D v2`, pulso verde en vivo (`#10b981`) y subtítulo institucional (`MOVILIDAD ACADÉMICA · Ruta N · Medellín`).
-  2. **Zona 2 (Telemetría de Datos Integrada):** Cintas continuas de métricas clave con números tabulares y separadores finos (`29,014 ESTUDIANTES` · `78 NODOS` · `380 CONEXIONES`), legibles al instante para cualquier tomador de decisiones.
-  3. **Zona 3 (Hub de Acciones Globales):** Acciones agrupadas en un solo flexbox sin posibilidad de solapamiento:
+### Barra de Navegación Institucional Master (`AppV2.tsx`)
+- **Diseño Ejecutivo y Confiable:**
+  1. **Zona 1 (Identidad y Contexto):** Logotipo `SIMA-3D`, badge `PRO`, indicador de estado en vivo (`#10b981`) y subtítulo institucional (`OBSERVATORIO DE MOVILIDAD · Ruta N · Medellín`).
+  2. **Zona 2 (Métricas Clave Consolidadas):** Barra de métricas con tipografía de precisión (`29,014 Estudiantes` · `78 Nodos` · `380 Flujos`).
+  3. **Zona 3 (Hub de Acciones):** Acciones agrupadas en un solo flexbox sin colisiones:
      - `⛶ Reencuadrar` (Centra la constelación 3D).
      - `⟲ Vista General` (Restaura la selección activa).
-     - `⚙ Mejoras (7/7)` (Acceso directo al modal de control de feature flags).
+     - `⚙ Módulos` (Acceso al diálogo de control de módulos del sistema).
 
-### Panel Inspector de Telemetría (Cyber-Obsidian Glassmorphism)
-- **Tarjeta Lateral de Telemetría Precisa:**
-  1. En reposo, muestra un estado limpio y discreto sin sobrecargar al usuario.
-  2. Al enfocar o seleccionar un nodo, presenta con alta fidelidad sus variables métricas cuantitativas: volumen total de estudiantes, estrato socioeconómico mediano, proporción rural y grado de red.
-  3. Botón de análisis directo con el Copiloto IA enfocado en la entidad activa.
+### Panel Inspector de Telemetría (Dossier Ejecutivo)
+- **Tarjeta Lateral de Telemetría Institucional:**
+  1. En reposo, muestra un estado limpio y sobrio sin sobrecargar la pantalla.
+  2. Al enfocar o seleccionar una entidad, presenta un dossier analítico con variables cuantitativas: volumen total de estudiantes, estrato socioeconómico mediano, proporción rural y grado de red.
+  3. Botón de análisis institucional con el Asistente Analítico enfocado en la entidad activa.
+
+### Asistente Analítico (Copilot Institucional)
+- **Experiencia de Inteligencia de Datos Corporativa:**
+  1. Tipografía y burbujas de mensaje inspiradas en plataformas enterprise (Linear / Vercel / ChatGPT Enterprise).
+  2. Consultas analíticas directas sobre distribución territorial, matrícula y flujos interinstitucionales.
+  3. Paleta de alto contraste sin resplandores ni efectos distractores de ciencia ficción.
 
 ### Física Mejorada de Nodos (Dual-Layer Physics Engine)
 - **Capa 1: Física de Posicionamiento Topológico (Offline Spring Relaxation):**

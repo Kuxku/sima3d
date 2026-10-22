@@ -72,13 +72,13 @@ export const V2_CONFIG = {
     sqrtFactor: 0.022,
     // Niebla atmosférica adaptada a la sala de rejilla en perspectiva
     fog: {
-      color: '#080a10',
+      color: '#0b0f19',
       near: 35,
       far: 145,
     },
-    // Parámetros de Bloom y translucidez
-    bloomIntensity: 1.25,
-    translucentOpacity: 0.90,
+    // Parámetros de Bloom y translucidez sobria
+    bloomIntensity: 0.35,
+    translucentOpacity: 0.92,
   },
 
   // Parámetros de UI y accesibilidad (Mejora 6)

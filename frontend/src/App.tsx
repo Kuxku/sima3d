@@ -346,7 +346,7 @@ function App() {
                     if (node) handleSelectNode(node);
                   }}
                 >
-                  <span>Enfoque: {msg.command.target_node_id}</span>
+                  <span>🎯 Enfoque: {msg.command.target_node_id}</span>
                 </div>
               )}
             </div>
@@ -440,7 +440,7 @@ function App() {
             }
             disabled={sending}
           >
-            Analizar con Copilot
+            ✨ Analizar con Copilot
           </button>
         </section>
       )}

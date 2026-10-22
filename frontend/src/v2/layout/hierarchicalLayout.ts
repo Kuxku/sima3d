@@ -200,64 +200,143 @@ export function computeHierarchicalPositions(
     }
   });
 
-  // 5. Cálculo de radios de colisión aproximados por nodo
+  // 5. Cálculo de masas e inercias físicas basadas en el volumen de estudiantes
+  const nodeMasses = new Map<string, number>();
   const nodeRadii = new Map<string, number>();
+
   nodes.forEach((n) => {
     const vol = n.metrics?.volume || 1;
-    // Radio proporcional a sqrt(volumen) con límites
-    const r = Math.max(0.35, Math.min(Math.sqrt(vol) * 0.045, 1.4));
+    // Masa física gravitacional: las facultades son anclas pesadas, los colegios orbitan
+    let mass = 3.0 + Math.log10(vol + 1) * 2.0;
+    if (n.type === 'facultad') mass = 12.0 + Math.sqrt(vol) * 0.08;
+    else if (n.type === 'comuna') mass = 7.0 + Math.log10(vol + 1);
+
+    nodeMasses.set(n.id, mass);
+
+    // Radio volumétrico de colisión
+    const r = Math.max(0.38, Math.min(Math.sqrt(vol) * 0.045, 1.45));
     nodeRadii.set(n.id, r);
   });
 
-  // 6. PASADAS SÍNCRONAS DE RELAJACIÓN Y COLISIÓN (determinado, rápido < 5ms)
+  // 6. SIMULACIÓN FÍSICA AVANZADA (VELOCITY VERLET CON AMORTIGUAMIENTO Y FUERZAS DE MASA)
   const nodeIds = nodes.map((n) => n.id);
-  const iterations = layout.repulsionIterations;
-  const dt = layout.repulsionStrength;
+  const iterations = Math.max(layout.repulsionIterations, 75);
+  const baseDt = 0.42;
+  const damping = 0.76; // Coeficiente de fricción viscosa
+
+  // Vectores de velocidad e inercia por nodo
+  const velocities = new Map<string, THREE.Vector3>();
+  nodeIds.forEach((id) => velocities.set(id, new THREE.Vector3(0, 0, 0)));
 
   for (let iter = 0; iter < iterations; iter++) {
-    const factor = (1 - iter / iterations) * dt;
+    // Factor de enfriamiento simulado (Simulated Annealing)
+    const anneal = Math.pow(1 - iter / iterations, 1.3);
+    const dt = baseDt * anneal;
+    if (dt < 0.001) break;
 
+    // Acumulador de fuerzas por nodo en este paso de tiempo
+    const forces = new Map<string, THREE.Vector3>();
+    nodeIds.forEach((id) => forces.set(id, new THREE.Vector3(0, 0, 0)));
+
+    // 6a. FUERZA DE RESORTES PONDERADOS (Hooke's Law con Rigidez Logarítmica)
+    edges.forEach((edge) => {
+      const posSource = positions.get(edge.source);
+      const posTarget = positions.get(edge.target);
+      const fSource = forces.get(edge.source);
+      const fTarget = forces.get(edge.target);
+      if (!posSource || !posTarget || !fSource || !fTarget) return;
+
+      const diff = posTarget.clone().sub(posSource);
+      const dist = diff.length();
+      if (dist < 0.001) return;
+
+      const weight = edge.weight || 1;
+      // Longitud natural de reposo: flujos mayores atraen a distancias más compactas
+      const restLength = Math.max(4.8, 10.5 - Math.log10(weight + 1) * 1.6);
+      const displacement = dist - restLength;
+      // Rigidez del resorte elástico proporcional a la raíz del flujo de estudiantes
+      const stiffness = Math.min(0.08, 0.015 + Math.sqrt(weight) * 0.0035);
+      const springForce = diff.normalize().multiplyScalar(displacement * stiffness);
+
+      fSource.add(springForce);
+      fTarget.sub(springForce);
+    });
+
+    // 6b. REPULSIÓN MULTI-CUERPO COULOMBIANA Y FUERZA DE CONTACTO
     for (let i = 0; i < nodeIds.length; i++) {
       const idA = nodeIds[i];
       const posA = positions.get(idA);
+      const fA = forces.get(idA);
       const rA = nodeRadii.get(idA) || 0.5;
-      if (!posA) continue;
+      const mA = nodeMasses.get(idA) || 3.0;
+      if (!posA || !fA) continue;
 
       for (let j = i + 1; j < nodeIds.length; j++) {
         const idB = nodeIds[j];
         const posB = positions.get(idB);
+        const fB = forces.get(idB);
         const rB = nodeRadii.get(idB) || 0.5;
-        if (!posB) continue;
+        const mB = nodeMasses.get(idB) || 3.0;
+        if (!posB || !fB) continue;
 
         const diff = posA.clone().sub(posB);
-        const dist = diff.length();
+        let dist = diff.length();
         const minDist = rA + rB + layout.collisionPadding;
 
         if (dist < 0.0001) {
           diff.set((rand() - 0.5) * 0.1, (rand() - 0.5) * 0.1, (rand() - 0.5) * 0.1);
+          dist = diff.length();
         }
 
-        // Colisión física dura si se empalman
+        const normal = diff.normalize();
+
+        // Si hay colisión/solapamiento físico: fuerza elástica restauradora inmediata
         if (dist < minDist) {
           const overlap = minDist - dist;
-          const correction = diff.normalize().multiplyScalar(overlap * 0.5 * factor);
-          posA.add(correction);
-          posB.sub(correction);
-        } else if (dist < minDist * 2.2) {
-          // Repulsión suave entre vecinos cercanos
-          const repulsion = (minDist * 2.2 - dist) / (minDist * 2.2);
-          const force = diff.normalize().multiplyScalar(repulsion * 0.3 * factor);
-          posA.add(force);
-          posB.sub(force);
+          const repulsionMag = overlap * 4.5;
+          fA.addScaledVector(normal, repulsionMag);
+          fB.addScaledVector(normal, -repulsionMag);
+        } else if (dist < minDist * 2.8) {
+          // Repulsión de Coulomb cuadrática atenuada por masa
+          const coulomb = (minDist * 2.8 - dist) / (minDist * 2.8);
+          const repulsionMag = Math.min(1.2, (coulomb * coulomb * (mA + mB) * 0.18) / (dist * 0.5 + 1.0));
+          fA.addScaledVector(normal, repulsionMag);
+          fB.addScaledVector(normal, -repulsionMag);
         }
       }
 
-      // Restricción al radio envolvente máximo
-      const currentDist = posA.length();
-      if (currentDist > layout.maxBoundingRadius) {
-        posA.normalize().multiplyScalar(layout.maxBoundingRadius);
+      // Fuerza central armónica de confinamiento suave (evita dispersión infinita)
+      const distFromOrigin = posA.length();
+      if (distFromOrigin > 15.0) {
+        const centerForce = posA.clone().normalize().multiplyScalar(-(distFromOrigin - 15.0) * 0.08);
+        fA.add(centerForce);
       }
     }
+
+    // 6c. INTEGRACIÓN VELOCITY VERLET CON INERCIA DE MASA (Newton F = m*a)
+    nodeIds.forEach((id) => {
+      const pos = positions.get(id);
+      const vel = velocities.get(id);
+      const force = forces.get(id);
+      const mass = nodeMasses.get(id) || 3.0;
+      if (!pos || !vel || !force) return;
+
+      // a = F / m
+      const accel = force.divideScalar(mass);
+
+      // v = (v + a * dt) * gamma
+      vel.addScaledVector(accel, dt).multiplyScalar(damping);
+
+      // x = x + v * dt
+      pos.addScaledVector(vel, dt);
+
+      // Restricción al radio envolvente máximo
+      const currentDist = pos.length();
+      if (currentDist > layout.maxBoundingRadius) {
+        pos.normalize().multiplyScalar(layout.maxBoundingRadius);
+        vel.multiplyScalar(0.2); // Fricción en el borde
+      }
+    });
   }
 
   // 7. Centrado perfecto del grafo completo

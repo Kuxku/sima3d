@@ -68,8 +68,10 @@ export const V2_CONFIG = {
   1. Solo los nodos más representativos de la red (`volume >= 800`, como facultades principales y comunas masivas) muestran etiqueta fija permanente, reduciendo el ruido visual en más del 80%.
   2. **Anti-colisión en pantalla 2D:** Proyecta las posiciones tridimensionales a píxeles de pantalla y descarta automáticamente etiquetas secundarias si colisionan con una de mayor volumen.
   3. **Desvanecimiento por Distancia (Distance Fade):** La opacidad de las etiquetas fijas se interpola dinámicamente según la distancia a la cámara, desvaneciéndose con elegancia al alejarse (`maxVisibleDistance: 55`).
-- **Tooltip Enriquecido (Hover y Selección):**
-  1. Al pasar el cursor o hacer clic sobre cualquier nodo, se despliega una tarjeta HUD con glassmorphism que detalla: tipo y color oficial, nombre completo, volumen exacto de estudiantes, estrato socioeconómico mediano, porcentaje de población rural y número de conexiones directas.
+- **Tarjeta Inspectora Lateral HUD (Hover y Selección):**
+  1. La tarjeta de información ya no flota encima del nodo dentro de la escena 3D, liberando el 100% del lienzo espacial sin tapar geometrías ni aristas.
+  2. Ahora se despliega dinámicamente en el **panel lateral derecho del HUD**, mostrando al instante la telemetría del nodo activo (tipo, nombre, volumen exacto, estrato mediano, ruralidad y conexiones directas), con indicador de modo (`○ VISTA PREVIA` en hover o `● FIJADO` al hacer clic) y botón para análisis con el Copilot de IA.
+- **Fallback defensivo:** Si `labels: false`, regresa al tooltip flotante básico original.
 ### Mejora 5: Tamaño y Profundidad (`depthStyle`)
 - **Problema solucionado:** La compresión logarítmica aplastaba las diferencias visuales entre entidades pequeñas y grandes, faltaba profundidad atmosférica en el fondo 3D y los tonos azul/verde podían generar confusión visual.
 - **Dimensionamiento Físico Proporcional a $\sqrt{\text{estudiantes}}$:**
@@ -100,10 +102,50 @@ export const V2_CONFIG = {
   2. El tooltip aparece con una transición de opacidad pura sin movimientos de rebote.
 - **Fallback defensivo:** Si `uiPolish: false`, regresa al HUD clásico estático de v1.
 
+### Entorno Visual: Escenario Arquitectónico Sobrio (Grid Stage)
+- **Fondo de Perspectiva 3D (`GridRoom.tsx`):**
+  1. Recrea un escenario de estudio sobrio y arquitectónico: plano de suelo horizontal y pared vertical de fondo con líneas de fuga limpias y no invasivas.
+  2. **Perspectiva convergente sobria:** Cuadrícula en gris pizarra arquitectónico (`#475569` al 22% de opacidad) sobre fondo slate oscuro institucional (`#0b0f19`), eliminando destellos fluorescentes de estilo de ciencia ficción.
+  3. **Profundidad espacial calibrada:** Niebla atmosférica suave en `#0b0f19` y bloom satinado calibrado (`0.35`) que garantiza legibilidad y presencia sin deslumbramiento.
 
+### Barra de Navegación Institucional Master (`AppV2.tsx`)
+- **Diseño Ejecutivo y Confiable:**
+  1. **Zona 1 (Identidad y Contexto):** Logotipo `SIMA-3D`, badge `PRO`, indicador de estado en vivo (`#10b981`) y subtítulo institucional (`OBSERVATORIO DE MOVILIDAD · Ruta N · Medellín`).
+  2. **Zona 2 (Métricas Clave Consolidadas):** Barra de métricas con tipografía de precisión (`29,014 Estudiantes` · `78 Nodos` · `380 Flujos`).
+  3. **Zona 3 (Hub de Acciones):** Acciones agrupadas en un solo flexbox sin colisiones:
+     - `⛶ Reencuadrar` (Centra la constelación 3D).
+     - `⟲ Vista General` (Restaura la selección activa).
+     - `⚙ Módulos` (Acceso al diálogo de control de módulos del sistema).
 
+### Panel Inspector de Telemetría (Dossier Ejecutivo)
+- **Tarjeta Lateral de Telemetría Institucional:**
+  1. En reposo, muestra un estado limpio y sobrio sin sobrecargar la pantalla.
+  2. Al enfocar o seleccionar una entidad, presenta un dossier analítico con variables cuantitativas: volumen total de estudiantes, estrato socioeconómico mediano, proporción rural y grado de red.
+  3. Botón de análisis institucional con el Asistente Analítico enfocado en la entidad activa.
 
+### Asistente Analítico (Copilot Institucional)
+- **Experiencia de Inteligencia de Datos Corporativa:**
+  1. Tipografía y burbujas de mensaje inspiradas en plataformas enterprise (Linear / Vercel / ChatGPT Enterprise).
+  2. Consultas analíticas directas sobre distribución territorial, matrícula y flujos interinstitucionales.
+  3. Paleta de alto contraste sin resplandores ni efectos distractores de ciencia ficción.
 
+### Sustitución de Kamada-Kawai por Stratified Force-Directed 3D
+- **Por qué Kamada-Kawai era sub-óptimo para movilidad estudiantil:**
+  1. Kamada-Kawai optimiza distancias teóricas más cortas en grafo no dirigido ($d(u, v)$); no contempla la magnitud del flujo estudiantil ponderado ni la masa jerárquica de las facultades.
+  2. Provocaba un apelotonamiento central (*central hairball*) donde las facultades universitarias colisionaban en el núcleo y quedaban ocultas tras colegios pequeños.
+- **Nuevo Algoritmo: Stratified Force-Directed 3D (`pipeline/compute_layout.py`):**
+  1. **Atracción por flujo real ($w_{ij}$):** Implementación de resortes elásticos ponderados en NetworkX (`spring_layout` con `weight='weight'`), donde colegios con cientos de estudiantes son atraídos fuertemente hacia sus facultades receptoras, revelando cuencas de captación académica naturales.
+  2. **Estratificación semántica 3D:** Distribuye facultades como anclas estructurales en un volumen exterior y ubica colegios y comunas en capas espaciales legibles.
+  3. **Pase anti-colisión multi-cuerpo en Python:** Separa esferas solapadas en función de su radio volumétrico antes de normalizar deterministamente a $[-100, 100]$.
+
+### Física de Nodos de Alto Rendimiento (Dual-Layer Physics Engine)
+- **Capa 1: Simulación Física por Integración Velocity Verlet (`hierarchicalLayout.ts`):**
+  - **Inercia y Masa Gravitacional ($F = m \cdot a$):** Nodos con masa proporcional a su volumen de estudiantes. Las facultades actúan como anclas gravitacionales de alta masa ($m \approx 12.0$); los colegios orbitan de manera fluida y armónica sin perturbar los centros universitarios.
+  - **Integración Velocity Verlet con Fricción Viscosa ($\gamma = 0.76$):** Calcula aceleraciones, actualiza velocidades y aplica amortiguamiento para que la red alcance un estado de equilibrio de mínima energía sin oscilaciones caóticas.
+  - **Repulsión Coulombiana Cuadrática y Contacto de Cuerpos Sólidos:** Descarte estricto de solapamientos con fuerza elástica inmediata ($F \propto \text{overlap}$) y repulsión electrostática de Coulomb entre pares cercanos.
+- **Capa 2: Micro-Física Interactiva y Resonancia Gravitatoria en Canvas (`NetworkGraphV2.tsx`):**
+  - **Levitación Zero-G Armónica:** Cada nodo respira verticalmente ($Y \pm 0.12$) con una fase armónica periódica determinista basada en su ID.
+  - **Resonancia Gravitatoria Interconectada:** Al posar el cursor o seleccionar un nodo, todas sus entidades vecinas conectadas experimentan una atracción elástica sutil hacia él ($\approx 0.38$ unidades en la dirección del enlace), visualizando físicamente la tracción del flujo de movilidad, y retornando suavemente a su posición de reposo al deseleccionar.
 
 ---
 
@@ -113,3 +155,4 @@ export const V2_CONFIG = {
 2. Revertir la adición de entrada `v2` en `frontend/vite.config.ts`.
 3. Borrar este archivo `README_V2.md`.
 4. Regresar a la rama principal (`git checkout main` o `master`).
+

@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, List
 from app.core.config import settings
 from app.services.context_builder import ContextBuilder
+from app.services.fallback_engine import FallbackEngine
 
 logger = logging.getLogger(__name__)
 
@@ -45,28 +46,37 @@ class GeminiService:
         
         if selected_node_id and selected_node_id != "string":
             full_system_instruction += f"\n\nUSER IS CURRENTLY LOOKING AT NODE ID: {selected_node_id}"
+        # Cadena de modelos prioritarios para alta disponibilidad
+        candidate_models = [settings.GEMINI_MODEL]
+        for fallback_model in ["gemini-3-flash-preview", "gemini-2.5-flash", "gemini-flash-latest"]:
+            if fallback_model not in candidate_models:
+                candidate_models.append(fallback_model)
 
-        try:
-            # Utilizamos self.client.aio para evitar el bloqueo del event loop (loading infinito)
-            response = await self.client.aio.models.generate_content(
-                model=settings.GEMINI_MODEL,
-                contents=user_message,
-                config=types.GenerateContentConfig(
-                    system_instruction=full_system_instruction,
-                    temperature=settings.GEMINI_TEMPERATURE,
-                    response_mime_type="application/json",
-                    response_schema=CopilotResponseSchema,
-                ),
-            )
-            # Retornar como diccionario puro
-            return response.parsed.model_dump()
-            
-        except Exception as e:
-            logger.error(f"Gemini API Error: {str(e)}")
-            return {
-                "answer": f"El análisis en tiempo real está temporalmente saturado. Detalle técnico: {str(e)}",
-                "camera_command": None,
-                "highlighted_node_ids": [],
-                "status": "fallback",
-                "error_code": "API_UNAVAILABLE"
-            }
+        last_error = None
+
+        for model_name in candidate_models:
+            try:
+                response = await self.client.aio.models.generate_content(
+                    model=model_name,
+                    contents=user_message,
+                    config=types.GenerateContentConfig(
+                        system_instruction=full_system_instruction,
+                        temperature=settings.GEMINI_TEMPERATURE,
+                        response_mime_type="application/json",
+                        response_schema=CopilotResponseSchema,
+                    ),
+                )
+                if response and response.parsed:
+                    result = response.parsed.model_dump()
+                    result["status"] = "ok"
+                    return result
+            except Exception as e:
+                last_error = e
+                logger.warning(f"Model '{model_name}' unavailable or overloaded ({type(e).__name__}): {e}. Trying next fallback...")
+
+        # Si todos los modelos remotos están saturados (503 / 429), activar motor analítico local
+        logger.error(f"All Gemini cloud models exhausted ({last_error}). Triggering local structured fallback.")
+        return FallbackEngine.generate_response(
+            user_message=user_message,
+            selected_node_id=selected_node_id
+        )

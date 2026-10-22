@@ -13,6 +13,7 @@ import { FlagControls } from './components/FlagControls';
 import { FeatureBoundary } from './components/FeatureBoundary';
 import { AutoFitCamera } from './components/AutoFitCamera';
 import { DepthFog } from './components/DepthFog';
+import { GridRoom } from './components/GridRoom';
 import './v2.css';
 
 // Rig de cámara suave para enfoque de nodos
@@ -65,12 +66,14 @@ interface ChatMessage {
   sender: 'user' | 'bot';
   text: string;
   command?: CameraCommand | null;
+  status?: string;
 }
 
 const QUICK_PROMPTS = [
-  '¿Cuál es la comuna con más estudiantes?',
-  '¿Qué colegios destacan en la red?',
-  '¿Cuáles son las facultades con mayor volumen?',
+  '¿Cuáles son las 3 facultades con mayor atracción de estudiantes?',
+  '¿Qué comunas presentan mayor volumen de matrícula?',
+  'Identifica colegios con alto flujo hacia Ingeniería',
+  '¿Cómo se distribuyen los estratos socioeconómicos en la red?',
 ];
 
 export function AppV2() {
@@ -81,15 +84,16 @@ export function AppV2() {
 
   // Estados de interacción 3D
   const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
   const [highlightedIds, setHighlightedIds] = useState<string[]>([]);
   const [cameraTarget, setCameraTarget] = useState<THREE.Vector3 | null>(null);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
 
-  // Estados del Copilot
+  // Estados del Copilot con telemetría analítica
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       sender: 'bot',
-      text: 'SIMA-3D v2 en línea con arquitectura modular. Explora el grafo con layout jerárquico.',
+      text: 'Sistema SIMA-3D v2 en línea. Topología de movilidad académica cargada con éxito. Puedes consultar patrones de flujo, métricas de estratificación o solicitar enfoques analíticos de cámara.',
     },
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -121,6 +125,34 @@ export function AppV2() {
       V2_CONFIG.flags[key] = next[key];
       return next;
     });
+  };
+
+  const handleResetFlags = () => {
+    const defaults = {
+      improvedLayout: true,
+      autoFit: true,
+      smartEdges: true,
+      particles: true,
+      labels: true,
+      depthStyle: true,
+      uiPolish: true,
+    };
+    setFlags(defaults);
+    Object.assign(V2_CONFIG.flags, defaults);
+  };
+
+  const handleEnableAllFlags = () => {
+    const all = {
+      improvedLayout: true,
+      autoFit: true,
+      smartEdges: true,
+      particles: true,
+      labels: true,
+      depthStyle: true,
+      uiPolish: true,
+    };
+    setFlags(all);
+    Object.assign(V2_CONFIG.flags, all);
   };
 
   useEffect(() => {
@@ -183,6 +215,7 @@ export function AppV2() {
           sender: 'bot',
           text: response.answer,
           command: response.camera_command,
+          status: response.status,
         },
       ]);
 
@@ -243,9 +276,14 @@ export function AppV2() {
       {/* 1. LIENZO WEBGL A PANTALLA COMPLETA */}
       <div className="canvas-wrapper">
         <Canvas camera={{ position: [0, 0, 38], fov: 50 }}>
-          <ambientLight intensity={0.35} />
-          <pointLight position={[20, 20, 20]} intensity={2.0} color="#ffffff" />
-          <directionalLight position={[-20, -15, -10]} intensity={0.8} color="#38bdf8" />
+          {/* Iluminación Claymórfica Volumétrica */}
+          <ambientLight intensity={0.65} color="#1e293b" />
+          <directionalLight position={[24, 28, 20]} intensity={1.8} color="#fff7ed" />
+          <directionalLight position={[-20, -15, -10]} intensity={0.75} color="#38bdf8" />
+          <pointLight position={[0, -25, 15]} intensity={0.5} color="#0f172a" />
+
+          {/* Fondo de Sala / Túnel de Rejilla 3D en Perspectiva */}
+          <GridRoom />
 
           <FeatureBoundary featureName="DepthFog">
             <DepthFog enabled={flags.depthStyle} />
@@ -258,6 +296,7 @@ export function AppV2() {
               selectedNode={selectedNode}
               highlightedIds={highlightedIds}
               onSelectNode={handleSelectNode}
+              onHoverNode={setHoveredNode}
               smartEdgesEnabled={flags.smartEdges}
               particlesEnabled={flags.particles}
               labelsEnabled={flags.labels}
@@ -301,51 +340,79 @@ export function AppV2() {
         </Canvas>
       </div>
 
-      {/* Control de Feature Flags */}
-      <FlagControls flags={flags} onToggleFlag={toggleFlag} />
-
-      {/* 2. BARRA SUPERIOR HUD */}
-      <header className="hud-topbar">
-        <div className="brand-block">
-          <div className="brand-logo">
-            <span className="pulse-dot" />
-            SIMA-3D <span className="v2-version-tag">v2</span>
+      {/* 2. BARRA SUPERIOR HUD: CONSOLA MAESTRA UNIFICADA (DESIGN THINKING NAVBAR) */}
+      <header className="v2-master-navbar">
+        {/* ZONA 1: IDENTIDAD & TELEMETRÍA DE SISTEMA */}
+        <div className="v2-nav-brand-zone">
+          <div className="v2-brand-badge-group">
+            <span className="v2-brand-pulse-dot" />
+            <h1 className="v2-brand-title">SIMA-3D</h1>
+            <span className="v2-brand-version-pill">PRO</span>
           </div>
-          <span className="brand-subtitle">Inteligencia Espacial Educativa</span>
+          <span className="v2-brand-divider" />
+          <div className="v2-brand-meta">
+            <span className="v2-meta-label">OBSERVATORIO DE MOVILIDAD</span>
+            <span className="v2-meta-location">Ruta N · Medellín</span>
+          </div>
         </div>
 
-        <div className="kpi-group">
-          <div className="kpi-pill">
-            <span className="kpi-label">ESTUDIANTES</span>
-            <span className="kpi-value">
+        {/* ZONA 2: PULSO DE TELEMETRÍA EN VIVO (MÉTRICAS UNIFICADAS) */}
+        <div className="v2-nav-telemetry-strip">
+          <div className="v2-telemetry-item">
+            <span className="v2-telemetry-label">Estudiantes</span>
+            <span className="v2-telemetry-value highlight">
               {graphData.meta.total_records?.toLocaleString() || 'N/A'}
             </span>
           </div>
-          <div className="kpi-pill">
-            <span className="kpi-label">NODOS ACTIVOS</span>
-            <span className="kpi-value">{graphData.meta.node_count}</span>
+          <span className="v2-telemetry-separator" />
+          <div className="v2-telemetry-item">
+            <span className="v2-telemetry-label">Nodos</span>
+            <span className="v2-telemetry-value">
+              {graphData.meta.node_count}
+            </span>
           </div>
-          <div className="kpi-pill">
-            <span className="kpi-label">CONEXIONES</span>
-            <span className="kpi-value">{graphData.meta.edge_count}</span>
+          <span className="v2-telemetry-separator" />
+          <div className="v2-telemetry-item">
+            <span className="v2-telemetry-label">Flujos</span>
+            <span className="v2-telemetry-value">
+              {graphData.meta.edge_count}
+            </span>
           </div>
+        </div>
 
-          {/* Botón Reencuadrar para volver a la vista completa (Mejora 2) */}
+        {/* ZONA 3: HUB DE ACCIONES Y MEJORAS INTEGRADAS (CERO COLISIONES) */}
+        <div className="v2-nav-action-hub">
           {flags.autoFit && (
             <button
-              className="v2-refit-btn"
+              className="v2-nav-action-btn primary"
               onClick={handleRefit}
               title="Ajustar y centrar todos los nodos en pantalla"
+              type="button"
             >
-              ⛶ Reencuadrar
+              <span className="btn-icon">⛶</span>
+              <span>Reencuadrar</span>
             </button>
           )}
 
           {(selectedNode || highlightedIds.length > 0 || cameraTarget) && (
-            <button className="reset-view-btn" onClick={handleResetView}>
-              ⟲ Vista General
+            <button
+              className="v2-nav-action-btn neutral"
+              onClick={handleResetView}
+              title="Restaurar vista global"
+              type="button"
+            >
+              <span className="btn-icon">⟲</span>
+              <span>Vista General</span>
             </button>
           )}
+
+          {/* Control de Feature Flags integrado en el flujo de la barra: ¡SIN COLISIÓN! */}
+          <FlagControls
+            flags={flags}
+            onToggleFlag={toggleFlag}
+            onResetDefaults={handleResetFlags}
+            onEnableAll={handleEnableAllFlags}
+          />
         </div>
       </header>
 
@@ -354,10 +421,10 @@ export function AppV2() {
         <button
           className="v2-open-chat-tab"
           onClick={() => setChatCollapsed(false)}
-          title="Abrir Copilot Analítico"
+          title="Abrir Asistente Analítico"
         >
           <span className="ai-badge">IA</span>
-          <span>Abrir Chat Copilot</span>
+          <span>Abrir Asistente</span>
         </button>
       )}
 
@@ -370,7 +437,7 @@ export function AppV2() {
         <div className="sidebar-header">
           <div className="sidebar-title-row">
             <span className="ai-badge">IA</span>
-            <h3>Copilot Analítico</h3>
+            <h3>Asistente Analítico</h3>
             {flags.uiPolish && (
               <button
                 className="v2-collapse-chat-btn"
@@ -381,13 +448,21 @@ export function AppV2() {
               </button>
             )}
           </div>
-          <p>Impulsado por Gemini 3.8 Flash</p>
+          <p>Análisis de Movilidad Estudiantil</p>
         </div>
 
         <div className="chat-messages">
           {messages.map((msg, idx) => (
             <div key={idx} className={`chat-bubble ${msg.sender}`}>
               <div className="bubble-text">{msg.text}</div>
+              {msg.status === 'fallback' && (
+                <div
+                  className="fallback-tag"
+                  title="Análisis generado por el motor topológico determinista local (alta disponibilidad ante saturación temporal de la nube)"
+                >
+                  <span>⚡</span> Síntesis Topológica Local
+                </div>
+              )}
               {msg.command && msg.command.target_node_id && (
                 <div
                   className="camera-action-tag"
@@ -444,58 +519,86 @@ export function AppV2() {
         </form>
       </aside>
 
-      {/* 4. TARJETA INSPECTORA DE NODO SELECCIONADO */}
-      {selectedNode && (
-        <section className="hud-inspector">
-          <div className="inspector-header">
-            <span className={`node-type-tag ${selectedNode.type}`}>
-              {selectedNode.type.toUpperCase()}
-            </span>
-            <button className="close-btn" onClick={() => handleSelectNode(null)}>
-              ✕
-            </button>
-          </div>
-          <h4 className="inspector-title">{selectedNode.label}</h4>
-          <p className="inspector-id">{selectedNode.id}</p>
+      {/* 4. TARJETA INSPECTORA LATERAL DERECHA (Hover o Selección) */}
+      {(() => {
+        const activeDetailNode = hoveredNode || selectedNode;
+        const isPinned = selectedNode !== null && selectedNode.id === activeDetailNode?.id;
 
-          <div className="inspector-metrics">
-            <div className="metric-box">
-              <span className="metric-name">Volumen Estudiantes</span>
-              <span className="metric-val">
-                {selectedNode.metrics.volume.toLocaleString()}
-              </span>
-            </div>
-            <div className="metric-box">
-              <span className="metric-name">Estrato Mediano</span>
-              <span className="metric-val">
-                {selectedNode.metrics.estrato_median ?? 'N/A'}
-              </span>
-            </div>
-            <div className="metric-box">
-              <span className="metric-name">Participación Rural</span>
-              <span className="metric-val">
-                {((selectedNode.metrics.rural_share || 0) * 100).toFixed(1)}%
-              </span>
-            </div>
-            {selectedNode.metrics.degree !== undefined && (
-              <div className="metric-box">
-                <span className="metric-name">Conexiones Directas</span>
-                <span className="metric-val">{selectedNode.metrics.degree}</span>
+        if (!activeDetailNode) {
+          return (
+            <aside className="v2-lateral-inspector empty">
+              <span className="empty-icon">⬚</span>
+              <p className="empty-title">Sin nodo seleccionado</p>
+              <p className="empty-hint">Pasa el cursor sobre un nodo o haz clic para ver su telemetría detallada</p>
+            </aside>
+          );
+        }
+
+        return (
+          <aside className={`v2-lateral-inspector active ${isPinned ? 'pinned' : 'preview'}`}>
+            <div className="inspector-header">
+              <div className="inspector-badge-row">
+                <span className={`node-type-tag ${activeDetailNode.type}`}>
+                  {activeDetailNode.type.toUpperCase()}
+                </span>
+                <span className={`inspector-mode-tag ${isPinned ? 'pinned' : 'preview'}`}>
+                  {isPinned ? '● FIJADO' : '○ EN FOCO'}
+                </span>
               </div>
-            )}
-          </div>
+              {isPinned && (
+                <button
+                  className="close-btn"
+                  onClick={() => handleSelectNode(null)}
+                  title="Desfijar nodo"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
 
-          <button
-            className="ask-ai-node-btn"
-            onClick={() =>
-              sendQuery(`Analiza el perfil e impacto de ${selectedNode.label} en la red.`)
-            }
-            disabled={sending}
-          >
-            ✨ Analizar con Copilot
-          </button>
-        </section>
-      )}
+            <h4 className="inspector-title">{activeDetailNode.label}</h4>
+            <p className="inspector-id">ID de catálogo: {activeDetailNode.id}</p>
+
+            <div className="inspector-metrics">
+              <div className="metric-box">
+                <span className="metric-name">Volumen de Estudiantes</span>
+                <span className="metric-val">
+                  {activeDetailNode.metrics.volume.toLocaleString()}
+                </span>
+              </div>
+              <div className="metric-box">
+                <span className="metric-name">Estrato Mediano</span>
+                <span className="metric-val">
+                  {activeDetailNode.metrics.estrato_median ? `Estrato ${activeDetailNode.metrics.estrato_median}` : 'N/A'}
+                </span>
+              </div>
+              <div className="metric-box">
+                <span className="metric-name">Proporción Rural</span>
+                <span className="metric-val">
+                  {((activeDetailNode.metrics.rural_share || 0) * 100).toFixed(1)}%
+                </span>
+              </div>
+              {activeDetailNode.metrics.degree !== undefined && (
+                <div className="metric-box">
+                  <span className="metric-name">Grado de Red</span>
+                  <span className="metric-val">{activeDetailNode.metrics.degree}</span>
+                </div>
+              )}
+            </div>
+
+            <button
+              className="ask-ai-node-btn"
+              onClick={() => {
+                handleSelectNode(activeDetailNode);
+                sendQuery(`Analiza el nodo ${activeDetailNode.label} (${activeDetailNode.type}) y su rol en la red de movilidad estudiantil.`);
+              }}
+              disabled={sending}
+            >
+              Consultar Análisis en Asistente
+            </button>
+          </aside>
+        );
+      })()}
 
       {/* 5. LEYENDA INTERACTIVA INFERIOR DERECHA (Mejora 6) */}
       <footer className={`hud-legend ${flags.uiPolish ? 'interactive' : ''}`}>

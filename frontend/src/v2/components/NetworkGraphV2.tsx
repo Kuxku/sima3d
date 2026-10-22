@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
 import type { GraphPayload, GraphNode } from '../../types/graph';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -14,6 +15,7 @@ interface NetworkGraphV2Props {
   selectedNode: GraphNode | null;
   highlightedIds: string[];
   onSelectNode: (node: GraphNode | null) => void;
+  onHoverNode?: (node: GraphNode | null) => void;
   smartEdgesEnabled: boolean;
   particlesEnabled: boolean;
   labelsEnabled: boolean;
@@ -27,6 +29,7 @@ export function NetworkGraphV2({
   selectedNode,
   highlightedIds,
   onSelectNode,
+  onHoverNode,
   smartEdgesEnabled,
   particlesEnabled,
   labelsEnabled,
@@ -138,17 +141,17 @@ export function NetworkGraphV2({
         // Tamaño estable sin saltos de zoom in/out en hover
         const activeScale = isSelected ? baseScale * 1.12 : baseScale;
 
-        // Bloom selectivo: boost solo en nodos en foco o activos
+        // Iluminación satinada sobria sin sobreexposición ni deslumbramiento
         const emissiveIntensity =
           isSelected || isHovered
-            ? 2.3
+            ? 0.85
             : isHighlighted
-              ? 1.7
+              ? 0.65
               : hasActiveFilter
                 ? matchesType && (isNeighbor || filterType !== null)
-                  ? 0.85
-                  : 0.04
-                : 0.55;
+                  ? 0.45
+                  : 0.05
+                : 0.20;
 
         // Translucidez sutil para orbes de cristal espacial
         const baseOpacity = depthStyleEnabled ? V2_CONFIG.depth.translucentOpacity : 0.95;
@@ -160,62 +163,163 @@ export function NetworkGraphV2({
 
         // Solo mostrar etiqueta básica si labels está apagado
         const showFallbackLabel = !labelsEnabled && (isSelected || isHovered || isHighlighted);
+        const activeFocusId = selectedNode?.id || hoveredId;
+        const activeFocusPos = activeFocusId ? nodePositions.get(activeFocusId) : null;
 
         return (
-          <group key={node.id} position={[pos.x, pos.y, pos.z]}>
-            <mesh
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelectNode(node);
-              }}
-              onPointerOver={(e) => {
-                e.stopPropagation();
-                setHoveredId(node.id);
-                document.body.style.cursor = 'pointer';
-              }}
-              onPointerOut={() => {
-                setHoveredId(null);
-                document.body.style.cursor = 'auto';
-              }}
-            >
-              <sphereGeometry args={[activeScale, 32, 32]} />
-              <meshStandardMaterial
-                color={color}
-                emissive={color}
-                emissiveIntensity={emissiveIntensity}
-                roughness={depthStyleEnabled ? 0.22 : 0.15}
-                metalness={depthStyleEnabled ? 0.65 : 0.8}
-                transparent
-                opacity={nodeOpacity}
-              />
-            </mesh>
-
-            {(isSelected || isHighlighted) && (
-              <mesh rotation={[Math.PI / 2, 0, 0]}>
-                <ringGeometry args={[activeScale * 1.35, activeScale * 1.48, 32]} />
-                <meshBasicMaterial
-                  color={color}
-                  side={THREE.DoubleSide}
-                  transparent
-                  opacity={0.85}
-                />
-              </mesh>
-            )}
-
-            {showFallbackLabel && (
-              <Html distanceFactor={18} position={[0, activeScale + 0.45, 0]} center zIndexRange={[100, 0]}>
-                <div className="node-tooltip">
-                  <span className="node-tooltip-badge" style={{ backgroundColor: color }} />
-                  <span className="node-tooltip-title">{node.label}</span>
-                  <span className="node-tooltip-metric">
-                    {node.metrics.volume.toLocaleString()} est.
-                  </span>
-                </div>
-              </Html>
-            )}
-          </group>
+          <NodeMeshWithPhysics
+            key={node.id}
+            node={node}
+            pos={pos}
+            activeScale={activeScale}
+            color={color}
+            emissiveIntensity={emissiveIntensity}
+            nodeOpacity={nodeOpacity}
+            isSelected={isSelected}
+            isHovered={isHovered}
+            isHighlighted={isHighlighted}
+            isNeighbor={isNeighbor}
+            activeFocusPos={activeFocusPos}
+            showFallbackLabel={showFallbackLabel}
+            onSelectNode={onSelectNode}
+            setHoveredId={setHoveredId}
+            onHoverNode={onHoverNode}
+          />
         );
       })}
+    </group>
+  );
+}
+
+/**
+ * Componente individual de nodo con micro-física armónica Zero-G y resonancia elástica gravitacional.
+ */
+function NodeMeshWithPhysics({
+  node,
+  pos,
+  activeScale,
+  color,
+  emissiveIntensity,
+  nodeOpacity,
+  isSelected,
+  isHovered,
+  isHighlighted,
+  isNeighbor,
+  activeFocusPos,
+  showFallbackLabel,
+  onSelectNode,
+  setHoveredId,
+  onHoverNode,
+}: {
+  node: GraphNode;
+  pos: THREE.Vector3;
+  activeScale: number;
+  color: string;
+  emissiveIntensity: number;
+  nodeOpacity: number;
+  isSelected: boolean;
+  isHovered: boolean;
+  isHighlighted: boolean;
+  isNeighbor: boolean;
+  activeFocusPos: THREE.Vector3 | null | undefined;
+  showFallbackLabel: boolean;
+  onSelectNode: (node: GraphNode) => void;
+  setHoveredId: (id: string | null) => void;
+  onHoverNode?: (node: GraphNode | null) => void;
+}) {
+  const groupRef = useRef<THREE.Group>(null);
+
+  // Hash determinista para desfase armónico único por nodo
+  const phase = useMemo(() => {
+    let hash = 0;
+    for (let i = 0; i < node.id.length; i++) hash += node.id.charCodeAt(i) * 19;
+    return (hash % 1000) * 0.01;
+  }, [node.id]);
+
+  // Micro-física armónica continua con resonancia gravitatoria en red
+  useFrame((state) => {
+    if (!groupRef.current) return;
+    const t = state.clock.getElapsedTime();
+    // Oscilación vertical armónica de gravedad cero
+    const floatY = Math.sin(t * 1.2 + phase) * 0.12;
+    // Elevación suave e intuitiva al pasar el cursor o seleccionar
+    const hoverOffset = isSelected ? 0.35 : isHovered ? 0.22 : 0;
+
+    let targetX = pos.x;
+    let targetY = pos.y + floatY + hoverOffset;
+    let targetZ = pos.z;
+
+    // Resonancia gravitatoria: vecinos conectados se inclinan elásticamente hacia el nodo activo
+    if (isNeighbor && activeFocusPos && !isSelected && !isHovered) {
+      const pull = activeFocusPos.clone().sub(pos);
+      const pullDist = pull.length();
+      if (pullDist > 0.1) {
+        const pullFactor = Math.min(0.38, 1.1 / Math.sqrt(pullDist));
+        targetX += (pull.x / pullDist) * pullFactor;
+        targetY += (pull.y / pullDist) * pullFactor;
+        targetZ += (pull.z / pullDist) * pullFactor;
+      }
+    }
+
+    const step = 0.12;
+    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, step);
+    groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, step);
+    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, step);
+  });
+
+  return (
+    <group ref={groupRef} position={[pos.x, pos.y, pos.z]}>
+      <mesh
+        onClick={(e) => {
+          e.stopPropagation();
+          onSelectNode(node);
+        }}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHoveredId(node.id);
+          onHoverNode?.(node);
+          document.body.style.cursor = 'pointer';
+        }}
+        onPointerOut={() => {
+          setHoveredId(null);
+          onHoverNode?.(null);
+          document.body.style.cursor = 'auto';
+        }}
+      >
+        <sphereGeometry args={[activeScale, 32, 32]} />
+        <meshStandardMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={emissiveIntensity}
+          roughness={0.72}
+          metalness={0.06}
+          transparent
+          opacity={nodeOpacity}
+        />
+      </mesh>
+
+      {(isSelected || isHighlighted) && (
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[activeScale * 1.35, activeScale * 1.48, 32]} />
+          <meshBasicMaterial
+            color={color}
+            side={THREE.DoubleSide}
+            transparent
+            opacity={0.85}
+          />
+        </mesh>
+      )}
+
+      {showFallbackLabel && (
+        <Html distanceFactor={18} position={[0, activeScale + 0.45, 0]} center zIndexRange={[100, 0]}>
+          <div className="node-tooltip">
+            <span className="node-tooltip-title">{node.label}</span>
+            <span className="node-tooltip-metric">
+              {node.metrics.volume.toLocaleString()} estudiantes · {node.type.toUpperCase()}
+            </span>
+          </div>
+        </Html>
+      )}
     </group>
   );
 }

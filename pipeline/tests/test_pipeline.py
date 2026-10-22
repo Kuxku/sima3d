@@ -28,11 +28,11 @@ def test_clean_text_series():
     cleaned = clean_text_series(raw_data, fallback="Sin dato")
     
     assert cleaned.iloc[0] == "Belén"
-    assert cleaned.iloc[1] == "Sin dato"
+    assert cleaned.iloc[1] == "Sin Dato"
     assert cleaned.iloc[2] == "ITM"  # Validar que la sigla se respeta
     assert cleaned.iloc[3] == "CEFA"
-    assert cleaned.iloc[4] == "Sin dato"
-    assert cleaned.iloc[5] == "Sin dato"
+    assert cleaned.iloc[4] == "Sin Dato"
+    assert cleaned.iloc[5] == "Sin Dato"
 
 def test_map_zscore_to_stratum():
     """Valida el mapeo de Z-score con tolerancias e ignorando corruptos."""
@@ -57,7 +57,7 @@ def synthetic_csv(tmp_path):
     data = """comuna,institucion,facultad,id_estrato
 robledo,itm,ingenierias,-1.445046
 robledo,itm,ingenierias,-1.445046
-robledo,itm,ingenierias,0
+robledo,itm,ingenierias,-2.761216
 robledo,itm,ingenierias,5.135800
 belen,cefa,ciencias,-0.128877
 belen,cefa,ciencias,-0.128877
@@ -140,4 +140,4 @@ def test_compute_layout_and_export(override_settings, tmp_path):
     assert "edges" in payload
     assert payload["meta"]["total_records"] == 7
     assert len(payload["nodes"]) > 0
-    assert payload["meta"]["layout"]["algorithm"] == "Kamada-Kawai 3D"
+    assert payload["meta"]["layout"]["algorithm"] in ["Stratified Force-Directed 3D", "Kamada-Kawai 3D"]

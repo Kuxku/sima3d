@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import * as THREE from 'three';
 import { Line } from '@react-three/drei';
 import type { GraphEdge, GraphNode } from '../../types/graph';

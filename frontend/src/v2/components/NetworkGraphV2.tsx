@@ -245,9 +245,6 @@ function NodeMeshWithPhysics({
     );
   });
 
-  const typeIcon = node.type === 'comuna' ? '📍' : node.type === 'colegio' ? '🏫' : '🏛️';
-  const typeFriendlyName = node.type === 'comuna' ? 'Comuna de origen' : node.type === 'colegio' ? 'Colegio' : 'Facultad';
-
   return (
     <group ref={groupRef} position={[pos.x, pos.y, pos.z]}>
       <mesh
@@ -293,14 +290,11 @@ function NodeMeshWithPhysics({
 
       {showFallbackLabel && (
         <Html distanceFactor={18} position={[0, activeScale + 0.45, 0]} center zIndexRange={[100, 0]}>
-          <div className="node-tooltip friendly">
-            <span className="node-tooltip-icon">{typeIcon}</span>
-            <div className="node-tooltip-content">
-              <span className="node-tooltip-title">{node.label}</span>
-              <span className="node-tooltip-metric">
-                {node.metrics.volume.toLocaleString()} jóvenes ({typeFriendlyName})
-              </span>
-            </div>
+          <div className="node-tooltip">
+            <span className="node-tooltip-title">{node.label}</span>
+            <span className="node-tooltip-metric">
+              {node.metrics.volume.toLocaleString()} estudiantes · {node.type.toUpperCase()}
+            </span>
           </div>
         </Html>
       )}

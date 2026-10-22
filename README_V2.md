@@ -114,24 +114,15 @@ export const V2_CONFIG = {
   1. **Zona 1 (Identidad y Contexto):** Logotipo `SIMA-3D v2`, pulso verde en vivo (`#10b981`) y subtítulo institucional (`MOVILIDAD ACADÉMICA · Ruta N · Medellín`).
   2. **Zona 2 (Telemetría de Datos Integrada):** Cintas continuas de métricas clave con números tabulares y separadores finos (`29,014 ESTUDIANTES` · `78 NODOS` · `380 CONEXIONES`), legibles al instante para cualquier tomador de decisiones.
   3. **Zona 3 (Hub de Acciones Globales):** Acciones agrupadas en un solo flexbox sin posibilidad de solapamiento:
-     - `💡 ¿Cómo funciona?` (Abre la Guía Amigable e interactiva).
      - `⛶ Reencuadrar` (Centra la constelación 3D).
      - `⟲ Vista General` (Restaura la selección activa).
      - `⚙ Mejoras (7/7)` (Acceso directo al modal de control de feature flags).
 
-### Experiencia Amigable para Público No Técnico (Accesibilidad Cognitiva)
-- **Modal de Inducción Rápida (`FriendlyGuideModal.tsx`):**
-  - Botón visible `💡 ¿Cómo funciona?` y sugerencia flotante en la esquina inferior izquierda.
-  - Explicación visual en 4 pasos sencillos sin jerga técnica:
-    1. **¿Qué es cada esfera?** Código de color cotidiano (🔵 Comunas/Territorio, 🟢 Colegios donde nacen los sueños, 🟡 Facultades/Destino universitario).
-    2. **¿Por qué hay esferas más grandes?** El tamaño representa el volumen directo de jóvenes atendidos.
-    3. **¿Qué son los rayos de luz?** Rutas y caminos de movilidad estudiantil; a mayor flujo, más brillante y visible la conexión.
-    4. **¿Cómo moverte en 3D?** Instrucciones directas de ratón y táctil (girar, desplazar, acercar).
-- **Lenguaje Humanizado en el Panel Inspector:**
-  - Sustitución de términos fríos ("In-Degree", "Out-Degree", "Weight") por conceptos accesibles: `Jóvenes Vinculados`, `Estrato Predominante`, `Procedencia Urbana`, `Rutas de Movilidad`.
-  - Tarjeta en reposo con leyenda explicativa visual y chips de colores para guiar al usuario que entra por primera vez.
-- **Preguntas Rápidas del Copilot para Ciudadanos:**
-  - Enfoque en preguntas cotidianas como *"¿De qué colegios llegan más estudiantes?"* y *"¿Cuáles son las comunas con mayor movilidad?"*.
+### Panel Inspector de Telemetría (Cyber-Obsidian Glassmorphism)
+- **Tarjeta Lateral de Telemetría Precisa:**
+  1. En reposo, muestra un estado limpio y discreto sin sobrecargar al usuario.
+  2. Al enfocar o seleccionar un nodo, presenta con alta fidelidad sus variables métricas cuantitativas: volumen total de estudiantes, estrato socioeconómico mediano, proporción rural y grado de red.
+  3. Botón de análisis directo con el Copiloto IA enfocado en la entidad activa.
 
 ### Física Mejorada de Nodos (Dual-Layer Physics Engine)
 - **Capa 1: Física de Posicionamiento Topológico (Offline Spring Relaxation):**

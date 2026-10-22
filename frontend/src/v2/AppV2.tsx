@@ -14,7 +14,6 @@ import { FeatureBoundary } from './components/FeatureBoundary';
 import { AutoFitCamera } from './components/AutoFitCamera';
 import { DepthFog } from './components/DepthFog';
 import { GridRoom } from './components/GridRoom';
-import { FriendlyGuideModal } from './components/FriendlyGuideModal';
 import './v2.css';
 
 // Rig de cámara suave para enfoque de nodos
@@ -70,10 +69,10 @@ interface ChatMessage {
 }
 
 const QUICK_PROMPTS = [
-  '¿De qué comunas vienen más estudiantes?',
-  '¿Cuáles son los 5 colegios con mayor impacto?',
-  '¿Qué carreras prefieren los jóvenes de Medellín?',
-  '¿Cómo se distribuye la procedencia rural y urbana?',
+  '¿Cuáles son las 3 facultades con mayor atracción de estudiantes?',
+  '¿Qué comunas presentan mayor volumen de matrícula?',
+  'Identifica colegios con alto flujo hacia Ingeniería',
+  '¿Cómo se distribuyen los estratos socioeconómicos en la red?',
 ];
 
 export function AppV2() {
@@ -88,13 +87,12 @@ export function AppV2() {
   const [highlightedIds, setHighlightedIds] = useState<string[]>([]);
   const [cameraTarget, setCameraTarget] = useState<THREE.Vector3 | null>(null);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
-  const [guideOpen, setGuideOpen] = useState(false);
 
-  // Estados del Copilot con bienvenida pedagógica y empática
+  // Estados del Copilot con telemetría analítica
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       sender: 'bot',
-      text: '¡Hola! Te doy la bienvenida a SIMA-3D. Este mapa interactivo te muestra cómo los estudiantes de Medellín se mueven desde sus colegios hacia la educación superior. Haz clic en cualquier esfera o pregúntame lo que quieras saber sobre los datos.',
+      text: 'Sistema SIMA-3D v2 en línea. Topología de movilidad académica cargada con éxito. Puedes consultar patrones de flujo, métricas de estratificación o solicitar enfoques analíticos de cámara.',
     },
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -382,17 +380,6 @@ export function AppV2() {
 
         {/* ZONA 3: HUB DE ACCIONES Y MEJORAS INTEGRADAS (CERO COLISIONES) */}
         <div className="v2-nav-action-hub">
-          {/* Botón de Guía Didáctica (Para Cualquier Usuario No Técnico) */}
-          <button
-            className="v2-nav-action-btn guide-btn"
-            onClick={() => setGuideOpen(true)}
-            title="Aprende a interpretar y navegar este mapa en 1 minuto"
-            type="button"
-          >
-            <span className="btn-icon">💡</span>
-            <span>¿Cómo funciona?</span>
-          </button>
-
           {flags.autoFit && (
             <button
               className="v2-nav-action-btn primary"
@@ -529,19 +516,10 @@ export function AppV2() {
 
         if (!activeDetailNode) {
           return (
-            <aside className="v2-lateral-inspector standby">
-              <div className="standby-header">
-                <span className="standby-icon">✦</span>
-                <span className="standby-title">Ficha Informativa</span>
-              </div>
-              <p className="standby-hint">
-                Pasa el cursor o haz clic en cualquier esfera 3D para ver a qué comuna o colegio pertenece, cuántos estudiantes tiene y preguntarle a la IA.
-              </p>
-              <div className="standby-legend-pills">
-                <span className="standby-pill comuna">🔵 Comunas</span>
-                <span className="standby-pill colegio">🟢 Colegios</span>
-                <span className="standby-pill facultad">🟡 Facultades</span>
-              </div>
+            <aside className="v2-lateral-inspector empty">
+              <span className="empty-icon">⬚</span>
+              <p className="empty-title">Sin nodo seleccionado</p>
+              <p className="empty-hint">Pasa el cursor sobre un nodo o haz clic para ver su telemetría detallada</p>
             </aside>
           );
         }
@@ -551,11 +529,7 @@ export function AppV2() {
             <div className="inspector-header">
               <div className="inspector-badge-row">
                 <span className={`node-type-tag ${activeDetailNode.type}`}>
-                  {activeDetailNode.type === 'comuna'
-                    ? '📍 COMUNA (ORIGEN)'
-                    : activeDetailNode.type === 'colegio'
-                    ? '🏫 COLEGIO (BACHILLERATO)'
-                    : '🏛️ FACULTAD (UNIVERSIDAD)'}
+                  {activeDetailNode.type.toUpperCase()}
                 </span>
                 <span className={`inspector-mode-tag ${isPinned ? 'pinned' : 'preview'}`}>
                   {isPinned ? '● FIJADO' : '○ EN FOCO'}
@@ -577,33 +551,27 @@ export function AppV2() {
 
             <div className="inspector-metrics">
               <div className="metric-box">
-                <span className="metric-name">Jóvenes Vinculados</span>
+                <span className="metric-name">Volumen de Estudiantes</span>
                 <span className="metric-val">
                   {activeDetailNode.metrics.volume.toLocaleString()}
                 </span>
-                <span className="metric-hint">Estudiantes en el histórico</span>
               </div>
               <div className="metric-box">
-                <span className="metric-name">Estrato Predominante</span>
+                <span className="metric-name">Estrato Mediano</span>
                 <span className="metric-val">
                   {activeDetailNode.metrics.estrato_median ? `Estrato ${activeDetailNode.metrics.estrato_median}` : 'N/A'}
                 </span>
-                <span className="metric-hint">Nivel socioeconómico</span>
               </div>
               <div className="metric-box">
-                <span className="metric-name">Procedencia Urbana</span>
+                <span className="metric-name">Proporción Rural</span>
                 <span className="metric-val">
-                  {((1 - (activeDetailNode.metrics.rural_share || 0)) * 100).toFixed(0)}%
-                </span>
-                <span className="metric-hint">
-                  {((activeDetailNode.metrics.rural_share || 0) * 100).toFixed(1)}% rural
+                  {((activeDetailNode.metrics.rural_share || 0) * 100).toFixed(1)}%
                 </span>
               </div>
               {activeDetailNode.metrics.degree !== undefined && (
                 <div className="metric-box">
-                  <span className="metric-name">Rutas de Movilidad</span>
+                  <span className="metric-name">Grado de Red</span>
                   <span className="metric-val">{activeDetailNode.metrics.degree}</span>
-                  <span className="metric-hint">Vínculos directos activos</span>
                 </div>
               )}
             </div>
@@ -612,11 +580,11 @@ export function AppV2() {
               className="ask-ai-node-btn"
               onClick={() => {
                 handleSelectNode(activeDetailNode);
-                sendQuery(`Cuéntame en lenguaje sencillo la historia y relevancia de ${activeDetailNode.label} en la educación de Medellín.`);
+                sendQuery(`Analiza el nodo ${activeDetailNode.label} (${activeDetailNode.type}) y su rol en la red de movilidad estudiantil.`);
               }}
               disabled={sending}
             >
-              ✨ Preguntarle al Copiloto IA
+              ✨ Consultar Copiloto IA
             </button>
           </aside>
         );
@@ -652,17 +620,6 @@ export function AppV2() {
           <span className="legend-dot facultad" /> Facultades
         </div>
       </footer>
-
-      {/* Indicador sutil de ayuda y navegación en el lienzo */}
-      <div className="v2-floating-help-hint" onClick={() => setGuideOpen(true)}>
-        <span className="hint-icon">💡</span>
-        <span className="hint-text">
-          <strong>¿Primera vez?</strong> Toca aquí para ver la Guía Rápida · 🖱️ Arrastra para girar en 3D
-        </span>
-      </div>
-
-      {/* Ventana Modal Didáctica para Todo Usuario (No técnicos) */}
-      <FriendlyGuideModal isOpen={guideOpen} onClose={() => setGuideOpen(false)} />
     </div>
   );
 }

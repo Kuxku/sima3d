@@ -14,6 +14,8 @@ import { FeatureBoundary } from './components/FeatureBoundary';
 import { AutoFitCamera } from './components/AutoFitCamera';
 import { DepthFog } from './components/DepthFog';
 import { GridRoom } from './components/GridRoom';
+import { JarvisVoiceAssistant } from '../components/JarvisVoiceAssistant';
+import type { JarvisActionPayload } from '../hooks/useJarvisVoice';
 import './v2.css';
 
 // Rig de cámara suave para enfoque de nodos
@@ -103,6 +105,14 @@ export function AppV2() {
   // Estados de Mejora 6 (uiPolish)
   const [chatCollapsed, setChatCollapsed] = useState(false);
   const [activeTypeFilter, setActiveTypeFilter] = useState<string | null>(null);
+
+  // Estado para la Petición Activa y Explicación en el Grafo 3D
+  const [activeVoicePetition, setActiveVoicePetition] = useState<{
+    query: string;
+    explanation?: string;
+    actionLabel?: string;
+    isSpeaking: boolean;
+  } | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -207,8 +217,22 @@ export function AppV2() {
     setMessages((prev) => [...prev, { sender: 'user', text: queryText }]);
     setSending(true);
 
+    // Activar banner en el grafo 3D y detección de entidades
+    setActiveVoicePetition({
+      query: queryText,
+      isSpeaking: false,
+    });
+    detectEntitiesFromText(queryText);
+
     try {
       const response = await CopilotService.chat(queryText, selectedNode?.id || null);
+      setActiveVoicePetition((prev) => ({
+        query: prev?.query || queryText,
+        explanation: response.answer,
+        actionLabel: response.camera_command ? `Enfoque: ${response.camera_command.target_node_id || response.camera_command.action}` : undefined,
+        isSpeaking: false,
+      }));
+
       setMessages((prev) => [
         ...prev,
         {
@@ -249,6 +273,62 @@ export function AppV2() {
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     sendQuery(inputValue);
+  };
+
+  // Detección automática en el grafo basada en el texto del usuario
+  const detectEntitiesFromText = (queryText: string) => {
+    if (!graphData) return;
+    const lower = queryText.toLowerCase();
+
+    // 1. Detectar si pide filtrar por categoría
+    if (lower.includes('comuna') && !lower.includes('facultad') && !lower.includes('colegio')) {
+      setActiveTypeFilter('comuna');
+    } else if (lower.includes('colegio') && !lower.includes('comuna') && !lower.includes('facultad')) {
+      setActiveTypeFilter('colegio');
+    } else if (lower.includes('facultad') && !lower.includes('comuna') && !lower.includes('colegio')) {
+      setActiveTypeFilter('facultad');
+    }
+
+    // 2. Buscar nodos cuyos nombres o IDs coincidan con palabras clave
+    const matchedNodes = graphData.nodes.filter((node) => {
+      const cleanLabel = node.label.toLowerCase();
+      const cleanId = node.id.toLowerCase().replace(/^(comuna|facultad|colegio):/, '');
+      return lower.includes(cleanLabel) || lower.includes(cleanId);
+    });
+
+    if (matchedNodes.length > 0) {
+      const matchedIds = matchedNodes.map((n) => n.id);
+      setHighlightedIds(matchedIds);
+
+      // Si es un solo nodo puntual detectado, enfocar la cámara y fijarlo
+      if (matchedNodes.length === 1) {
+        handleSelectNode(matchedNodes[0]);
+      }
+    }
+  };
+
+  const handleJarvisAction = (payload: JarvisActionPayload) => {
+    const actionLabel = payload.confirmation || payload.action;
+    setActiveVoicePetition((prev) => (prev ? { ...prev, actionLabel } : null));
+
+    if (payload.action === 'reset_view') {
+      handleResetView();
+      return;
+    }
+    if (payload.highlighted_node_ids && payload.highlighted_node_ids.length > 0) {
+      setHighlightedIds(payload.highlighted_node_ids);
+    }
+    if (payload.camera_command) {
+      const { action, target_node_id } = payload.camera_command;
+      if (action === 'focus_node' && target_node_id && graphData) {
+        const targetNode = graphData.nodes.find((n) => n.id === target_node_id);
+        if (targetNode) {
+          handleSelectNode(targetNode);
+        }
+      } else if (action === 'reset_view') {
+        handleResetView();
+      }
+    }
   };
 
   if (loading) {
@@ -430,9 +510,8 @@ export function AppV2() {
 
       {/* 3. PANEL LATERAL FLOTANTE: COPILOT IA (Colapsable en Mejora 6) */}
       <aside
-        className={`hud-sidebar ${
-          flags.uiPolish && chatCollapsed ? 'collapsed' : ''
-        }`}
+        className={`hud-sidebar ${flags.uiPolish && chatCollapsed ? 'collapsed' : ''
+          }`}
       >
         <div className="sidebar-header">
           <div className="sidebar-title-row">
@@ -473,7 +552,7 @@ export function AppV2() {
                     if (node) handleSelectNode(node);
                   }}
                 >
-                  <span>🎯 Enfoque: {msg.command.target_node_id}</span>
+                  <span>Enfoque: {msg.command.target_node_id}</span>
                 </div>
               )}
             </div>
@@ -603,33 +682,85 @@ export function AppV2() {
       {/* 5. LEYENDA INTERACTIVA INFERIOR DERECHA (Mejora 6) */}
       <footer className={`hud-legend ${flags.uiPolish ? 'interactive' : ''}`}>
         <div
-          className={`legend-item ${flags.uiPolish ? 'clickable' : ''} ${
-            activeTypeFilter === 'comuna' ? 'active' : activeTypeFilter ? 'dimmed' : ''
-          }`}
+          className={`legend-item ${flags.uiPolish ? 'clickable' : ''} ${activeTypeFilter === 'comuna' ? 'active' : activeTypeFilter ? 'dimmed' : ''
+            }`}
           onClick={() => handleToggleTypeFilter('comuna')}
           title={flags.uiPolish ? 'Clic para filtrar Comunas' : undefined}
         >
           <span className="legend-dot comuna" /> Comunas
         </div>
         <div
-          className={`legend-item ${flags.uiPolish ? 'clickable' : ''} ${
-            activeTypeFilter === 'colegio' ? 'active' : activeTypeFilter ? 'dimmed' : ''
-          }`}
+          className={`legend-item ${flags.uiPolish ? 'clickable' : ''} ${activeTypeFilter === 'colegio' ? 'active' : activeTypeFilter ? 'dimmed' : ''
+            }`}
           onClick={() => handleToggleTypeFilter('colegio')}
           title={flags.uiPolish ? 'Clic para filtrar Colegios' : undefined}
         >
           <span className="legend-dot colegio" /> Colegios
         </div>
         <div
-          className={`legend-item ${flags.uiPolish ? 'clickable' : ''} ${
-            activeTypeFilter === 'facultad' ? 'active' : activeTypeFilter ? 'dimmed' : ''
-          }`}
+          className={`legend-item ${flags.uiPolish ? 'clickable' : ''} ${activeTypeFilter === 'facultad' ? 'active' : activeTypeFilter ? 'dimmed' : ''
+            }`}
           onClick={() => handleToggleTypeFilter('facultad')}
           title={flags.uiPolish ? 'Clic para filtrar Facultades' : undefined}
         >
           <span className="legend-dot facultad" /> Facultades
         </div>
       </footer>
+
+      {/* 2.5 BANNER FLOTANTE DE PETICIÓN ACTIVA Y EXPLICACIÓN EN EL GRAFO */}
+      {activeVoicePetition && (
+        <div className="v2-active-petition-banner">
+          <div className="petition-badge-pulse">
+            <span className="pulse-dot-cyan" />
+            <span>{activeVoicePetition.isSpeaking ? 'SIMA EXPLICANDO' : 'CONSULTA DETECTADA'}</span>
+          </div>
+          <div className="petition-content-group">
+            <p className="petition-query-text">
+              &ldquo;{activeVoicePetition.query}&rdquo;
+            </p>
+            {activeVoicePetition.explanation && (
+              <p className={`petition-reply-text ${activeVoicePetition.isSpeaking ? 'speaking' : ''}`}>
+                {activeVoicePetition.explanation}
+              </p>
+            )}
+          </div>
+          {activeVoicePetition.actionLabel && (
+            <div className="petition-action-tag">
+              {activeVoicePetition.actionLabel}
+            </div>
+          )}
+          <button
+            className="petition-close-btn"
+            onClick={() => setActiveVoicePetition(null)}
+            title="Cerrar aviso de consulta"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* 6. ASISTENTE DE VOZ SIMA-3D POR PETICIÓN */}
+      <JarvisVoiceAssistant
+        selectedNodeId={selectedNode?.id || null}
+        onActionExecuted={handleJarvisAction}
+        onUserMessage={(text) => {
+          setMessages((prev) => [...prev, { sender: 'user', text }]);
+          setActiveVoicePetition({
+            query: text,
+            isSpeaking: false,
+          });
+          detectEntitiesFromText(text);
+        }}
+        onAssistantMessage={(text) => {
+          setMessages((prev) => [...prev, { sender: 'bot', text }]);
+          setActiveVoicePetition((prev) => ({
+            query: prev?.query || 'Consulta por voz',
+            explanation: text,
+            actionLabel: prev?.actionLabel,
+            isSpeaking: true,
+          }));
+        }}
+      />
     </div>
   );
 }

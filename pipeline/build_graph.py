@@ -17,6 +17,13 @@ class PipelineSettings(BaseSettings):
     Z_SCORE_TOLERANCE: float = 0.1
     KNOWN_Z_SCORES: list[float] = [-2.761216, -1.445046, -0.128877, 1.187292, 2.503462, 3.819631, 5.135800]
     ACRONYMS: list[str] = ["ITM", "CEFA", "SENA", "INEM", "UEMR"]
+    RURAL_TERRITORIES: list[str] = [
+        "san cristobal",
+        "san antonio de prado",
+        "altavista",
+        "santa elena",
+        "palmitas"
+    ]
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
@@ -31,7 +38,7 @@ logger = logging.getLogger(__name__)
 def clean_text_series(series: pd.Series, fallback: str = "Sin dato") -> pd.Series:
     """Limpia espacios, aplica regex para basura de sistema y da formato Title Case."""
     s = series.astype(str).str.strip().str.replace(r'\s+', ' ', regex=True)
-    mask = s.str.contains(r'\*\*.*(seleccionar|desconocid).*\*\*|^nan$', case=False, regex=True)
+    mask = s.str.contains(r'\*\*.*(?:seleccionar|desconocid).*\*\*|^nan$', case=False, regex=True)
     s = np.where(mask, fallback, s)
     s = pd.Series(s, index=series.index).str.title()
     
@@ -72,7 +79,12 @@ def build_aggregated_graph() -> nx.Graph:
     
     # 3.1 Mapeo de Estrato y Categoría Rural
     df['id_estrato_real'] = df['id_estrato'].apply(map_zscore_to_stratum)
-    df["es_rural"] = df["id_estrato_real"] == 0
+    
+    # Definición de ruralidad: Estrato rural (0) o pertenencia a corregimientos rurales de Medellín
+    comuna_lower = df['comuna'].astype(str).str.lower().str.strip()
+    is_corregimiento = comuna_lower.isin([t.lower() for t in settings.RURAL_TERRITORIES])
+    df["es_rural"] = (df["id_estrato_real"] == 0) | is_corregimiento
+    
     # NaN para lo rural o no reportado, así no afecta la mediana de estratos (1 a 6)
     df["estrato"] = df["id_estrato_real"].where(df["id_estrato_real"] > 0) 
     
@@ -171,7 +183,7 @@ def build_aggregated_graph() -> nx.Graph:
     }
     G.graph['meta'] = meta
 
-    logger.info(f"✅ Grafo construido. Cobertura de flujo efectiva: {coverage_pct}%")
+    logger.info(f"Grafo construido. Cobertura de flujo efectiva: {coverage_pct}%")
     logger.info(f"Nodos: {G.number_of_nodes()} | Aristas: {G.number_of_edges()}")
     
     # Invariante crítico: El volumen de estudiantes reportado en el meta no debe inflarse

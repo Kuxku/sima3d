@@ -1,6 +1,6 @@
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 import networkx as nx
 from pathlib import Path
 
@@ -45,7 +45,7 @@ def export_graph_to_json(G: nx.Graph):
     # 3. Build Meta object
     original_meta = G.graph.get('meta', {})
     meta = {
-        "generated_at": datetime.utcnow().isoformat() + "Z",
+        "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "total_records": original_meta.get('total_records_raw', 0),
         "node_count": len(nodes),
         "edge_count": len(edges),

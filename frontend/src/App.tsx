@@ -5,6 +5,8 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { GraphService, CopilotService } from './services/api';
 import type { GraphPayload, GraphNode, CameraCommand } from './types/graph';
 import { NetworkGraph } from './components/NetworkGraph';
+import { JarvisVoiceAssistant } from './components/JarvisVoiceAssistant';
+import type { JarvisActionPayload } from './hooks/useJarvisVoice';
 import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import './App.css';
@@ -234,6 +236,29 @@ function App() {
     sendQuery(inputValue);
   };
 
+  const handleJarvisAction = (payload: JarvisActionPayload) => {
+    if (payload.action === 'reset_view') {
+      handleResetView();
+      return;
+    }
+    if (payload.highlighted_node_ids && payload.highlighted_node_ids.length > 0) {
+      setHighlightedIds(payload.highlighted_node_ids);
+    }
+    if (payload.camera_command) {
+      const { action, target_node_id } = payload.camera_command;
+      if (action === 'focus_node' && target_node_id && graphData) {
+        const targetNode = graphData.nodes.find((n) => n.id === target_node_id);
+        if (targetNode) {
+          setSelectedNode(targetNode);
+          const pos = nodePositions.get(targetNode.id);
+          if (pos) setCameraTarget(pos.clone());
+        }
+      } else if (action === 'reset_view') {
+        handleResetView();
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="loading-screen">
@@ -346,7 +371,7 @@ function App() {
                     if (node) handleSelectNode(node);
                   }}
                 >
-                  <span>🎯 Enfoque: {msg.command.target_node_id}</span>
+                  <span>Enfoque: {msg.command.target_node_id}</span>
                 </div>
               )}
             </div>
@@ -440,7 +465,7 @@ function App() {
             }
             disabled={sending}
           >
-            ✨ Analizar con Copilot
+            Analizar con Copilot
           </button>
         </section>
       )}
@@ -457,6 +482,14 @@ function App() {
           <span className="legend-dot facultad" /> Facultades
         </div>
       </footer>
+
+      {/* 6. ASISTENTE DE VOZ JARVIS (MODOS 1 Y 2) */}
+      <JarvisVoiceAssistant
+        selectedNodeId={selectedNode?.id || null}
+        onActionExecuted={handleJarvisAction}
+        onUserMessage={(text) => setMessages((prev) => [...prev, { sender: 'user', text }])}
+        onAssistantMessage={(text) => setMessages((prev) => [...prev, { sender: 'bot', text }])}
+      />
     </div>
   );
 }

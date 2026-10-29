@@ -43,3 +43,8 @@ app.include_router(copilot.router, prefix=settings.API_V1_STR + "/copilot")
 async def health_check():
     has_graph = GraphService._cached_graph is not None
     return {"status": "ok", "graph_loaded": has_graph}
+
+@app.post("/api/graph/reload")
+async def reload_graph():
+    GraphService.load_graph()
+    return {"status": "reloaded", "node_count": len(GraphService.get_graph().nodes)}

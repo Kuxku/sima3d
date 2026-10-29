@@ -1,0 +1,3143 @@
+{
+  "meta": {
+    "generated_at": "2026-10-27T04:21:26.230216Z",
+    "total_records": 29014,
+    "node_count": 61,
+    "edge_count": 380,
+    "layout": {
+      "algorithm": "Stratified Force-Directed 3D",
+      "seed": 42,
+      "scale": 100.0
+    },
+    "matrix_comuna_facultad": {
+      "comuna:altavista": {
+        "facultad:facultad-de-artes-y-humanidades": 127,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 414,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 172,
+        "facultad:facultad-de-ingenierias": 401
+      },
+      "comuna:aranjuez": {
+        "facultad:facultad-de-artes-y-humanidades": 149,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 679,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 171,
+        "facultad:facultad-de-ingenierias": 496
+      },
+      "comuna:belen": {
+        "facultad:facultad-de-artes-y-humanidades": 157,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 460,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 132,
+        "facultad:facultad-de-ingenierias": 397
+      },
+      "comuna:bello": {
+        "facultad:facultad-de-artes-y-humanidades": 208,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 776,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 228,
+        "facultad:facultad-de-ingenierias": 796
+      },
+      "comuna:buenos-aires": {
+        "facultad:facultad-de-artes-y-humanidades": 161,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 937,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 200,
+        "facultad:facultad-de-ingenierias": 712
+      },
+      "comuna:castilla": {
+        "facultad:facultad-de-artes-y-humanidades": 114,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 585,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 168,
+        "facultad:facultad-de-ingenierias": 493
+      },
+      "comuna:copacabana": {
+        "facultad:facultad-de-artes-y-humanidades": 37,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 110,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 34,
+        "facultad:facultad-de-ingenierias": 130
+      },
+      "comuna:doce-de-octubre": {
+        "facultad:facultad-de-artes-y-humanidades": 113,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 649,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 171,
+        "facultad:facultad-de-ingenierias": 461
+      },
+      "comuna:guayabal": {
+        "facultad:facultad-de-artes-y-humanidades": 41,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 131,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 34,
+        "facultad:facultad-de-ingenierias": 126
+      },
+      "comuna:itagui": {
+        "facultad:facultad-de-artes-y-humanidades": 97,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 247,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 97,
+        "facultad:facultad-de-ingenierias": 280
+      },
+      "comuna:la-america": {
+        "facultad:facultad-de-artes-y-humanidades": 81,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 160,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 55,
+        "facultad:facultad-de-ingenierias": 169
+      },
+      "comuna:la-candelaria": {
+        "facultad:facultad-de-artes-y-humanidades": 51,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 140,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 65,
+        "facultad:facultad-de-ingenierias": 191
+      },
+      "comuna:manrique": {
+        "facultad:facultad-de-artes-y-humanidades": 144,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 1083,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 223,
+        "facultad:facultad-de-ingenierias": 665
+      },
+      "comuna:otras-comunas": {
+        "facultad:facultad-de-artes-y-humanidades": 500,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 1585,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 568,
+        "facultad:facultad-de-ingenierias": 1589
+      },
+      "comuna:popular": {
+        "facultad:facultad-de-artes-y-humanidades": 70,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 581,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 125,
+        "facultad:facultad-de-ingenierias": 369
+      },
+      "comuna:robledo": {
+        "facultad:facultad-de-artes-y-humanidades": 287,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 1109,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 347,
+        "facultad:facultad-de-ingenierias": 1005
+      },
+      "comuna:san-antonio-de-prado": {
+        "facultad:facultad-de-artes-y-humanidades": 54,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 375,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 89,
+        "facultad:facultad-de-ingenierias": 282
+      },
+      "comuna:san-cristobal": {
+        "facultad:facultad-de-artes-y-humanidades": 63,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 316,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 98,
+        "facultad:facultad-de-ingenierias": 217
+      },
+      "comuna:san-javier": {
+        "facultad:facultad-de-artes-y-humanidades": 171,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 733,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 206,
+        "facultad:facultad-de-ingenierias": 651
+      },
+      "comuna:santa-cruz": {
+        "facultad:facultad-de-artes-y-humanidades": 75,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 537,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 112,
+        "facultad:facultad-de-ingenierias": 324
+      },
+      "comuna:villa-hermosa": {
+        "facultad:facultad-de-artes-y-humanidades": 94,
+        "facultad:facultad-de-ciencias-economicas-y-administrativas": 796,
+        "facultad:facultad-de-ciencias-exactas-y-aplicadas": 177,
+        "facultad:facultad-de-ingenierias": 591
+      }
+    }
+  },
+  "nodes": [
+    {
+      "id": "comuna:altavista",
+      "label": "Altavista",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": 19.06,
+        "y": 35.5,
+        "z": -32.33
+      },
+      "metrics": {
+        "volume": 1114,
+        "estrato_median": 2.0,
+        "rural_share": 1.0,
+        "degree": 9,
+        "strength": 1079
+      }
+    },
+    {
+      "id": "comuna:aranjuez",
+      "label": "Aranjuez",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -17.48,
+        "y": 28.69,
+        "z": -7.02
+      },
+      "metrics": {
+        "volume": 1495,
+        "estrato_median": 2.0,
+        "rural_share": 0.0007,
+        "degree": 13,
+        "strength": 1462
+      }
+    },
+    {
+      "id": "comuna:belen",
+      "label": "Belen",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": 20.3,
+        "y": 43.8,
+        "z": -6.06
+      },
+      "metrics": {
+        "volume": 1146,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 9,
+        "strength": 1112
+      }
+    },
+    {
+      "id": "comuna:bello",
+      "label": "Bello",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": 33.2,
+        "y": 24.0,
+        "z": 10.22
+      },
+      "metrics": {
+        "volume": 2008,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 12,
+        "strength": 1968
+      }
+    },
+    {
+      "id": "comuna:buenos-aires",
+      "label": "Buenos Aires",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": 9.72,
+        "y": 26.48,
+        "z": 42.92
+      },
+      "metrics": {
+        "volume": 2010,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 16,
+        "strength": 1973
+      }
+    },
+    {
+      "id": "comuna:castilla",
+      "label": "Castilla",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -1.59,
+        "y": -30.4,
+        "z": 2.13
+      },
+      "metrics": {
+        "volume": 1360,
+        "estrato_median": 3.0,
+        "rural_share": 0.0,
+        "degree": 11,
+        "strength": 1326
+      }
+    },
+    {
+      "id": "comuna:copacabana",
+      "label": "Copacabana",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -26.41,
+        "y": 49.31,
+        "z": -55.3
+      },
+      "metrics": {
+        "volume": 311,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 2,
+        "strength": 295
+      }
+    },
+    {
+      "id": "comuna:doce-de-octubre",
+      "label": "Doce De Octubre",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": 19.28,
+        "y": -25.39,
+        "z": -15.15
+      },
+      "metrics": {
+        "volume": 1394,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 16,
+        "strength": 1371
+      }
+    },
+    {
+      "id": "comuna:guayabal",
+      "label": "Guayabal",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -34.97,
+        "y": -22.66,
+        "z": -54.01
+      },
+      "metrics": {
+        "volume": 332,
+        "estrato_median": 3.0,
+        "rural_share": 0.0,
+        "degree": 4,
+        "strength": 313
+      }
+    },
+    {
+      "id": "comuna:itagui",
+      "label": "Itagui",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -23.65,
+        "y": -37.11,
+        "z": -12.96
+      },
+      "metrics": {
+        "volume": 721,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 5,
+        "strength": 698
+      }
+    },
+    {
+      "id": "comuna:la-america",
+      "label": "La America",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": 49.85,
+        "y": -4.65,
+        "z": -46.02
+      },
+      "metrics": {
+        "volume": 465,
+        "estrato_median": 3.0,
+        "rural_share": 0.0,
+        "degree": 10,
+        "strength": 450
+      }
+    },
+    {
+      "id": "comuna:la-candelaria",
+      "label": "La Candelaria",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -45.2,
+        "y": 5.13,
+        "z": 36.14
+      },
+      "metrics": {
+        "volume": 447,
+        "estrato_median": 3.0,
+        "rural_share": 0.0022,
+        "degree": 6,
+        "strength": 419
+      }
+    },
+    {
+      "id": "comuna:manrique",
+      "label": "Manrique",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -36.68,
+        "y": -5.43,
+        "z": -7.0
+      },
+      "metrics": {
+        "volume": 2115,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 17,
+        "strength": 2079
+      }
+    },
+    {
+      "id": "comuna:otras-comunas",
+      "label": "Otras Comunas",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": 13.97,
+        "y": 12.69,
+        "z": -17.74
+      },
+      "metrics": {
+        "volume": 4242,
+        "estrato_median": 2.0,
+        "rural_share": 0.024,
+        "degree": 22,
+        "strength": 4218
+      }
+    },
+    {
+      "id": "comuna:popular",
+      "label": "Popular",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -41.09,
+        "y": 19.41,
+        "z": 4.07
+      },
+      "metrics": {
+        "volume": 1145,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 11,
+        "strength": 1095
+      }
+    },
+    {
+      "id": "comuna:robledo",
+      "label": "Robledo",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": 26.67,
+        "y": -22.87,
+        "z": 12.87
+      },
+      "metrics": {
+        "volume": 2748,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 21,
+        "strength": 2713
+      }
+    },
+    {
+      "id": "comuna:san-antonio-de-prado",
+      "label": "San Antonio De Prado",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -25.51,
+        "y": -1.12,
+        "z": -35.04
+      },
+      "metrics": {
+        "volume": 800,
+        "estrato_median": 2.0,
+        "rural_share": 1.0,
+        "degree": 5,
+        "strength": 770
+      }
+    },
+    {
+      "id": "comuna:san-cristobal",
+      "label": "San Cristobal",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": 55.49,
+        "y": 12.0,
+        "z": -10.16
+      },
+      "metrics": {
+        "volume": 694,
+        "estrato_median": 2.0,
+        "rural_share": 1.0,
+        "degree": 12,
+        "strength": 676
+      }
+    },
+    {
+      "id": "comuna:san-javier",
+      "label": "San Javier",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": 20.72,
+        "y": -6.7,
+        "z": -36.11
+      },
+      "metrics": {
+        "volume": 1761,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 16,
+        "strength": 1731
+      }
+    },
+    {
+      "id": "comuna:santa-cruz",
+      "label": "Santa Cruz",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -8.83,
+        "y": 20.58,
+        "z": -31.89
+      },
+      "metrics": {
+        "volume": 1048,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 7,
+        "strength": 1020
+      }
+    },
+    {
+      "id": "comuna:villa-hermosa",
+      "label": "Villa Hermosa",
+      "type": "comuna",
+      "cluster": "territorio",
+      "position": {
+        "x": -9.2,
+        "y": 4.25,
+        "z": 38.27
+      },
+      "metrics": {
+        "volume": 1658,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 17,
+        "strength": 1629
+      }
+    },
+    {
+      "id": "colegio:cefa",
+      "label": "CEFA",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -18.18,
+        "y": 35.55,
+        "z": 21.08
+      },
+      "metrics": {
+        "volume": 478,
+        "estrato_median": 2.0,
+        "rural_share": 0.0565,
+        "degree": 21,
+        "strength": 949
+      }
+    },
+    {
+      "id": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "label": "Cencal (Colegio Nacional De Capacitacion Academica Y Laboral)",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 18.89,
+        "y": 27.62,
+        "z": -54.01
+      },
+      "metrics": {
+        "volume": 241,
+        "estrato_median": 2.0,
+        "rural_share": 0.1328,
+        "degree": 21,
+        "strength": 469
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-alfonso-lopez-pumarejo",
+      "label": "Institucion Educativa Alfonso Lopez Pumarejo",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -28.08,
+        "y": -28.25,
+        "z": 96.7
+      },
+      "metrics": {
+        "volume": 98,
+        "estrato_median": 2.0,
+        "rural_share": 0.0204,
+        "degree": 5,
+        "strength": 170
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-antonio-derka-santo-domingo",
+      "label": "Institucion Educativa Antonio Derka- Santo Domingo",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -100.0,
+        "y": 27.4,
+        "z": 28.23
+      },
+      "metrics": {
+        "volume": 84,
+        "estrato_median": 1.0,
+        "rural_share": 0.0119,
+        "degree": 4,
+        "strength": 148
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-asamblea-departamental",
+      "label": "Institucion Educativa Asamblea Departamental",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -19.3,
+        "y": 77.34,
+        "z": 74.25
+      },
+      "metrics": {
+        "volume": 93,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 5,
+        "strength": 171
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-atanasio-girardot",
+      "label": "Institucion Educativa Atanasio Girardot",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 90.92,
+        "y": 48.37,
+        "z": 30.25
+      },
+      "metrics": {
+        "volume": 86,
+        "estrato_median": 2.0,
+        "rural_share": 0.0116,
+        "degree": 8,
+        "strength": 151
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-concejo-de-medellin",
+      "label": "Institucion Educativa Concejo De Medellin",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 57.83,
+        "y": -37.71,
+        "z": -34.64
+      },
+      "metrics": {
+        "volume": 181,
+        "estrato_median": 2.0,
+        "rural_share": 0.011,
+        "degree": 11,
+        "strength": 344
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-diego-echavarria-misas",
+      "label": "Institucion Educativa Diego Echavarria Misas",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -9.63,
+        "y": -62.17,
+        "z": 4.91
+      },
+      "metrics": {
+        "volume": 201,
+        "estrato_median": 2.0,
+        "rural_share": 0.0697,
+        "degree": 11,
+        "strength": 379
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-fe-y-alegria-la-cima",
+      "label": "Institucion Educativa Fe Y Alegria La Cima",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -88.32,
+        "y": -41.98,
+        "z": -11.65
+      },
+      "metrics": {
+        "volume": 84,
+        "estrato_median": 2.0,
+        "rural_share": 0.0238,
+        "degree": 4,
+        "strength": 150
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-federico-ozanam",
+      "label": "Institucion Educativa Federico Ozanam",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 41.79,
+        "y": 25.67,
+        "z": 100.0
+      },
+      "metrics": {
+        "volume": 90,
+        "estrato_median": 3.0,
+        "rural_share": 0.0444,
+        "degree": 7,
+        "strength": 161
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-gilberto-alzate-avendano",
+      "label": "Institucion Educativa Gilberto Alzate Avendano",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -48.78,
+        "y": 75.12,
+        "z": -10.01
+      },
+      "metrics": {
+        "volume": 120,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 8,
+        "strength": 226
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-gonzalo-restrepo-jaramillo",
+      "label": "Institucion Educativa Gonzalo Restrepo Jaramillo",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 1.88,
+        "y": 23.07,
+        "z": 96.47
+      },
+      "metrics": {
+        "volume": 114,
+        "estrato_median": 2.0,
+        "rural_share": 0.0263,
+        "degree": 6,
+        "strength": 216
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-hector-abad-gomez",
+      "label": "Institucion Educativa Hector Abad Gomez",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -45.8,
+        "y": 19.95,
+        "z": 91.25
+      },
+      "metrics": {
+        "volume": 88,
+        "estrato_median": 2.0,
+        "rural_share": 0.0682,
+        "degree": 10,
+        "strength": 158
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "label": "Institucion Educativa INEM Jose Felix De Restrepo",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -22.36,
+        "y": -15.01,
+        "z": 15.39
+      },
+      "metrics": {
+        "volume": 436,
+        "estrato_median": 2.0,
+        "rural_share": 0.0619,
+        "degree": 22,
+        "strength": 862
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-javiera-londono",
+      "label": "Institucion Educativa Javiera Londono",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -35.05,
+        "y": 41.13,
+        "z": 49.78
+      },
+      "metrics": {
+        "volume": 176,
+        "estrato_median": 2.0,
+        "rural_share": 0.0341,
+        "degree": 13,
+        "strength": 339
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-jose-antonio-galan",
+      "label": "Institucion Educativa Jose Antonio Galan",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -44.76,
+        "y": 13.35,
+        "z": -76.81
+      },
+      "metrics": {
+        "volume": 87,
+        "estrato_median": 2.0,
+        "rural_share": 0.0575,
+        "degree": 10,
+        "strength": 158
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-jose-celestino-mutis",
+      "label": "Institucion Educativa Jose Celestino Mutis",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -63.84,
+        "y": -41.97,
+        "z": 53.18
+      },
+      "metrics": {
+        "volume": 92,
+        "estrato_median": 2.0,
+        "rural_share": 0.0109,
+        "degree": 9,
+        "strength": 162
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-jose-maria-bernal",
+      "label": "Institucion Educativa Jose Maria Bernal",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 28.79,
+        "y": 84.4,
+        "z": -6.09
+      },
+      "metrics": {
+        "volume": 125,
+        "estrato_median": 2.0,
+        "rural_share": 0.048,
+        "degree": 8,
+        "strength": 227
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-jose-roberto-vasquez-barrio-manrique",
+      "label": "Institucion Educativa Jose Roberto Vasquez Barrio Manrique",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -88.82,
+        "y": 11.18,
+        "z": -17.78
+      },
+      "metrics": {
+        "volume": 98,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 6,
+        "strength": 183
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-la-milagrosa",
+      "label": "Institucion Educativa La Milagrosa",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 31.51,
+        "y": 87.46,
+        "z": 55.66
+      },
+      "metrics": {
+        "volume": 91,
+        "estrato_median": 2.0,
+        "rural_share": 0.0,
+        "degree": 6,
+        "strength": 169
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-lola-gonzalez",
+      "label": "Institucion Educativa Lola Gonzalez",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 27.66,
+        "y": -21.63,
+        "z": -68.42
+      },
+      "metrics": {
+        "volume": 165,
+        "estrato_median": 2.0,
+        "rural_share": 0.0667,
+        "degree": 9,
+        "strength": 320
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-luis-carlos-galan-sarmiento",
+      "label": "Institucion Educativa Luis Carlos Galan Sarmiento",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 2.96,
+        "y": -41.2,
+        "z": 73.93
+      },
+      "metrics": {
+        "volume": 126,
+        "estrato_median": 2.0,
+        "rural_share": 0.0476,
+        "degree": 9,
+        "strength": 235
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-marco-fidel-suarez",
+      "label": "Institucion Educativa Marco Fidel Suarez",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 81.29,
+        "y": -15.54,
+        "z": -3.18
+      },
+      "metrics": {
+        "volume": 148,
+        "estrato_median": 2.0,
+        "rural_share": 0.0811,
+        "degree": 13,
+        "strength": 280
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-mariscal-robledo",
+      "label": "Institucion Educativa Mariscal Robledo",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 28.21,
+        "y": -93.56,
+        "z": 18.95
+      },
+      "metrics": {
+        "volume": 91,
+        "estrato_median": 2.0,
+        "rural_share": 0.033,
+        "degree": 6,
+        "strength": 163
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-miraflores-luis-eduardo-valencia-garcia",
+      "label": "Institucion Educativa Miraflores Luis Eduardo Valencia Garcia",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 19.39,
+        "y": 57.78,
+        "z": 82.33
+      },
+      "metrics": {
+        "volume": 106,
+        "estrato_median": 2.0,
+        "rural_share": 0.0094,
+        "degree": 6,
+        "strength": 197
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-rafael-uribe-uribe",
+      "label": "Institucion Educativa Rafael Uribe Uribe",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 74.01,
+        "y": 16.09,
+        "z": -74.94
+      },
+      "metrics": {
+        "volume": 94,
+        "estrato_median": 2.0,
+        "rural_share": 0.2234,
+        "degree": 9,
+        "strength": 164
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-san-jose",
+      "label": "Institucion Educativa San Jose",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -2.64,
+        "y": -49.09,
+        "z": -46.91
+      },
+      "metrics": {
+        "volume": 146,
+        "estrato_median": 2.0,
+        "rural_share": 0.1164,
+        "degree": 15,
+        "strength": 270
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-san-luis-gonzaga",
+      "label": "Institucion Educativa San Luis Gonzaga",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 7.86,
+        "y": 74.11,
+        "z": -50.31
+      },
+      "metrics": {
+        "volume": 114,
+        "estrato_median": 2.0,
+        "rural_share": 0.0614,
+        "degree": 11,
+        "strength": 200
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-san-vicente-de-paul",
+      "label": "Institucion Educativa San Vicente De Paul",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 63.26,
+        "y": -69.58,
+        "z": 48.97
+      },
+      "metrics": {
+        "volume": 82,
+        "estrato_median": 2.0,
+        "rural_share": 0.0122,
+        "degree": 7,
+        "strength": 150
+      }
+    },
+    {
+      "id": "colegio:institucion-educativa-yermo-y-parres",
+      "label": "Institucion Educativa Yermo Y Parres",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 66.82,
+        "y": 90.96,
+        "z": -11.55
+      },
+      "metrics": {
+        "volume": 88,
+        "estrato_median": 3.0,
+        "rural_share": 0.125,
+        "degree": 6,
+        "strength": 161
+      }
+    },
+    {
+      "id": "colegio:instituto-corferrini",
+      "label": "Instituto Corferrini",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 81.95,
+        "y": -0.21,
+        "z": 40.2
+      },
+      "metrics": {
+        "volume": 115,
+        "estrato_median": 2.0,
+        "rural_share": 0.1217,
+        "degree": 13,
+        "strength": 206
+      }
+    },
+    {
+      "id": "colegio:instituto-ferrini",
+      "label": "Instituto Ferrini",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 41.93,
+        "y": -6.77,
+        "z": 40.65
+      },
+      "metrics": {
+        "volume": 259,
+        "estrato_median": 2.0,
+        "rural_share": 0.0965,
+        "degree": 17,
+        "strength": 497
+      }
+    },
+    {
+      "id": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "label": "Instituto Tecnico Industrial Pascual Bravo",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 56.91,
+        "y": -43.91,
+        "z": 23.24
+      },
+      "metrics": {
+        "volume": 179,
+        "estrato_median": 2.0,
+        "rural_share": 0.0559,
+        "degree": 12,
+        "strength": 336
+      }
+    },
+    {
+      "id": "colegio:instituto-tecnologico-metropolitano-itm",
+      "label": "Instituto Tecnologico Metropolitano - ITM",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 30.93,
+        "y": -62.15,
+        "z": 0.91
+      },
+      "metrics": {
+        "volume": 163,
+        "estrato_median": 2.0,
+        "rural_share": 0.0736,
+        "degree": 16,
+        "strength": 303
+      }
+    },
+    {
+      "id": "colegio:liceo-salazar-y-herrera",
+      "label": "Liceo Salazar Y Herrera",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": 85.64,
+        "y": 24.51,
+        "z": -29.04
+      },
+      "metrics": {
+        "volume": 130,
+        "estrato_median": 3.0,
+        "rural_share": 0.0769,
+        "degree": 11,
+        "strength": 231
+      }
+    },
+    {
+      "id": "colegio:otros-colegios",
+      "label": "Otros Colegios",
+      "type": "colegio",
+      "cluster": "origen_academico",
+      "position": {
+        "x": -10.2,
+        "y": 1.15,
+        "z": -10.84
+      },
+      "metrics": {
+        "volume": 23945,
+        "estrato_median": 2.0,
+        "rural_share": 0.1007,
+        "degree": 25,
+        "strength": 47890
+      }
+    },
+    {
+      "id": "facultad:facultad-de-artes-y-humanidades",
+      "label": "Facultad De Artes Y Humanidades",
+      "type": "facultad",
+      "cluster": "destino_academico",
+      "position": {
+        "x": 33.22,
+        "y": -3.59,
+        "z": -5.69
+      },
+      "metrics": {
+        "volume": 2794,
+        "estrato_median": 2.0,
+        "rural_share": 0.0923,
+        "degree": 31,
+        "strength": 2778
+      }
+    },
+    {
+      "id": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "label": "Facultad De Ciencias Economicas Y Administrativas",
+      "type": "facultad",
+      "cluster": "destino_academico",
+      "position": {
+        "x": 6.41,
+        "y": 27.59,
+        "z": 15.59
+      },
+      "metrics": {
+        "volume": 12403,
+        "estrato_median": 2.0,
+        "rural_share": 0.0918,
+        "degree": 36,
+        "strength": 12403
+      }
+    },
+    {
+      "id": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "label": "Facultad De Ciencias Exactas Y Aplicadas",
+      "type": "facultad",
+      "cluster": "destino_academico",
+      "position": {
+        "x": 2.6,
+        "y": -17.89,
+        "z": 26.44
+      },
+      "metrics": {
+        "volume": 3472,
+        "estrato_median": 2.0,
+        "rural_share": 0.1097,
+        "degree": 36,
+        "strength": 3472
+      }
+    },
+    {
+      "id": "facultad:facultad-de-ingenierias",
+      "label": "Facultad De Ingenierias",
+      "type": "facultad",
+      "cluster": "destino_academico",
+      "position": {
+        "x": 9.85,
+        "y": 1.31,
+        "z": 8.06
+      },
+      "metrics": {
+        "volume": 10345,
+        "estrato_median": 2.0,
+        "rural_share": 0.0903,
+        "degree": 36,
+        "strength": 10345
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "comuna:altavista",
+      "target": "colegio:cefa",
+      "weight": 7
+    },
+    {
+      "source": "comuna:altavista",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 11
+    },
+    {
+      "source": "comuna:altavista",
+      "target": "colegio:institucion-educativa-lola-gonzalez",
+      "weight": 5
+    },
+    {
+      "source": "comuna:altavista",
+      "target": "colegio:institucion-educativa-marco-fidel-suarez",
+      "weight": 8
+    },
+    {
+      "source": "comuna:altavista",
+      "target": "colegio:institucion-educativa-rafael-uribe-uribe",
+      "weight": 11
+    },
+    {
+      "source": "comuna:altavista",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 7
+    },
+    {
+      "source": "comuna:altavista",
+      "target": "colegio:institucion-educativa-yermo-y-parres",
+      "weight": 10
+    },
+    {
+      "source": "comuna:altavista",
+      "target": "colegio:instituto-corferrini",
+      "weight": 6
+    },
+    {
+      "source": "comuna:altavista",
+      "target": "colegio:otros-colegios",
+      "weight": 1014
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:cefa",
+      "weight": 42
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 17
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:institucion-educativa-concejo-de-medellin",
+      "weight": 5
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:institucion-educativa-gilberto-alzate-avendano",
+      "weight": 75
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 34
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:institucion-educativa-javiera-londono",
+      "weight": 18
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:institucion-educativa-jose-antonio-galan",
+      "weight": 10
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:institucion-educativa-jose-celestino-mutis",
+      "weight": 5
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:institucion-educativa-jose-roberto-vasquez-barrio-manrique",
+      "weight": 5
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 6
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:instituto-ferrini",
+      "weight": 10
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 9
+    },
+    {
+      "source": "comuna:aranjuez",
+      "target": "colegio:otros-colegios",
+      "weight": 1226
+    },
+    {
+      "source": "comuna:belen",
+      "target": "colegio:cefa",
+      "weight": 11
+    },
+    {
+      "source": "comuna:belen",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 15
+    },
+    {
+      "source": "comuna:belen",
+      "target": "colegio:institucion-educativa-concejo-de-medellin",
+      "weight": 7
+    },
+    {
+      "source": "comuna:belen",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 23
+    },
+    {
+      "source": "comuna:belen",
+      "target": "colegio:institucion-educativa-jose-maria-bernal",
+      "weight": 30
+    },
+    {
+      "source": "comuna:belen",
+      "target": "colegio:institucion-educativa-yermo-y-parres",
+      "weight": 63
+    },
+    {
+      "source": "comuna:belen",
+      "target": "colegio:instituto-ferrini",
+      "weight": 6
+    },
+    {
+      "source": "comuna:belen",
+      "target": "colegio:liceo-salazar-y-herrera",
+      "weight": 15
+    },
+    {
+      "source": "comuna:belen",
+      "target": "colegio:otros-colegios",
+      "weight": 942
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:cefa",
+      "weight": 19
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 18
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:institucion-educativa-atanasio-girardot",
+      "weight": 23
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:institucion-educativa-diego-echavarria-misas",
+      "weight": 27
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 23
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:institucion-educativa-la-milagrosa",
+      "weight": 11
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:institucion-educativa-marco-fidel-suarez",
+      "weight": 24
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 10
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:institucion-educativa-san-luis-gonzaga",
+      "weight": 8
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "weight": 8
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 7
+    },
+    {
+      "source": "comuna:bello",
+      "target": "colegio:otros-colegios",
+      "weight": 1790
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:cefa",
+      "weight": 76
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 14
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:institucion-educativa-asamblea-departamental",
+      "weight": 63
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:institucion-educativa-federico-ozanam",
+      "weight": 56
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:institucion-educativa-gonzalo-restrepo-jaramillo",
+      "weight": 71
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:institucion-educativa-hector-abad-gomez",
+      "weight": 27
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 42
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:institucion-educativa-javiera-londono",
+      "weight": 30
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:institucion-educativa-jose-maria-bernal",
+      "weight": 5
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:institucion-educativa-la-milagrosa",
+      "weight": 67
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:institucion-educativa-luis-carlos-galan-sarmiento",
+      "weight": 7
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:institucion-educativa-miraflores-luis-eduardo-valencia-garcia",
+      "weight": 66
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:instituto-corferrini",
+      "weight": 6
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:instituto-ferrini",
+      "weight": 37
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 6
+    },
+    {
+      "source": "comuna:buenos-aires",
+      "target": "colegio:otros-colegios",
+      "weight": 1400
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:cefa",
+      "weight": 21
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 13
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:institucion-educativa-diego-echavarria-misas",
+      "weight": 29
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 16
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:institucion-educativa-marco-fidel-suarez",
+      "weight": 6
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 7
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:instituto-corferrini",
+      "weight": 5
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:instituto-ferrini",
+      "weight": 9
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "weight": 13
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 31
+    },
+    {
+      "source": "comuna:castilla",
+      "target": "colegio:otros-colegios",
+      "weight": 1176
+    },
+    {
+      "source": "comuna:copacabana",
+      "target": "colegio:institucion-educativa-san-luis-gonzaga",
+      "weight": 28
+    },
+    {
+      "source": "comuna:copacabana",
+      "target": "colegio:otros-colegios",
+      "weight": 267
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:cefa",
+      "weight": 21
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 11
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:institucion-educativa-atanasio-girardot",
+      "weight": 7
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:institucion-educativa-concejo-de-medellin",
+      "weight": 6
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:institucion-educativa-diego-echavarria-misas",
+      "weight": 36
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 40
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:institucion-educativa-jose-antonio-galan",
+      "weight": 5
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:institucion-educativa-marco-fidel-suarez",
+      "weight": 11
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:institucion-educativa-san-luis-gonzaga",
+      "weight": 5
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:institucion-educativa-san-vicente-de-paul",
+      "weight": 12
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:instituto-corferrini",
+      "weight": 6
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:instituto-ferrini",
+      "weight": 19
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "weight": 39
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 11
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:liceo-salazar-y-herrera",
+      "weight": 5
+    },
+    {
+      "source": "comuna:doce-de-octubre",
+      "target": "colegio:otros-colegios",
+      "weight": 1137
+    },
+    {
+      "source": "comuna:guayabal",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 7
+    },
+    {
+      "source": "comuna:guayabal",
+      "target": "colegio:institucion-educativa-diego-echavarria-misas",
+      "weight": 5
+    },
+    {
+      "source": "comuna:guayabal",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 12
+    },
+    {
+      "source": "comuna:guayabal",
+      "target": "colegio:otros-colegios",
+      "weight": 289
+    },
+    {
+      "source": "comuna:itagui",
+      "target": "colegio:institucion-educativa-diego-echavarria-misas",
+      "weight": 51
+    },
+    {
+      "source": "comuna:itagui",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 16
+    },
+    {
+      "source": "comuna:itagui",
+      "target": "colegio:institucion-educativa-luis-carlos-galan-sarmiento",
+      "weight": 14
+    },
+    {
+      "source": "comuna:itagui",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 19
+    },
+    {
+      "source": "comuna:itagui",
+      "target": "colegio:otros-colegios",
+      "weight": 598
+    },
+    {
+      "source": "comuna:la-america",
+      "target": "colegio:cefa",
+      "weight": 5
+    },
+    {
+      "source": "comuna:la-america",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 6
+    },
+    {
+      "source": "comuna:la-america",
+      "target": "colegio:institucion-educativa-concejo-de-medellin",
+      "weight": 36
+    },
+    {
+      "source": "comuna:la-america",
+      "target": "colegio:institucion-educativa-lola-gonzalez",
+      "weight": 18
+    },
+    {
+      "source": "comuna:la-america",
+      "target": "colegio:institucion-educativa-marco-fidel-suarez",
+      "weight": 6
+    },
+    {
+      "source": "comuna:la-america",
+      "target": "colegio:institucion-educativa-rafael-uribe-uribe",
+      "weight": 14
+    },
+    {
+      "source": "comuna:la-america",
+      "target": "colegio:instituto-ferrini",
+      "weight": 10
+    },
+    {
+      "source": "comuna:la-america",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 7
+    },
+    {
+      "source": "comuna:la-america",
+      "target": "colegio:liceo-salazar-y-herrera",
+      "weight": 26
+    },
+    {
+      "source": "comuna:la-america",
+      "target": "colegio:otros-colegios",
+      "weight": 322
+    },
+    {
+      "source": "comuna:la-candelaria",
+      "target": "colegio:cefa",
+      "weight": 15
+    },
+    {
+      "source": "comuna:la-candelaria",
+      "target": "colegio:institucion-educativa-federico-ozanam",
+      "weight": 5
+    },
+    {
+      "source": "comuna:la-candelaria",
+      "target": "colegio:institucion-educativa-hector-abad-gomez",
+      "weight": 15
+    },
+    {
+      "source": "comuna:la-candelaria",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 13
+    },
+    {
+      "source": "comuna:la-candelaria",
+      "target": "colegio:institucion-educativa-javiera-londono",
+      "weight": 15
+    },
+    {
+      "source": "comuna:la-candelaria",
+      "target": "colegio:otros-colegios",
+      "weight": 356
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:cefa",
+      "weight": 57
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 16
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:institucion-educativa-alfonso-lopez-pumarejo",
+      "weight": 5
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:institucion-educativa-fe-y-alegria-la-cima",
+      "weight": 68
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:institucion-educativa-gilberto-alzate-avendano",
+      "weight": 6
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:institucion-educativa-hector-abad-gomez",
+      "weight": 6
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 42
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:institucion-educativa-javiera-londono",
+      "weight": 13
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:institucion-educativa-jose-antonio-galan",
+      "weight": 19
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:institucion-educativa-jose-celestino-mutis",
+      "weight": 16
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:institucion-educativa-jose-maria-bernal",
+      "weight": 5
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:institucion-educativa-jose-roberto-vasquez-barrio-manrique",
+      "weight": 80
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:instituto-corferrini",
+      "weight": 5
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:instituto-ferrini",
+      "weight": 11
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "weight": 5
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 12
+    },
+    {
+      "source": "comuna:manrique",
+      "target": "colegio:otros-colegios",
+      "weight": 1713
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:cefa",
+      "weight": 12
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 21
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-atanasio-girardot",
+      "weight": 30
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-concejo-de-medellin",
+      "weight": 9
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-diego-echavarria-misas",
+      "weight": 20
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-hector-abad-gomez",
+      "weight": 5
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 25
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-jose-antonio-galan",
+      "weight": 25
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-jose-celestino-mutis",
+      "weight": 10
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-jose-maria-bernal",
+      "weight": 62
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-luis-carlos-galan-sarmiento",
+      "weight": 14
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-marco-fidel-suarez",
+      "weight": 26
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-rafael-uribe-uribe",
+      "weight": 16
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 43
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-san-luis-gonzaga",
+      "weight": 17
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:institucion-educativa-san-vicente-de-paul",
+      "weight": 5
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:instituto-corferrini",
+      "weight": 14
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:instituto-ferrini",
+      "weight": 11
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "weight": 5
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 17
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:liceo-salazar-y-herrera",
+      "weight": 11
+    },
+    {
+      "source": "comuna:otras-comunas",
+      "target": "colegio:otros-colegios",
+      "weight": 3820
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:cefa",
+      "weight": 22
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:institucion-educativa-antonio-derka-santo-domingo",
+      "weight": 68
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:institucion-educativa-gilberto-alzate-avendano",
+      "weight": 9
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 20
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:institucion-educativa-javiera-londono",
+      "weight": 5
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:institucion-educativa-jose-antonio-galan",
+      "weight": 5
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:institucion-educativa-jose-celestino-mutis",
+      "weight": 5
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 5
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:institucion-educativa-san-luis-gonzaga",
+      "weight": 5
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:instituto-ferrini",
+      "weight": 6
+    },
+    {
+      "source": "comuna:popular",
+      "target": "colegio:otros-colegios",
+      "weight": 945
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:cefa",
+      "weight": 43
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 25
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-concejo-de-medellin",
+      "weight": 31
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-hector-abad-gomez",
+      "weight": 5
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 32
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-javiera-londono",
+      "weight": 6
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-jose-antonio-galan",
+      "weight": 7
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-jose-celestino-mutis",
+      "weight": 6
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-lola-gonzalez",
+      "weight": 10
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-luis-carlos-galan-sarmiento",
+      "weight": 7
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-marco-fidel-suarez",
+      "weight": 33
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-mariscal-robledo",
+      "weight": 67
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 9
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-san-luis-gonzaga",
+      "weight": 14
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:institucion-educativa-san-vicente-de-paul",
+      "weight": 51
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:instituto-corferrini",
+      "weight": 33
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:instituto-ferrini",
+      "weight": 69
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "weight": 70
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 18
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:liceo-salazar-y-herrera",
+      "weight": 17
+    },
+    {
+      "source": "comuna:robledo",
+      "target": "colegio:otros-colegios",
+      "weight": 2160
+    },
+    {
+      "source": "comuna:san-antonio-de-prado",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 11
+    },
+    {
+      "source": "comuna:san-antonio-de-prado",
+      "target": "colegio:institucion-educativa-diego-echavarria-misas",
+      "weight": 10
+    },
+    {
+      "source": "comuna:san-antonio-de-prado",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 9
+    },
+    {
+      "source": "comuna:san-antonio-de-prado",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 6
+    },
+    {
+      "source": "comuna:san-antonio-de-prado",
+      "target": "colegio:otros-colegios",
+      "weight": 734
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:cefa",
+      "weight": 14
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 10
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 13
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:institucion-educativa-javiera-londono",
+      "weight": 5
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:institucion-educativa-lola-gonzalez",
+      "weight": 6
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:institucion-educativa-rafael-uribe-uribe",
+      "weight": 6
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:instituto-corferrini",
+      "weight": 7
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:instituto-ferrini",
+      "weight": 15
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "weight": 9
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 8
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:liceo-salazar-y-herrera",
+      "weight": 6
+    },
+    {
+      "source": "comuna:san-cristobal",
+      "target": "colegio:otros-colegios",
+      "weight": 577
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:cefa",
+      "weight": 21
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 18
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:institucion-educativa-concejo-de-medellin",
+      "weight": 69
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 17
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:institucion-educativa-javiera-londono",
+      "weight": 7
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:institucion-educativa-lola-gonzalez",
+      "weight": 116
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:institucion-educativa-marco-fidel-suarez",
+      "weight": 12
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:institucion-educativa-mariscal-robledo",
+      "weight": 5
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:institucion-educativa-rafael-uribe-uribe",
+      "weight": 23
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 7
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:institucion-educativa-san-luis-gonzaga",
+      "weight": 9
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:instituto-ferrini",
+      "weight": 24
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "weight": 8
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 6
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:liceo-salazar-y-herrera",
+      "weight": 21
+    },
+    {
+      "source": "comuna:san-javier",
+      "target": "colegio:otros-colegios",
+      "weight": 1368
+    },
+    {
+      "source": "comuna:santa-cruz",
+      "target": "colegio:cefa",
+      "weight": 18
+    },
+    {
+      "source": "comuna:santa-cruz",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 10
+    },
+    {
+      "source": "comuna:santa-cruz",
+      "target": "colegio:institucion-educativa-gilberto-alzate-avendano",
+      "weight": 16
+    },
+    {
+      "source": "comuna:santa-cruz",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 23
+    },
+    {
+      "source": "comuna:santa-cruz",
+      "target": "colegio:institucion-educativa-marco-fidel-suarez",
+      "weight": 6
+    },
+    {
+      "source": "comuna:santa-cruz",
+      "target": "colegio:instituto-corferrini",
+      "weight": 9
+    },
+    {
+      "source": "comuna:santa-cruz",
+      "target": "colegio:otros-colegios",
+      "weight": 938
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:cefa",
+      "weight": 67
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "weight": 5
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-alfonso-lopez-pumarejo",
+      "weight": 69
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-asamblea-departamental",
+      "weight": 19
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-atanasio-girardot",
+      "weight": 5
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-federico-ozanam",
+      "weight": 10
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-gonzalo-restrepo-jaramillo",
+      "weight": 31
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-hector-abad-gomez",
+      "weight": 12
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "weight": 26
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-javiera-londono",
+      "weight": 64
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-jose-celestino-mutis",
+      "weight": 32
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-luis-carlos-galan-sarmiento",
+      "weight": 67
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-miraflores-luis-eduardo-valencia-garcia",
+      "weight": 25
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:institucion-educativa-san-jose",
+      "weight": 5
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:instituto-ferrini",
+      "weight": 11
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:instituto-tecnologico-metropolitano-itm",
+      "weight": 8
+    },
+    {
+      "source": "comuna:villa-hermosa",
+      "target": "colegio:otros-colegios",
+      "weight": 1173
+    },
+    {
+      "source": "colegio:cefa",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 42
+    },
+    {
+      "source": "colegio:cefa",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 286
+    },
+    {
+      "source": "colegio:cefa",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 67
+    },
+    {
+      "source": "colegio:cefa",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 83
+    },
+    {
+      "source": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 30
+    },
+    {
+      "source": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 101
+    },
+    {
+      "source": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 25
+    },
+    {
+      "source": "colegio:cencal-colegio-nacional-de-capacitacion-academica-y-laboral",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 85
+    },
+    {
+      "source": "colegio:institucion-educativa-alfonso-lopez-pumarejo",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 47
+    },
+    {
+      "source": "colegio:institucion-educativa-alfonso-lopez-pumarejo",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 15
+    },
+    {
+      "source": "colegio:institucion-educativa-alfonso-lopez-pumarejo",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 34
+    },
+    {
+      "source": "colegio:institucion-educativa-antonio-derka-santo-domingo",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 44
+    },
+    {
+      "source": "colegio:institucion-educativa-antonio-derka-santo-domingo",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 9
+    },
+    {
+      "source": "colegio:institucion-educativa-antonio-derka-santo-domingo",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 27
+    },
+    {
+      "source": "colegio:institucion-educativa-asamblea-departamental",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 43
+    },
+    {
+      "source": "colegio:institucion-educativa-asamblea-departamental",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 8
+    },
+    {
+      "source": "colegio:institucion-educativa-asamblea-departamental",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 38
+    },
+    {
+      "source": "colegio:institucion-educativa-atanasio-girardot",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 9
+    },
+    {
+      "source": "colegio:institucion-educativa-atanasio-girardot",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 41
+    },
+    {
+      "source": "colegio:institucion-educativa-atanasio-girardot",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 5
+    },
+    {
+      "source": "colegio:institucion-educativa-atanasio-girardot",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 31
+    },
+    {
+      "source": "colegio:institucion-educativa-concejo-de-medellin",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 31
+    },
+    {
+      "source": "colegio:institucion-educativa-concejo-de-medellin",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 43
+    },
+    {
+      "source": "colegio:institucion-educativa-concejo-de-medellin",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 25
+    },
+    {
+      "source": "colegio:institucion-educativa-concejo-de-medellin",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 82
+    },
+    {
+      "source": "colegio:institucion-educativa-diego-echavarria-misas",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 26
+    },
+    {
+      "source": "colegio:institucion-educativa-diego-echavarria-misas",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 62
+    },
+    {
+      "source": "colegio:institucion-educativa-diego-echavarria-misas",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 36
+    },
+    {
+      "source": "colegio:institucion-educativa-diego-echavarria-misas",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 77
+    },
+    {
+      "source": "colegio:institucion-educativa-fe-y-alegria-la-cima",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 46
+    },
+    {
+      "source": "colegio:institucion-educativa-fe-y-alegria-la-cima",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 14
+    },
+    {
+      "source": "colegio:institucion-educativa-fe-y-alegria-la-cima",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 22
+    },
+    {
+      "source": "colegio:institucion-educativa-federico-ozanam",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 5
+    },
+    {
+      "source": "colegio:institucion-educativa-federico-ozanam",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 37
+    },
+    {
+      "source": "colegio:institucion-educativa-federico-ozanam",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 7
+    },
+    {
+      "source": "colegio:institucion-educativa-federico-ozanam",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 41
+    },
+    {
+      "source": "colegio:institucion-educativa-gilberto-alzate-avendano",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 20
+    },
+    {
+      "source": "colegio:institucion-educativa-gilberto-alzate-avendano",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 57
+    },
+    {
+      "source": "colegio:institucion-educativa-gilberto-alzate-avendano",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 10
+    },
+    {
+      "source": "colegio:institucion-educativa-gilberto-alzate-avendano",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 33
+    },
+    {
+      "source": "colegio:institucion-educativa-gonzalo-restrepo-jaramillo",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 7
+    },
+    {
+      "source": "colegio:institucion-educativa-gonzalo-restrepo-jaramillo",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 71
+    },
+    {
+      "source": "colegio:institucion-educativa-gonzalo-restrepo-jaramillo",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 12
+    },
+    {
+      "source": "colegio:institucion-educativa-gonzalo-restrepo-jaramillo",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 24
+    },
+    {
+      "source": "colegio:institucion-educativa-hector-abad-gomez",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 7
+    },
+    {
+      "source": "colegio:institucion-educativa-hector-abad-gomez",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 31
+    },
+    {
+      "source": "colegio:institucion-educativa-hector-abad-gomez",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 8
+    },
+    {
+      "source": "colegio:institucion-educativa-hector-abad-gomez",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 42
+    },
+    {
+      "source": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 65
+    },
+    {
+      "source": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 143
+    },
+    {
+      "source": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 63
+    },
+    {
+      "source": "colegio:institucion-educativa-inem-jose-felix-de-restrepo",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 165
+    },
+    {
+      "source": "colegio:institucion-educativa-javiera-londono",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 19
+    },
+    {
+      "source": "colegio:institucion-educativa-javiera-londono",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 87
+    },
+    {
+      "source": "colegio:institucion-educativa-javiera-londono",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 13
+    },
+    {
+      "source": "colegio:institucion-educativa-javiera-londono",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 57
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-antonio-galan",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 11
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-antonio-galan",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 26
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-antonio-galan",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 12
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-antonio-galan",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 38
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-celestino-mutis",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 39
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-celestino-mutis",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 8
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-celestino-mutis",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 41
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-maria-bernal",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 15
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-maria-bernal",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 48
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-maria-bernal",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 19
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-maria-bernal",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 43
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-roberto-vasquez-barrio-manrique",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 6
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-roberto-vasquez-barrio-manrique",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 62
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-roberto-vasquez-barrio-manrique",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 8
+    },
+    {
+      "source": "colegio:institucion-educativa-jose-roberto-vasquez-barrio-manrique",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 22
+    },
+    {
+      "source": "colegio:institucion-educativa-la-milagrosa",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 8
+    },
+    {
+      "source": "colegio:institucion-educativa-la-milagrosa",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 42
+    },
+    {
+      "source": "colegio:institucion-educativa-la-milagrosa",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 7
+    },
+    {
+      "source": "colegio:institucion-educativa-la-milagrosa",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 34
+    },
+    {
+      "source": "colegio:institucion-educativa-lola-gonzalez",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 13
+    },
+    {
+      "source": "colegio:institucion-educativa-lola-gonzalez",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 80
+    },
+    {
+      "source": "colegio:institucion-educativa-lola-gonzalez",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 21
+    },
+    {
+      "source": "colegio:institucion-educativa-lola-gonzalez",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 51
+    },
+    {
+      "source": "colegio:institucion-educativa-luis-carlos-galan-sarmiento",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 6
+    },
+    {
+      "source": "colegio:institucion-educativa-luis-carlos-galan-sarmiento",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 63
+    },
+    {
+      "source": "colegio:institucion-educativa-luis-carlos-galan-sarmiento",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 13
+    },
+    {
+      "source": "colegio:institucion-educativa-luis-carlos-galan-sarmiento",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 44
+    },
+    {
+      "source": "colegio:institucion-educativa-marco-fidel-suarez",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 10
+    },
+    {
+      "source": "colegio:institucion-educativa-marco-fidel-suarez",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 62
+    },
+    {
+      "source": "colegio:institucion-educativa-marco-fidel-suarez",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 17
+    },
+    {
+      "source": "colegio:institucion-educativa-marco-fidel-suarez",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 59
+    },
+    {
+      "source": "colegio:institucion-educativa-mariscal-robledo",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 10
+    },
+    {
+      "source": "colegio:institucion-educativa-mariscal-robledo",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 31
+    },
+    {
+      "source": "colegio:institucion-educativa-mariscal-robledo",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 15
+    },
+    {
+      "source": "colegio:institucion-educativa-mariscal-robledo",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 35
+    },
+    {
+      "source": "colegio:institucion-educativa-miraflores-luis-eduardo-valencia-garcia",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 9
+    },
+    {
+      "source": "colegio:institucion-educativa-miraflores-luis-eduardo-valencia-garcia",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 42
+    },
+    {
+      "source": "colegio:institucion-educativa-miraflores-luis-eduardo-valencia-garcia",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 9
+    },
+    {
+      "source": "colegio:institucion-educativa-miraflores-luis-eduardo-valencia-garcia",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 46
+    },
+    {
+      "source": "colegio:institucion-educativa-rafael-uribe-uribe",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 14
+    },
+    {
+      "source": "colegio:institucion-educativa-rafael-uribe-uribe",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 27
+    },
+    {
+      "source": "colegio:institucion-educativa-rafael-uribe-uribe",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 11
+    },
+    {
+      "source": "colegio:institucion-educativa-rafael-uribe-uribe",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 42
+    },
+    {
+      "source": "colegio:institucion-educativa-san-jose",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 12
+    },
+    {
+      "source": "colegio:institucion-educativa-san-jose",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 78
+    },
+    {
+      "source": "colegio:institucion-educativa-san-jose",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 13
+    },
+    {
+      "source": "colegio:institucion-educativa-san-jose",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 43
+    },
+    {
+      "source": "colegio:institucion-educativa-san-luis-gonzaga",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 7
+    },
+    {
+      "source": "colegio:institucion-educativa-san-luis-gonzaga",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 45
+    },
+    {
+      "source": "colegio:institucion-educativa-san-luis-gonzaga",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 17
+    },
+    {
+      "source": "colegio:institucion-educativa-san-luis-gonzaga",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 45
+    },
+    {
+      "source": "colegio:institucion-educativa-san-vicente-de-paul",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 10
+    },
+    {
+      "source": "colegio:institucion-educativa-san-vicente-de-paul",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 42
+    },
+    {
+      "source": "colegio:institucion-educativa-san-vicente-de-paul",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 5
+    },
+    {
+      "source": "colegio:institucion-educativa-san-vicente-de-paul",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 25
+    },
+    {
+      "source": "colegio:institucion-educativa-yermo-y-parres",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 12
+    },
+    {
+      "source": "colegio:institucion-educativa-yermo-y-parres",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 34
+    },
+    {
+      "source": "colegio:institucion-educativa-yermo-y-parres",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 12
+    },
+    {
+      "source": "colegio:institucion-educativa-yermo-y-parres",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 30
+    },
+    {
+      "source": "colegio:instituto-corferrini",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 7
+    },
+    {
+      "source": "colegio:instituto-corferrini",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 59
+    },
+    {
+      "source": "colegio:instituto-corferrini",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 9
+    },
+    {
+      "source": "colegio:instituto-corferrini",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 40
+    },
+    {
+      "source": "colegio:instituto-ferrini",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 25
+    },
+    {
+      "source": "colegio:instituto-ferrini",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 94
+    },
+    {
+      "source": "colegio:instituto-ferrini",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 35
+    },
+    {
+      "source": "colegio:instituto-ferrini",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 105
+    },
+    {
+      "source": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 30
+    },
+    {
+      "source": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 38
+    },
+    {
+      "source": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 21
+    },
+    {
+      "source": "colegio:instituto-tecnico-industrial-pascual-bravo",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 90
+    },
+    {
+      "source": "colegio:instituto-tecnologico-metropolitano-itm",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 16
+    },
+    {
+      "source": "colegio:instituto-tecnologico-metropolitano-itm",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 68
+    },
+    {
+      "source": "colegio:instituto-tecnologico-metropolitano-itm",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 22
+    },
+    {
+      "source": "colegio:instituto-tecnologico-metropolitano-itm",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 57
+    },
+    {
+      "source": "colegio:liceo-salazar-y-herrera",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 25
+    },
+    {
+      "source": "colegio:liceo-salazar-y-herrera",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 37
+    },
+    {
+      "source": "colegio:liceo-salazar-y-herrera",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 13
+    },
+    {
+      "source": "colegio:liceo-salazar-y-herrera",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 55
+    },
+    {
+      "source": "colegio:otros-colegios",
+      "target": "facultad:facultad-de-artes-y-humanidades",
+      "weight": 2271
+    },
+    {
+      "source": "colegio:otros-colegios",
+      "target": "facultad:facultad-de-ciencias-economicas-y-administrativas",
+      "weight": 10247
+    },
+    {
+      "source": "colegio:otros-colegios",
+      "target": "facultad:facultad-de-ciencias-exactas-y-aplicadas",
+      "weight": 2868
+    },
+    {
+      "source": "colegio:otros-colegios",
+      "target": "facultad:facultad-de-ingenierias",
+      "weight": 8559
+    }
+  ]
+}

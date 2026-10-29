@@ -539,6 +539,7 @@ export function AppV2() {
                   className="fallback-tag"
                   title="Análisis generado por el motor topológico determinista local (alta disponibilidad ante saturación temporal de la nube)"
                 >
+                  <span>⚡</span> Síntesis Topológica Local
                 </div>
               )}
               {msg.command && msg.command.target_node_id && (

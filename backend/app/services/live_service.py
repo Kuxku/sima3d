@@ -66,17 +66,25 @@ class GeminiLiveBridge:
             "     * Si menciona un grupo o ranking (ej: 'las 3 comunas con más flujo', 'colegios destacados'): invoca 'highlight_nodes' pasando los IDs correspondientes.\n"
             "     * Si menciona un tipo de entidad (ej: 'muestra facultades', 'ver comunas'): invoca 'filter_by_type' con 'facultad', 'comuna' o 'colegio'.\n"
             "     * Si pide resetear o ver el panorama general: invoca 'reset_view'.\n"
-            "2. Responde SIEMPRE en español de Colombia, con tono profesional, claro y conciso (1 a 2 oraciones breves).\n"
-            "3. Basa todas tus afirmaciones estrictamente en los datos del contexto topológico proporcionado. Nunca inventes cifras.\n\n"
+            "2. Responde SIEMPRE en español de Colombia, con tono ejecutivo, profesional y ultra-conciso (máximo 1 o 2 oraciones breves).\n"
+            "3. Basa todas tus afirmaciones estrictamente en los datos del contexto topológico proporcionado. Nunca inventes cifras.\n"
+            "   Solo menciona posiciones ('la segunda', 'la quinta'...) si aparecen literalmente en RANKINGS o en el campo 'ranking' de la herramienta; si no, menciona solo el volumen.\n"
+            "4. NUNCA hables en inglés ni menciones tu proceso de pensamiento o herramientas internas. Habla directo al grano.\n"
+            "5. ORDEN DEL TURNO: invoca la herramienta visual de inmediato y responde con UNA sola intervención usando los datos del contexto. Nunca repitas una frase.\n\n"
             f"CONTEXTO TOPOLÓGICO ACTUAL:\n{network_context}"
         )
 
         if selected_node_id and selected_node_id != "string":
             sys_instruction += f"\n\nEL USUARIO TIENE SELECCIONADO EL NODO ID: {selected_node_id}"
 
-        # 2. Configurar LiveConnectConfig
+        # 2. Configurar LiveConnectConfig con latencia ultra-baja y transcripción nativa
         config = types.LiveConnectConfig(
             response_modalities=["AUDIO"],
+            thinking_config=types.ThinkingConfig(thinking_budget=0),
+            output_audio_transcription=types.AudioTranscriptionConfig(),
+            input_audio_transcription=types.AudioTranscriptionConfig(),
+            max_output_tokens=settings.GEMINI_LIVE_MAX_OUTPUT_TOKENS,
+            temperature=settings.GEMINI_TEMPERATURE,
             speech_config=types.SpeechConfig(
                 voice_config=types.VoiceConfig(
                     prebuilt_voice_config=types.PrebuiltVoiceConfig(
@@ -87,7 +95,7 @@ class GeminiLiveBridge:
             system_instruction=types.Content(
                 parts=[types.Part.from_text(text=sys_instruction)]
             ),
-            tools=action_registry.get_gemini_tools()
+            tools=action_registry.get_gemini_tools(non_blocking=True)
         )
 
         logger.info(f"Iniciando Gemini Live session {self.session_id} con modelo {settings.GEMINI_LIVE_MODEL}")
@@ -236,11 +244,13 @@ class GeminiLiveBridge:
                             "highlighted_node_ids": result.highlighted_node_ids
                         })
 
-                        # Responder a Gemini Live dentro de la misma sesión persistente
+                        # Responder a Gemini Live en modo SILENT: el resultado queda en contexto
+                        # sin disparar un segundo turno hablado (evita frases repetidas)
                         await session.send_tool_response(
                             function_responses=[types.FunctionResponse(
                                 id=fc.id,
                                 name=fc.name,
+                                scheduling=types.FunctionResponseScheduling.SILENT,
                                 response={
                                     "result": result.data,
                                     "confirmation": result.confirmation
@@ -260,8 +270,8 @@ class GeminiLiveBridge:
                     # Turno del modelo
                     if content.model_turn and content.model_turn.parts:
                         for part in content.model_turn.parts:
-                            # Texto explicativo (si lo emite el modelo)
-                            if part.text:
+                            # Texto explicativo (filtrar pensamientos internos de Gemini)
+                            if part.text and not getattr(part, "thought", False):
                                 await self.websocket.send_json({
                                     "type": "text",
                                     "text": part.text
@@ -276,12 +286,23 @@ class GeminiLiveBridge:
                                     "mime_type": part.inline_data.mime_type or "audio/pcm;rate=24000"
                                 })
 
-                    # Transcripción del audio del usuario (VAD de Gemini)
+                    # Transcripción del audio de salida en español (lo que Jarvis está hablando)
+                    if content.output_transcription:
+                        out_text = content.output_transcription.text if hasattr(content.output_transcription, "text") else str(content.output_transcription)
+                        if out_text:
+                            await self.websocket.send_json({
+                                "type": "text",
+                                "text": out_text
+                            })
+
+                    # Transcripción del audio del usuario (lo que habló el usuario)
                     if content.input_transcription:
-                        await self.websocket.send_json({
-                            "type": "user_transcript",
-                            "text": content.input_transcription
-                        })
+                        in_text = content.input_transcription.text if hasattr(content.input_transcription, "text") else str(content.input_transcription)
+                        if in_text:
+                            await self.websocket.send_json({
+                                "type": "user_transcript",
+                                "text": in_text
+                            })
 
                     # Fin de turno
                     if content.turn_complete:

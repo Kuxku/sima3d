@@ -1,1 +1,28 @@
+# Environment & Secrets
 .env
+.env.local
+.env.*.local
+backend/.env
+
+# Raw data (never version raw student records)
+data/raw/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+frontend/.next/
+
+# IDE / OS
+.vscode/
+.DS_Store
+Thumbs.db

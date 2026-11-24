@@ -1,11 +1,12 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useState, useRef, useMemo, useCallback, memo } from 'react';
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { GraphService, CopilotService } from './services/api';
-import type { GraphPayload, GraphNode, CameraCommand } from './types/graph';
+import type { GraphPayload, GraphNode } from './types/graph';
 import { NetworkGraph } from './components/NetworkGraph';
 import { JarvisVoiceAssistant } from './components/JarvisVoiceAssistant';
+import { ChatPanel, type ChatMessage } from './components/ChatPanel';
 import type { JarvisActionPayload } from './hooks/useJarvisVoice';
 import * as THREE from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
@@ -80,11 +81,9 @@ function CameraRig({
   useEffect(() => {
     if (targetPos) {
       desiredTarget.current.copy(targetPos);
-      // Nos acercamos a una distancia de 9 unidades frente al nodo objetivo
       desiredCameraPos.current.set(targetPos.x, targetPos.y + 1.5, targetPos.z + 9);
       isAnimating.current = true;
     } else {
-      // Vista general en Z: 30
       desiredTarget.current.set(0, 0, 0);
       desiredCameraPos.current.set(0, 0, 30);
       isAnimating.current = true;
@@ -110,17 +109,68 @@ function CameraRig({
   return null;
 }
 
-interface ChatMessage {
-  sender: 'user' | 'bot';
-  text: string;
-  command?: CameraCommand | null;
+// Subcomponente memoizado del Canvas 3D para evitar re-renderizados innecesarios
+interface SceneCanvasProps {
+  graphData: GraphPayload;
+  nodePositions: Map<string, THREE.Vector3>;
+  selectedNode: GraphNode | null;
+  highlightedIds: string[];
+  cameraTarget: THREE.Vector3 | null;
+  controlsRef: React.RefObject<OrbitControlsImpl | null>;
+  onSelectNode: (node: GraphNode | null) => void;
 }
 
-const QUICK_PROMPTS = [
-  '¿Cuál es la comuna con más estudiantes?',
-  '¿Qué colegios destacan en la red?',
-  '¿Cuáles son las facultades con mayor volumen?',
-];
+const SceneCanvas = memo(function SceneCanvas({
+  graphData,
+  nodePositions,
+  selectedNode,
+  highlightedIds,
+  cameraTarget,
+  controlsRef,
+  onSelectNode,
+}: SceneCanvasProps) {
+  return (
+    <div className="canvas-wrapper">
+      <Canvas
+        camera={{ position: [0, 0, 30], fov: 50 }}
+        dpr={[1, 1.5]}
+        gl={{ powerPreference: 'high-performance', antialias: false }}
+      >
+        <ambientLight intensity={0.35} />
+        <pointLight position={[20, 20, 20]} intensity={2.0} color="#ffffff" />
+        <directionalLight position={[-20, -15, -10]} intensity={0.8} color="#38bdf8" />
+
+        <NetworkGraph
+          data={graphData}
+          nodePositions={nodePositions}
+          selectedNode={selectedNode}
+          highlightedIds={highlightedIds}
+          onSelectNode={onSelectNode}
+        />
+
+        <CameraRig targetPos={cameraTarget} controlsRef={controlsRef} />
+
+        <EffectComposer>
+          <Bloom
+            luminanceThreshold={0.22}
+            luminanceSmoothing={0.85}
+            intensity={1.15}
+            mipmapBlur
+          />
+        </EffectComposer>
+
+        <OrbitControls
+          ref={controlsRef}
+          makeDefault
+          enableDamping
+          dampingFactor={0.06}
+          maxDistance={90}
+          minDistance={3}
+        />
+      </Canvas>
+    </div>
+  );
+});
 
 function App() {
   const [graphData, setGraphData] = useState<GraphPayload | null>(null);
@@ -140,9 +190,7 @@ function App() {
       text: 'Sistema SIMA-3D en línea. Selecciona cualquier nodo en la constelación o haz una consulta analítica para explorar la red educativa.',
     },
   ]);
-  const [inputValue, setInputValue] = useState('');
   const [sending, setSending] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const loadGraph = async () => {
@@ -163,12 +211,8 @@ function App() {
     return graphData ? computeNodePositions(graphData.nodes) : new Map<string, THREE.Vector3>();
   }, [graphData]);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
   // Seleccionar un nodo manualmente y volar hacia él
-  const handleSelectNode = (node: GraphNode | null) => {
+  const handleSelectNode = useCallback((node: GraphNode | null) => {
     setSelectedNode(node);
     if (node) {
       const pos = nodePositions.get(node.id);
@@ -177,19 +221,26 @@ function App() {
       setHighlightedIds([]);
       setCameraTarget(null);
     }
-  };
+  }, [nodePositions]);
 
-  const handleResetView = () => {
+  const handleResetView = useCallback(() => {
     setSelectedNode(null);
     setHighlightedIds([]);
     setCameraTarget(null);
-  };
+  }, []);
+
+  const handleFocusNodeById = useCallback((nodeId: string) => {
+    if (!graphData) return;
+    const targetNode = graphData.nodes.find((n) => n.id === nodeId);
+    if (targetNode) {
+      handleSelectNode(targetNode);
+    }
+  }, [graphData, handleSelectNode]);
 
   // Enviar consulta al Copilot y ejecutar comandos de cámara automáticos
-  const sendQuery = async (queryText: string) => {
+  const sendQuery = useCallback(async (queryText: string) => {
     if (!queryText.trim() || sending) return;
 
-    setInputValue('');
     setMessages((prev) => [...prev, { sender: 'user', text: queryText }]);
     setSending(true);
 
@@ -229,14 +280,9 @@ function App() {
     } finally {
       setSending(false);
     }
-  };
+  }, [sending, selectedNode, graphData, nodePositions, handleResetView]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    sendQuery(inputValue);
-  };
-
-  const handleJarvisAction = (payload: JarvisActionPayload) => {
+  const handleJarvisAction = useCallback((payload: JarvisActionPayload) => {
     if (payload.action === 'reset_view') {
       handleResetView();
       return;
@@ -257,7 +303,7 @@ function App() {
         handleResetView();
       }
     }
-  };
+  }, [graphData, nodePositions, handleResetView]);
 
   if (loading) {
     return (
@@ -281,39 +327,18 @@ function App() {
 
   return (
     <div className="sima-viewport">
-      {/* 1. LIENZO WEBGL A PANTALLA COMPLETA */}
-      <div className="canvas-wrapper">
-        <Canvas camera={{ position: [0, 0, 30], fov: 50 }}>
-          <ambientLight intensity={0.35} />
-          <pointLight position={[20, 20, 20]} intensity={2.0} color="#ffffff" />
-          <directionalLight position={[-20, -15, -10]} intensity={0.8} color="#38bdf8" />
+      {/* 1. LIENZO WEBGL MEMOIZADO (Aislado de inputs de texto) */}
+      <SceneCanvas
+        graphData={graphData}
+        nodePositions={nodePositions}
+        selectedNode={selectedNode}
+        highlightedIds={highlightedIds}
+        cameraTarget={cameraTarget}
+        controlsRef={controlsRef}
+        onSelectNode={handleSelectNode}
+      />
 
-          <NetworkGraph
-            data={graphData}
-            nodePositions={nodePositions}
-            selectedNode={selectedNode}
-            highlightedIds={highlightedIds}
-            onSelectNode={handleSelectNode}
-          />
-
-          <CameraRig targetPos={cameraTarget} controlsRef={controlsRef} />
-
-          <EffectComposer>
-            <Bloom luminanceThreshold={0.18} luminanceSmoothing={0.9} intensity={1.35} />
-          </EffectComposer>
-
-          <OrbitControls
-            ref={controlsRef}
-            makeDefault
-            enableDamping
-            dampingFactor={0.06}
-            maxDistance={90}
-            minDistance={3}
-          />
-        </Canvas>
-      </div>
-
-      {/* 2. BARRA SUPERIOR HUD (BRANDING + KPIS DE LA RED) */}
+      {/* 2. BARRA SUPERIOR HUD */}
       <header className="hud-topbar">
         <div className="brand-block">
           <div className="brand-logo">
@@ -348,76 +373,15 @@ function App() {
       </header>
 
       {/* 3. PANEL LATERAL FLOTANTE: COPILOT IA */}
-      <aside className="hud-sidebar">
-        <div className="sidebar-header">
-          <div className="sidebar-title-row">
-            <span className="ai-badge">IA</span>
-            <h3>Copilot Analítico</h3>
-          </div>
-          <p>Impulsado por Gemini 3.8 Flash</p>
-        </div>
+      <ChatPanel
+        messages={messages}
+        sending={sending}
+        selectedNode={selectedNode}
+        onSendMessage={sendQuery}
+        onFocusNode={handleFocusNodeById}
+      />
 
-        <div className="chat-messages">
-          {messages.map((msg, idx) => (
-            <div key={idx} className={`chat-bubble ${msg.sender}`}>
-              <div className="bubble-text">{msg.text}</div>
-              {msg.command && msg.command.target_node_id && (
-                <div
-                  className="camera-action-tag"
-                  onClick={() => {
-                    const node = graphData.nodes.find(
-                      (n) => n.id === msg.command?.target_node_id
-                    );
-                    if (node) handleSelectNode(node);
-                  }}
-                >
-                  <span>Enfoque: {msg.command.target_node_id}</span>
-                </div>
-              )}
-            </div>
-          ))}
-          {sending && (
-            <div className="chat-bubble bot typing">
-              <span className="dot" />
-              <span className="dot" />
-              <span className="dot" />
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Sugerencias rápidas */}
-        <div className="quick-prompts">
-          {QUICK_PROMPTS.map((prompt, i) => (
-            <button
-              key={i}
-              className="prompt-chip"
-              onClick={() => sendQuery(prompt)}
-              disabled={sending}
-            >
-              {prompt}
-            </button>
-          ))}
-        </div>
-
-        <form onSubmit={handleSendMessage} className="chat-input-bar">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder={
-              selectedNode
-                ? `Preguntar sobre ${selectedNode.label}...`
-                : 'Consulta sobre comunas, colegios...'
-            }
-          />
-          <button type="submit" disabled={sending || !inputValue.trim()}>
-            ↵
-          </button>
-        </form>
-      </aside>
-
-      {/* 4. TARJETA INSPECTORA DE NODO SELECCIONADO (DERECHA) */}
+      {/* 4. TARJETA INSPECTORA DE NODO SELECCIONADO */}
       {selectedNode && (
         <section className="hud-inspector">
           <div className="inspector-header">
@@ -483,7 +447,7 @@ function App() {
         </div>
       </footer>
 
-      {/* 6. ASISTENTE DE VOZ JARVIS (MODOS 1 Y 2) */}
+      {/* 6. ASISTENTE DE VOZ JARVIS */}
       <JarvisVoiceAssistant
         selectedNodeId={selectedNode?.id || null}
         onActionExecuted={handleJarvisAction}

@@ -355,7 +355,11 @@ export function AppV2() {
     <div className="sima-viewport">
       {/* 1. LIENZO WEBGL A PANTALLA COMPLETA */}
       <div className="canvas-wrapper">
-        <Canvas camera={{ position: [0, 0, 38], fov: 50 }}>
+        <Canvas
+          camera={{ position: [0, 0, 38], fov: 50 }}
+          dpr={[1, 1.5]}
+          gl={{ powerPreference: 'high-performance', antialias: false }}
+        >
           {/* Iluminación Claymórfica Volumétrica */}
           <ambientLight intensity={0.65} color="#1e293b" />
           <directionalLight position={[24, 28, 20]} intensity={1.8} color="#fff7ed" />

@@ -50,8 +50,30 @@ export function useJarvisVoice(options: UseJarvisVoiceOptions = {}) {
   const turnCompleteRef = useRef<boolean>(false);
   const isClosingRef = useRef<boolean>(false);
 
+  // Búferes de transcripción: Gemini Live envía fragmentos de 1-2 palabras.
+  // Se acumulan aquí y se publican al chat UNA sola vez por turno.
+  const userBufferRef = useRef<string>('');
+  const assistantBufferRef = useRef<string>('');
+  const actionConfirmationRef = useRef<string>('');
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
+  // Publica en el chat los mensajes completos del turno (usuario primero, luego asistente)
+  const flushTranscripts = useCallback(() => {
+    const userText = userBufferRef.current.trim();
+    const assistantText = assistantBufferRef.current.trim() || actionConfirmationRef.current.trim();
+    userBufferRef.current = '';
+    assistantBufferRef.current = '';
+    actionConfirmationRef.current = '';
+
+    if (userText) optionsRef.current.onUserMessage?.(userText);
+    if (assistantText) optionsRef.current.onAssistantMessage?.(assistantText);
+  }, []);
+
   // Limpieza total de recursos (cierra audio, mic y WebSocket)
   const cleanupAll = useCallback(() => {
+    // Publicar lo acumulado antes de liberar recursos (cubre interrupciones y cierres)
+    flushTranscripts();
     isClosingRef.current = true;
 
     // 1. Detener captura de audio
@@ -78,7 +100,7 @@ export function useJarvisVoice(options: UseJarvisVoiceOptions = {}) {
     }
 
     turnCompleteRef.current = false;
-  }, []);
+  }, [flushTranscripts]);
 
   // Finalizar petición limpia una vez el asistente termina de hablar
   const finishPetition = useCallback(() => {
@@ -180,19 +202,24 @@ export function useJarvisVoice(options: UseJarvisVoiceOptions = {}) {
           }
 
           case 'text':
-            setAssistantReply((prev) => (prev ? `${prev} ${msg.text}` : msg.text));
-            options.onAssistantMessage?.(msg.text);
+            // Fragmento parcial: se muestra en vivo en el panel de voz y se acumula para el chat
+            assistantBufferRef.current += msg.text;
+            setAssistantReply(assistantBufferRef.current.trim());
             break;
 
           case 'user_transcript':
-            setUserTranscript(msg.text);
-            options.onUserMessage?.(msg.text);
+            userBufferRef.current += msg.text;
+            setUserTranscript(userBufferRef.current.trim());
             break;
 
           case 'action':
             // Tool call ejecutada por Gemini Live
             setStatus('executing_action');
             setLastExecutedAction(msg.confirmation || msg.action);
+            if (msg.confirmation) {
+              actionConfirmationRef.current = msg.confirmation;
+              setAssistantReply((prev) => prev || msg.confirmation);
+            }
             options.onActionExecuted?.({
               action: msg.action,
               args: msg.args,
@@ -213,6 +240,8 @@ export function useJarvisVoice(options: UseJarvisVoiceOptions = {}) {
 
           case 'turn_complete':
             turnCompleteRef.current = true;
+            // Turno terminado: publicar la frase completa en el chat (un solo mensaje)
+            flushTranscripts();
             // Si el reproductor no está reproduciendo o no hay cola de audio, finalizar la petición de inmediato
             if (!audioPlayerRef.current || !audioPlayerRef.current.isPlaying) {
               finishPetition();

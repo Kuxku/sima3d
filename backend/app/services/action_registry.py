@@ -3,13 +3,16 @@ import logging
 from pydantic import BaseModel, Field, ValidationError
 from google.genai import types
 from app.services.graph_service import GraphService
+from app.services.context_builder import ContextBuilder
 
 logger = logging.getLogger(__name__)
 
 # --- DTOs de Argumentos ---
 
 class FocusNodeArgs(BaseModel):
-    node_id: str = Field(description="ID exacto del nodo en el grafo (ej: comuna-robledo, fac-ingenieria, etc.)")
+    node_id: str = Field(
+        description="ID exacto del nodo en el grafo (ej: comuna:robledo, facultad:facultad-de-ingenierias, colegio:cefa)"
+    )
 
 class ResetViewArgs(BaseModel):
     pass
@@ -78,8 +81,15 @@ class ActionRegistry:
     def get_function_declarations(self) -> List[types.FunctionDeclaration]:
         return [act.to_function_declaration() for act in self._actions.values()]
 
-    def get_gemini_tools(self) -> List[types.Tool]:
-        return [types.Tool(function_declarations=self.get_function_declarations())]
+    def get_gemini_tools(self, non_blocking: bool = False) -> List[types.Tool]:
+        """
+        non_blocking=True (solo Gemini Live): el modelo no espera el resultado para hablar,
+        evitando que narre antes y después de la herramienta (respuestas duplicadas).
+        """
+        decls = self.get_function_declarations()
+        if non_blocking:
+            decls = [d.model_copy(update={"behavior": types.Behavior.NON_BLOCKING}) for d in decls]
+        return [types.Tool(function_declarations=decls)]
 
     def execute(self, action_name: str, raw_args: Dict[str, Any]) -> ActionResult:
         """
@@ -122,7 +132,7 @@ class ActionRegistry:
                 action=action_name,
                 args=validated_dict,
                 confirmation=f"Ocurrió un error al ejecutar la acción {action_name}.",
-                error=str(e)
+                error="HANDLER_EXECUTION_ERROR"
             )
 
     def _register_default_actions(self):
@@ -136,7 +146,7 @@ class ActionRegistry:
                 "properties": {
                     "node_id": {
                         "type": "STRING",
-                        "description": "ID del nodo (ej: fac-ingenieria, comuna-belen, col-cefa)"
+                        "description": "ID del nodo (ej: facultad:facultad-de-ingenierias, comuna:belen, colegio:cefa)"
                     }
                 },
                 "required": ["node_id"]
@@ -263,7 +273,8 @@ class ActionRegistry:
             "type": node.type,
             "cluster": node.cluster,
             "metrics": node.metrics.model_dump(),
-            "position": node.position.model_dump()
+            "position": node.position.model_dump(),
+            "ranking": ContextBuilder.get_node_ranking(node.id),
         }
 
         # Conexiones directas para resaltado contextual
@@ -304,9 +315,14 @@ class ActionRegistry:
         )
 
     def _handle_highlight_nodes(self, args: Dict[str, Any]) -> ActionResult:
-        graph = GraphService.get_graph()
         req_ids = args.get("node_ids", [])
-        valid_nodes = [n for n in graph.nodes if n.id in req_ids]
+        valid_nodes = []
+        seen_ids: set[str] = set()
+        for raw_id in req_ids:
+            node = self._find_node(raw_id)
+            if node and node.id not in seen_ids:
+                seen_ids.add(node.id)
+                valid_nodes.append(node)
         valid_ids = [n.id for n in valid_nodes]
 
         if not valid_ids:
@@ -384,6 +400,7 @@ class ActionRegistry:
             "label": node.label,
             "type": node.type,
             "metrics": node.metrics.model_dump(),
+            "ranking": ContextBuilder.get_node_ranking(node.id),
             "top_connections": connections[:5]
         }
 

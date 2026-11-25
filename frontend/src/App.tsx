@@ -6,6 +6,7 @@ import { GraphService, CopilotService } from './services/api';
 import type { GraphPayload, GraphNode } from './types/graph';
 import { NetworkGraph } from './components/NetworkGraph';
 import { JarvisVoiceAssistant } from './components/JarvisVoiceAssistant';
+import { SimaLogoLoader } from './components/SimaLogoLoader';
 import { ChatPanel, type ChatMessage } from './components/ChatPanel';
 import type { JarvisActionPayload } from './hooks/useJarvisVoice';
 import * as THREE from 'three';
@@ -194,8 +195,16 @@ function App() {
 
   useEffect(() => {
     const loadGraph = async () => {
+      const reducedMotion =
+        typeof window !== 'undefined' &&
+        window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      const minDisplayMs = reducedMotion ? 0 : 4500;
+      const minDelay = new Promise<void>((resolve) => {
+        window.setTimeout(resolve, minDisplayMs);
+      });
+
       try {
-        const data = await GraphService.getGraph();
+        const [data] = await Promise.all([GraphService.getGraph(), minDelay]);
         setGraphData(data);
       } catch (err) {
         setError('No se pudo establecer conexión con el servidor FastAPI (Puerto 8000).');
@@ -306,12 +315,7 @@ function App() {
   }, [graphData, nodePositions, handleResetView]);
 
   if (loading) {
-    return (
-      <div className="loading-screen">
-        <div className="spinner" />
-        <div className="loading-text">SINCRONIZANDO TOPOLOGÍA 3D...</div>
-      </div>
-    );
+    return <SimaLogoLoader />;
   }
 
   if (error || !graphData) {

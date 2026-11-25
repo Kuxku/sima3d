@@ -15,6 +15,7 @@ import { AutoFitCamera } from './components/AutoFitCamera';
 import { DepthFog } from './components/DepthFog';
 import { GridRoom } from './components/GridRoom';
 import { JarvisVoiceAssistant } from '../components/JarvisVoiceAssistant';
+import { SimaLogoLoader } from '../components/SimaLogoLoader';
 import type { JarvisActionPayload } from '../hooks/useJarvisVoice';
 import './v2.css';
 
@@ -167,8 +168,16 @@ export function AppV2() {
 
   useEffect(() => {
     const loadGraph = async () => {
+      const reducedMotion =
+        typeof window !== 'undefined' &&
+        window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      const minDisplayMs = reducedMotion ? 0 : 4500;
+      const minDelay = new Promise<void>((resolve) => {
+        window.setTimeout(resolve, minDisplayMs);
+      });
+
       try {
-        const data = await GraphService.getGraph();
+        const [data] = await Promise.all([GraphService.getGraph(), minDelay]);
         setGraphData(data);
       } catch (err) {
         setError('No se pudo establecer conexión con el servidor FastAPI (Puerto 8000).');
@@ -332,12 +341,7 @@ export function AppV2() {
   };
 
   if (loading) {
-    return (
-      <div className="loading-screen">
-        <div className="spinner" />
-        <div className="loading-text">SINCRONIZANDO TOPOLOGÍA 3D (V2)...</div>
-      </div>
-    );
+    return <SimaLogoLoader />;
   }
 
   if (error || !graphData) {

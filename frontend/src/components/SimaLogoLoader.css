@@ -1,0 +1,88 @@
+.sima-logo-loader {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0b0f19;
+  overflow: hidden;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.sima-logo-loader .sima-loader-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+}
+
+.sima-logo-loader .sima-loader-svg {
+  display: block;
+  width: clamp(220px, 42vw, 380px);
+  max-width: 84vw;
+  max-height: 70vh;
+  height: auto;
+  overflow: visible;
+}
+
+.sima-logo-loader .sima-loader-controls {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+.sima-logo-loader .sima-loader-btn {
+  appearance: none;
+  background: rgba(15, 23, 42, 0.72);
+  color: #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+}
+
+.sima-logo-loader .sima-loader-btn:hover:not(:disabled) {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(245, 237, 222, 0.55);
+}
+
+.sima-logo-loader .sima-loader-btn:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+.sima-logo-loader .sima-loader-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 500px) {
+  .sima-logo-loader .sima-loader-svg {
+    width: 72vw;
+    max-width: 84vw;
+  }
+
+  .sima-logo-loader .sima-loader-controls {
+    right: 12px;
+    bottom: 12px;
+  }
+}
+
+@media (max-height: 480px) {
+  .sima-logo-loader .sima-loader-svg {
+    width: auto;
+    height: 66vh;
+  }
+}

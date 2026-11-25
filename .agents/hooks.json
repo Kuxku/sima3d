@@ -1,0 +1,17 @@
+{
+  "sima3d-terminal-sandbox": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "c:\\red3d\\.venv\\Scripts\\python.exe hooks/terminal_guard.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

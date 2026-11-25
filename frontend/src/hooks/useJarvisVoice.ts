@@ -49,66 +49,95 @@ export function useJarvisVoice(options: UseJarvisVoiceOptions = {}) {
   const audioPlayerRef = useRef<PcmAudioPlayer | null>(null);
   const turnCompleteRef = useRef<boolean>(false);
   const isClosingRef = useRef<boolean>(false);
+  const statusRef = useRef<VoiceStatus>('idle');
 
-  // Búferes de transcripción: Gemini Live envía fragmentos de 1-2 palabras.
-  // Se acumulan aquí y se publican al chat UNA sola vez por turno.
+  // Búferes de transcripción: Gemini Live envía fragmentos cortos.
+  // Se acumulan aquí y se publican al chat UNA sola vez por turno completado.
   const userBufferRef = useRef<string>('');
   const assistantBufferRef = useRef<string>('');
   const actionConfirmationRef = useRef<string>('');
-  const optionsRef = useRef(options);
-  optionsRef.current = options;
+  const optionsRef = useRef<UseJarvisVoiceOptions>(options);
 
-  // Publica en el chat los mensajes completos del turno (usuario primero, luego asistente)
-  const flushTranscripts = useCallback(() => {
-    const userText = userBufferRef.current.trim();
-    const assistantText = assistantBufferRef.current.trim() || actionConfirmationRef.current.trim();
+  // Sincronizar opciones en useEffect (cumple react-hooks/refs)
+  useEffect(() => {
+    optionsRef.current = options;
+  }, [options]);
+
+  const updateStatus = useCallback((next: VoiceStatus) => {
+    statusRef.current = next;
+    setStatus(next);
+  }, []);
+
+  const clearTranscriptBuffers = useCallback(() => {
     userBufferRef.current = '';
     assistantBufferRef.current = '';
     actionConfirmationRef.current = '';
+  }, []);
+
+  // Publica en el chat los mensajes completos del turno una sola vez
+  const flushTranscripts = useCallback(() => {
+    const userText = userBufferRef.current.trim();
+    const assistantText = assistantBufferRef.current.trim() || actionConfirmationRef.current.trim();
+    clearTranscriptBuffers();
 
     if (userText) optionsRef.current.onUserMessage?.(userText);
     if (assistantText) optionsRef.current.onAssistantMessage?.(assistantText);
-  }, []);
+  }, [clearTranscriptBuffers]);
 
   // Limpieza total de recursos (cierra audio, mic y WebSocket)
-  const cleanupAll = useCallback(() => {
-    // Publicar lo acumulado antes de liberar recursos (cubre interrupciones y cierres)
-    flushTranscripts();
-    isClosingRef.current = true;
+  const cleanupAll = useCallback(
+    (flush = false) => {
+      if (flush) {
+        flushTranscripts();
+      } else {
+        clearTranscriptBuffers();
+      }
+      isClosingRef.current = true;
 
-    // 1. Detener captura de audio
-    if (audioCaptureRef.current) {
-      try {
-        audioCaptureRef.current.stop();
-      } catch {}
-      audioCaptureRef.current = null;
-    }
+      // 1. Detener captura de audio
+      if (audioCaptureRef.current) {
+        try {
+          audioCaptureRef.current.stop();
+        } catch (err) {
+          console.warn('Error deteniendo captura de audio:', err);
+        }
+        audioCaptureRef.current = null;
+      }
 
-    // 2. Detener reproductor
-    if (audioPlayerRef.current) {
-      try {
-        audioPlayerRef.current.interrupt();
-      } catch {}
-    }
+      // 2. Detener reproductor
+      if (audioPlayerRef.current) {
+        try {
+          audioPlayerRef.current.interrupt();
+        } catch (err) {
+          console.warn('Error interrumpiendo reproductor de audio:', err);
+        }
+      }
 
-    // 3. Cerrar WebSocket
-    if (wsRef.current) {
-      try {
-        wsRef.current.close();
-      } catch {}
-      wsRef.current = null;
-    }
+      // 3. Cerrar WebSocket
+      if (wsRef.current) {
+        const socket = wsRef.current;
+        wsRef.current = null;
+        try {
+          socket.close();
+        } catch (err) {
+          console.warn('Error cerrando WebSocket Live:', err);
+        }
+      }
 
-    turnCompleteRef.current = false;
-  }, [flushTranscripts]);
+      turnCompleteRef.current = false;
+    },
+    [clearTranscriptBuffers, flushTranscripts]
+  );
 
-  // Finalizar petición limpia una vez el asistente termina de hablar
-  const finishPetition = useCallback(() => {
-    // Si ya estamos cerrando, evitar llamadas redundantes
-    if (isClosingRef.current) return;
-    cleanupAll();
-    setStatus('idle');
-  }, [cleanupAll]);
+  // Finalizar petición limpia una vez el asistente termina de hablar o al cancelar
+  const finishPetition = useCallback(
+    (flush = false) => {
+      if (isClosingRef.current) return;
+      cleanupAll(flush);
+      updateStatus('idle');
+    },
+    [cleanupAll, updateStatus]
+  );
 
   // Inicializar reproductor de audio con callbacks de ciclo de vida
   useEffect(() => {
@@ -118,13 +147,13 @@ export function useJarvisVoice(options: UseJarvisVoiceOptions = {}) {
       if (audioCaptureRef.current) {
         audioCaptureRef.current.isMuted = true;
       }
-      setStatus('speaking');
+      updateStatus('speaking');
     };
 
     player.onPlaybackEnded = () => {
       // Si el modelo ya había emitido turn_complete, la petición culminó exitosamente
       if (turnCompleteRef.current) {
-        finishPetition();
+        finishPetition(false);
       }
     };
 
@@ -132,65 +161,64 @@ export function useJarvisVoice(options: UseJarvisVoiceOptions = {}) {
     return () => {
       player.close();
     };
-  }, [finishPetition]);
+  }, [finishPetition, updateStatus]);
 
-  // Interrupción manual de la voz
+  // Interrupción manual de la voz (no publica fragmentos incompletos)
   const interruptAssistant = useCallback(() => {
-    finishPetition();
+    finishPetition(false);
   }, [finishPetition]);
 
   // Iniciar petición de voz
   const startListening = useCallback(async () => {
-    cleanupAll();
+    cleanupAll(false);
     isClosingRef.current = false;
     turnCompleteRef.current = false;
-    setStatus('requesting_mic');
+    updateStatus('requesting_mic');
     setErrorMessage(null);
     setUserTranscript('');
     setAssistantReply('');
     setLastExecutedAction(null);
 
-    const wsUrl = CopilotService.getLiveWebSocketUrl(options.selectedNodeId);
+    const wsUrl = CopilotService.getLiveWebSocketUrl(optionsRef.current.selectedNodeId);
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 
     ws.onopen = async () => {
-      setStatus('listening');
+      if (isClosingRef.current || wsRef.current !== ws) return;
+      updateStatus('listening');
 
       try {
-        // Iniciar captura de audio PCM 16kHz
         const capture = new PcmAudioCapture({
           onAudioData: (pcmBytes) => {
             if (ws.readyState === WebSocket.OPEN && !isClosingRef.current) {
-              (ws as any).send(pcmBytes);
+              ws.send(pcmBytes);
             }
           },
         });
         audioCaptureRef.current = capture;
         await capture.start();
-      } catch (micErr: any) {
-        setStatus('error');
+      } catch {
+        updateStatus('error');
         setErrorMessage('No se pudo acceder al micrófono. Por favor concede permisos en tu navegador.');
-        cleanupAll();
+        cleanupAll(false);
       }
     };
 
-    ws.onmessage = async (event) => {
+    ws.onmessage = async (event: MessageEvent) => {
       try {
-        const msg = JSON.parse(event.data);
+        const msg = JSON.parse(String(event.data));
 
         switch (msg.type) {
           case 'session_started':
-            setStatus('listening');
+            updateStatus('listening');
             break;
 
           case 'audio': {
-            // Silenciar micrófono mientras Jarvis habla
             if (audioCaptureRef.current) {
               audioCaptureRef.current.isMuted = true;
             }
-            setStatus('speaking');
-            const binaryString = atob(msg.data);
+            updateStatus('speaking');
+            const binaryString = atob(String(msg.data || ''));
             const bytes = new Uint8Array(binaryString.length);
             for (let i = 0; i < binaryString.length; i++) {
               bytes[i] = binaryString.charCodeAt(i);
@@ -202,25 +230,23 @@ export function useJarvisVoice(options: UseJarvisVoiceOptions = {}) {
           }
 
           case 'text':
-            // Fragmento parcial: se muestra en vivo en el panel de voz y se acumula para el chat
-            assistantBufferRef.current += msg.text;
+            assistantBufferRef.current += String(msg.text || '');
             setAssistantReply(assistantBufferRef.current.trim());
             break;
 
           case 'user_transcript':
-            userBufferRef.current += msg.text;
+            userBufferRef.current += String(msg.text || '');
             setUserTranscript(userBufferRef.current.trim());
             break;
 
           case 'action':
-            // Tool call ejecutada por Gemini Live
-            setStatus('executing_action');
+            updateStatus('executing_action');
             setLastExecutedAction(msg.confirmation || msg.action);
             if (msg.confirmation) {
               actionConfirmationRef.current = msg.confirmation;
               setAssistantReply((prev) => prev || msg.confirmation);
             }
-            options.onActionExecuted?.({
+            optionsRef.current.onActionExecuted?.({
               action: msg.action,
               args: msg.args,
               confirmation: msg.confirmation,
@@ -231,39 +257,38 @@ export function useJarvisVoice(options: UseJarvisVoiceOptions = {}) {
             break;
 
           case 'interrupted':
-            // Interrupción confirmada
             if (audioPlayerRef.current) {
               audioPlayerRef.current.interrupt();
             }
-            finishPetition();
+            finishPetition(false);
             break;
 
           case 'turn_complete':
             turnCompleteRef.current = true;
-            // Turno terminado: publicar la frase completa en el chat (un solo mensaje)
+            // Turno terminado: publicar la frase completa en el chat UNA sola vez
             flushTranscripts();
-            // Si el reproductor no está reproduciendo o no hay cola de audio, finalizar la petición de inmediato
             if (!audioPlayerRef.current || !audioPlayerRef.current.isPlaying) {
-              finishPetition();
+              finishPetition(false);
             }
             break;
 
           case 'session_warning':
-            setStatus('warning');
+            updateStatus('warning');
             setErrorMessage(msg.message);
             break;
 
           case 'session_closed':
-            finishPetition();
+            finishPetition(false);
             break;
 
           case 'error':
-            setStatus('error');
             if (msg.code === 'CONCURRENCY_LIMIT_EXCEEDED') {
-              setStatus('quota_exceeded');
+              updateStatus('quota_exceeded');
+            } else {
+              updateStatus('error');
             }
             setErrorMessage(msg.message);
-            cleanupAll();
+            cleanupAll(false);
             break;
         }
       } catch (err) {
@@ -273,47 +298,49 @@ export function useJarvisVoice(options: UseJarvisVoiceOptions = {}) {
 
     ws.onerror = () => {
       if (!isClosingRef.current) {
-        setStatus('error');
+        updateStatus('error');
         setErrorMessage('Error de conexión WebSocket con el servidor de Gemini Live.');
       }
-      cleanupAll();
+      cleanupAll(false);
     };
 
-    ws.onclose = (e) => {
+    ws.onclose = (e: CloseEvent) => {
       if (e.code === 4003) {
-        setStatus('quota_exceeded');
+        updateStatus('quota_exceeded');
         setErrorMessage('Límite de concurrencia alcanzado (máx 3 sesiones simultáneas). Intenta en unos segundos.');
+        cleanupAll(false);
+        return;
       }
-      if (!isClosingRef.current && status !== 'error') {
-        setStatus('idle');
+
+      const currentStatus = statusRef.current;
+      if (!isClosingRef.current && currentStatus !== 'error' && currentStatus !== 'quota_exceeded') {
+        updateStatus('idle');
       }
-      cleanupAll();
+      cleanupAll(false);
     };
-  }, [cleanupAll, finishPetition, options, status]);
+  }, [cleanupAll, finishPetition, flushTranscripts, updateStatus]);
 
   // Usuario indica que terminó de hablar ("Listo" o detener escucha)
   const stopAndProcess = useCallback(() => {
-    // 1. Detener captura del micrófono local
     if (audioCaptureRef.current) {
       audioCaptureRef.current.stop();
       audioCaptureRef.current = null;
     }
-    // 2. Notificar al backend que finalizó el audio del usuario para que Gemini comience la respuesta
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify({ type: 'finish_speaking' }));
     }
-    setStatus('processing');
-  }, []);
+    updateStatus('processing');
+  }, [updateStatus]);
 
-  // Cancelar petición en curso y volver a reposo
+  // Cancelar petición en curso y volver a reposo (sin publicar parciales)
   const stopListening = useCallback(() => {
-    finishPetition();
+    finishPetition(false);
   }, [finishPetition]);
 
   // Cleanup al desmontar
   useEffect(() => {
     return () => {
-      cleanupAll();
+      cleanupAll(false);
     };
   }, [cleanupAll]);
 

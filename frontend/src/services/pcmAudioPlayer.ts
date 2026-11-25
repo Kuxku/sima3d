@@ -84,8 +84,10 @@ export class PcmAudioPlayer {
    * y reinicia los contadores (usado al interrumpir al asistente).
    */
   public interrupt(): void {
+    const hadActiveSources = this.activeSources.length > 0;
     for (const source of this.activeSources) {
       try {
+        source.onended = null;
         source.stop();
         source.disconnect();
       } catch {
@@ -96,7 +98,9 @@ export class PcmAudioPlayer {
     if (this.audioContext) {
       this.nextPlayTime = this.audioContext.currentTime;
     }
-    this.onPlaybackEnded?.();
+    if (hadActiveSources) {
+      this.onPlaybackEnded?.();
+    }
   }
 
   public get isPlaying(): boolean {

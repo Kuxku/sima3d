@@ -5,7 +5,7 @@
  */
 
 export interface AudioCaptureOptions {
-  onAudioData: (pcmBytes: Uint8Array) => void;
+  onAudioData: (pcmBytes: Uint8Array<ArrayBuffer>) => void;
   sampleRate?: number;
   noiseThreshold?: number; // RMS mínimo para transmitir (default 0.004)
 }
@@ -128,7 +128,7 @@ export class PcmAudioCapture {
     return result;
   }
 
-  private floatTo16BitPCM(input: Float32Array): Uint8Array {
+  private floatTo16BitPCM(input: Float32Array): Uint8Array<ArrayBuffer> {
     const buffer = new ArrayBuffer(input.length * 2);
     const view = new DataView(buffer);
     for (let i = 0; i < input.length; i++) {

@@ -1,5 +1,7 @@
 import asyncio
 import base64
+import binascii
+import json
 import logging
 import time
 from typing import Optional, Set
@@ -13,11 +15,13 @@ from app.services.context_builder import ContextBuilder
 
 logger = logging.getLogger(__name__)
 
+
 class LiveSessionManager:
     """
     Gestiona el ciclo de vida, concurrencia, límites de duración
     y puente seguro WebSocket <-> Gemini Multimodal Live API.
     """
+
     def __init__(self):
         self._active_sessions: Set[str] = set()
         self._lock = asyncio.Lock()
@@ -31,12 +35,16 @@ class LiveSessionManager:
 
     async def end_session(self, session_id: str):
         async with self._lock:
-            self._active_sessions.discard(session_id)
-            logger.info(f"Sesión Live {session_id} finalizada. Sesiones activas: {len(self._active_sessions)}")
+            if session_id in self._active_sessions:
+                self._active_sessions.discard(session_id)
+                logger.info(
+                    f"Sesión Live {session_id} finalizada. Sesiones activas: {len(self._active_sessions)}"
+                )
 
     @property
     def active_count(self) -> int:
         return len(self._active_sessions)
+
 
 live_session_manager = LiveSessionManager()
 
@@ -53,8 +61,8 @@ class GeminiLiveBridge:
     async def run(self, selected_node_id: Optional[str] = None):
         """
         Ejecuta el puente bidireccional entre el WebSocket del cliente y Gemini Live.
+        La liberación de concurrencia (`end_session`) es responsabilidad del router WebSocket.
         """
-        # 1. Construir contexto compacto de red
         network_context = ContextBuilder.build_network_context()
         sys_instruction = (
             "Eres Jarvis, el asistente de voz inteligente y ejecutivo de SIMA-3D Medellín.\n"
@@ -77,7 +85,6 @@ class GeminiLiveBridge:
         if selected_node_id and selected_node_id != "string":
             sys_instruction += f"\n\nEL USUARIO TIENE SELECCIONADO EL NODO ID: {selected_node_id}"
 
-        # 2. Configurar LiveConnectConfig con latencia ultra-baja y transcripción nativa
         config = types.LiveConnectConfig(
             response_modalities=["AUDIO"],
             thinking_config=types.ThinkingConfig(thinking_budget=0),
@@ -95,36 +102,38 @@ class GeminiLiveBridge:
             system_instruction=types.Content(
                 parts=[types.Part.from_text(text=sys_instruction)]
             ),
-            tools=action_registry.get_gemini_tools(non_blocking=True)
+            tools=action_registry.get_gemini_tools(non_blocking=True),
         )
 
-        logger.info(f"Iniciando Gemini Live session {self.session_id} con modelo {settings.GEMINI_LIVE_MODEL}")
+        logger.info(
+            f"Iniciando Gemini Live session {self.session_id} con modelo {settings.GEMINI_LIVE_MODEL}"
+        )
 
         try:
             async with self.client.aio.live.connect(
                 model=settings.GEMINI_LIVE_MODEL,
-                config=config
+                config=config,
             ) as session:
-                # Notificar al cliente que la sesión Live está activa
                 await self.websocket.send_json({
                     "type": "session_started",
                     "session_id": self.session_id,
                     "model": settings.GEMINI_LIVE_MODEL,
-                    "max_duration_seconds": settings.VOICE_LIVE_MAX_DURATION_SECONDS
+                    "max_duration_seconds": settings.VOICE_LIVE_MAX_DURATION_SECONDS,
                 })
 
-                # Tareas concurrentes de lectura y escritura
                 client_to_gemini = asyncio.create_task(self._forward_client_to_gemini(session))
                 gemini_to_client = asyncio.create_task(self._forward_gemini_to_client(session))
                 watchdog = asyncio.create_task(self._session_watchdog())
 
-                done, pending = await asyncio.wait(
+                _, pending = await asyncio.wait(
                     [client_to_gemini, gemini_to_client, watchdog],
-                    return_when=asyncio.FIRST_COMPLETED
+                    return_when=asyncio.FIRST_COMPLETED,
                 )
 
                 for t in pending:
                     t.cancel()
+                if pending:
+                    await asyncio.gather(*pending, return_exceptions=True)
 
         except Exception as e:
             logger.error(f"Error en sesión Live {self.session_id}: {e}", exc_info=True)
@@ -132,17 +141,16 @@ class GeminiLiveBridge:
                 await self.websocket.send_json({
                     "type": "error",
                     "code": "LIVE_API_ERROR",
-                    "message": f"Error en la conexión con Gemini Live: {str(e)}"
+                    "message": "No fue posible mantener la conexión de voz en tiempo real. Intenta nuevamente.",
                 })
             except Exception:
                 pass
         finally:
             self.is_running = False
-            await live_session_manager.end_session(self.session_id)
             try:
                 await self.websocket.send_json({
                     "type": "session_closed",
-                    "reason": "finished"
+                    "reason": "finished",
                 })
                 await self.websocket.close()
             except Exception:
@@ -161,45 +169,52 @@ class GeminiLiveBridge:
                     await session.send_realtime_input(
                         audio=types.Blob(
                             data=pcm_bytes,
-                            mime_type="audio/pcm;rate=16000"
+                            mime_type="audio/pcm;rate=16000",
                         )
                     )
 
                 # Caso 2: Frame JSON
                 elif "text" in msg and msg["text"]:
                     data = msg.get("text")
-                    import json
                     try:
                         payload = json.loads(data)
                         msg_type = payload.get("type")
 
                         if msg_type == "audio":
                             raw_b64 = payload.get("data", "")
-                            pcm_bytes = base64.b64decode(raw_b64)
+                            try:
+                                pcm_bytes = base64.b64decode(raw_b64, validate=True)
+                            except (binascii.Error, ValueError, TypeError):
+                                logger.warning(
+                                    f"Frame de audio base64 inválido descartado en sesión {self.session_id}"
+                                )
+                                continue
                             await session.send_realtime_input(
                                 audio=types.Blob(
                                     data=pcm_bytes,
-                                    mime_type="audio/pcm;rate=16000"
+                                    mime_type="audio/pcm;rate=16000",
                                 )
                             )
 
                         elif msg_type == "text":
-                            user_text = payload.get("text", "").strip()
+                            user_text = str(payload.get("text", "")).strip()
                             if user_text:
                                 await session.send_client_content(
-                                    turns=[types.Content(
-                                        role="user",
-                                        parts=[types.Part.from_text(text=user_text)]
-                                    )],
-                                    turn_complete=True
+                                    turns=[
+                                        types.Content(
+                                            role="user",
+                                            parts=[types.Part.from_text(text=user_text)],
+                                        )
+                                    ],
+                                    turn_complete=True,
                                 )
 
                         elif msg_type == "interrupt":
-                            # El cliente reporta que el usuario canceló
-                            logger.info(f"Interrupción manual recibida del cliente en {self.session_id}")
+                            logger.info(
+                                f"Interrupción manual recibida del cliente en {self.session_id}"
+                            )
 
                         elif msg_type == "finish_speaking":
-                            # El usuario terminó su turno oral
                             logger.info(f"Cliente indicó fin de habla en {self.session_id}")
                             try:
                                 await session.send_realtime_input(audio_stream_end=True)
@@ -219,6 +234,7 @@ class GeminiLiveBridge:
 
     async def _forward_gemini_to_client(self, session):
         """Lee eventos de Gemini Live y los reenvía estructurados al cliente WebSocket."""
+        saw_output_transcription = False
         try:
             async for server_msg in session.receive():
                 if not self.is_running:
@@ -230,10 +246,8 @@ class GeminiLiveBridge:
                 if server_msg.tool_call and server_msg.tool_call.function_calls:
                     for fc in server_msg.tool_call.function_calls:
                         logger.info(f"Live Gemini invoca acción: {fc.name} con args: {fc.args}")
-                        # Ejecutar acción en el grafo
                         result = action_registry.execute(fc.name, fc.args or {})
-                        
-                        # Notificar al cliente inmediatamente para animar la escena 3D
+
                         await self.websocket.send_json({
                             "type": "action",
                             "action": result.action,
@@ -241,71 +255,84 @@ class GeminiLiveBridge:
                             "confirmation": result.confirmation,
                             "result": result.data,
                             "camera_command": result.camera_command,
-                            "highlighted_node_ids": result.highlighted_node_ids
+                            "highlighted_node_ids": result.highlighted_node_ids,
                         })
 
-                        # Responder a Gemini Live en modo SILENT: el resultado queda en contexto
-                        # sin disparar un segundo turno hablado (evita frases repetidas)
                         await session.send_tool_response(
-                            function_responses=[types.FunctionResponse(
-                                id=fc.id,
-                                name=fc.name,
-                                scheduling=types.FunctionResponseScheduling.SILENT,
-                                response={
-                                    "result": result.data,
-                                    "confirmation": result.confirmation
-                                }
-                            )]
+                            function_responses=[
+                                types.FunctionResponse(
+                                    id=fc.id,
+                                    name=fc.name,
+                                    scheduling=types.FunctionResponseScheduling.SILENT,
+                                    response={
+                                        "result": result.data,
+                                        "confirmation": result.confirmation,
+                                    },
+                                )
+                            ]
                         )
 
                 # 2. Contenido del Servidor (Audio PCM 24kHz, texto y transcripciones)
                 if server_msg.server_content:
                     content = server_msg.server_content
 
-                    # Indicador de interrupción (el usuario empezó a hablar)
                     if content.interrupted:
                         logger.info("Gemini Live reporta interrupción por habla del usuario")
+                        saw_output_transcription = False
                         await self.websocket.send_json({"type": "interrupted"})
 
-                    # Turno del modelo
+                    # Transcripción del audio de salida (fuente prioritaria en modalidad AUDIO)
+                    has_out_tx_in_msg = False
+                    if content.output_transcription:
+                        out_text = (
+                            content.output_transcription.text
+                            if hasattr(content.output_transcription, "text")
+                            else str(content.output_transcription)
+                        )
+                        if out_text:
+                            has_out_tx_in_msg = True
+                            saw_output_transcription = True
+                            await self.websocket.send_json({
+                                "type": "text",
+                                "text": out_text,
+                            })
+
+                    # Turno del modelo (audio PCM y fallback de texto solo si no hay output_transcription)
                     if content.model_turn and content.model_turn.parts:
                         for part in content.model_turn.parts:
-                            # Texto explicativo (filtrar pensamientos internos de Gemini)
-                            if part.text and not getattr(part, "thought", False):
+                            if (
+                                part.text
+                                and not getattr(part, "thought", False)
+                                and not has_out_tx_in_msg
+                                and not saw_output_transcription
+                            ):
                                 await self.websocket.send_json({
                                     "type": "text",
-                                    "text": part.text
+                                    "text": part.text,
                                 })
 
-                            # Fragmento de Audio PCM 24kHz
                             if part.inline_data and part.inline_data.data:
                                 audio_b64 = base64.b64encode(part.inline_data.data).decode("utf-8")
                                 await self.websocket.send_json({
                                     "type": "audio",
                                     "data": audio_b64,
-                                    "mime_type": part.inline_data.mime_type or "audio/pcm;rate=24000"
+                                    "mime_type": part.inline_data.mime_type or "audio/pcm;rate=24000",
                                 })
 
-                    # Transcripción del audio de salida en español (lo que Jarvis está hablando)
-                    if content.output_transcription:
-                        out_text = content.output_transcription.text if hasattr(content.output_transcription, "text") else str(content.output_transcription)
-                        if out_text:
-                            await self.websocket.send_json({
-                                "type": "text",
-                                "text": out_text
-                            })
-
-                    # Transcripción del audio del usuario (lo que habló el usuario)
                     if content.input_transcription:
-                        in_text = content.input_transcription.text if hasattr(content.input_transcription, "text") else str(content.input_transcription)
+                        in_text = (
+                            content.input_transcription.text
+                            if hasattr(content.input_transcription, "text")
+                            else str(content.input_transcription)
+                        )
                         if in_text:
                             await self.websocket.send_json({
                                 "type": "user_transcript",
-                                "text": in_text
+                                "text": in_text,
                             })
 
-                    # Fin de turno
                     if content.turn_complete:
+                        saw_output_transcription = False
                         await self.websocket.send_json({"type": "turn_complete"})
 
         except Exception as e:
@@ -320,29 +347,30 @@ class GeminiLiveBridge:
             elapsed = time.time() - self.start_time
             inactive_time = time.time() - self.last_activity
 
-            # Aviso de fin de sesión (2 minutos antes de expirar)
             remaining = settings.VOICE_LIVE_MAX_DURATION_SECONDS - elapsed
             if remaining <= 120 and not warning_sent and remaining > 0:
                 warning_sent = True
                 await self.websocket.send_json({
                     "type": "session_warning",
-                    "message": f"La sesión Live se cerrará en {int(remaining)} segundos por límite de duración."
+                    "message": f"La sesión Live se cerrará en {int(remaining)} segundos por límite de duración.",
                 })
 
-            # Expiración por duración máxima
             if elapsed >= settings.VOICE_LIVE_MAX_DURATION_SECONDS:
-                logger.warning(f"Sesión Live {self.session_id} alcanzó el límite de {settings.VOICE_LIVE_MAX_DURATION_SECONDS}s")
+                logger.warning(
+                    f"Sesión Live {self.session_id} alcanzó el límite de {settings.VOICE_LIVE_MAX_DURATION_SECONDS}s"
+                )
                 await self.websocket.send_json({
                     "type": "session_warning",
-                    "message": "Duración máxima de sesión alcanzada. Cerrando conexión de forma ordenada."
+                    "message": "Duración máxima de sesión alcanzada. Cerrando conexión de forma ordenada.",
                 })
                 break
 
-            # Expiración por inactividad
             if inactive_time >= settings.VOICE_LIVE_INACTIVITY_TIMEOUT_SECONDS:
-                logger.info(f"Sesión Live {self.session_id} cerrada por inactividad ({inactive_time:.0f}s)")
+                logger.info(
+                    f"Sesión Live {self.session_id} cerrada por inactividad ({inactive_time:.0f}s)"
+                )
                 await self.websocket.send_json({
                     "type": "session_warning",
-                    "message": "Sesión cerrada por inactividad."
+                    "message": "Sesión cerrada por inactividad.",
                 })
                 break
